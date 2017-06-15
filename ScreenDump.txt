@@ -1,0 +1,57 @@
+pi@pi-top:~ $ cd Downloads
+pi@pi-top:~/Downloads $ sudo ./m_access-4
+
+*** Texas Instruments bq40z60 status tool v0.8 - Wed Jun 14 15:32:13 2017 ***
+
+pigpio initialization OK
+i2c open OK
+
+0x0001 Remaining Capacity Alarm     : 68 mAh
+0x0002 Remaining Time Alarm         : 10 min
+0x0003 Battery Mode                 : 0x6001
+0x0004 At Rate                      : 0 mA
+0x0005 At Rate Time to Full         : 65535 min
+0x0006 At Rate Time to Empty        : 65535 min
+0x0007 At Rate OK                   : 0x0001
+0x0008 Temperature                  : 27.3 °degC
+0x0009 Voltage                      : 16465 mV
+0x000A Current                      : 0 mA
+0x000B Average Current              : 0 mA
+0x000C Max Error                    : 2 %
+0x000D Relative State of Charge     : 100 %
+0x000E Absolute State of Charge     : 95 %
+0x000F Remaining Capacity           : 2741 mAh
+0x0010 Full Charge Capacity         : 2741 mAh
+0x0011 Run Time to Empty            : 65535 min
+0x0012 Average Time to Empty        : 65535 min
+0x0013 Average Time to Full         : 65535 min
+0x0014 Charging Current             : 0 mA
+0x0015 Charging Voltage             : 0 mV
+0x0016 Battery Status               : 0x00C4
+0x0017 Cycle Count                  : 21 cycles
+0x0018 Design Capacity              : 2900 mAh
+0x0019 Design Voltage               : 14800 mV
+0x003C Cell Voltage 4               : 4064 mV
+0x003D Cell Voltage 3               : 4139 mV
+0x003E Cell Voltage 2               : 4140 mV
+0x003F Cell Voltage 1               : 4123 mV
+0x004A Init Discharge Set           : 65535 mV
+0x004B Init Charge Set              : 65535 mV
+0x004F State of Health (SoH)        : 100 %
+0x0059 TURBO_POWER                  : 51441 cW
+0x005A TURBO_FINAL                  : 0 cW
+0x005B TURBO_PACK_R                 : 30 mOhm
+0x005C TURBO_SYS_R                  : 0 mOhm
+0x005D TURBO_EDV                    : 12000 mV
+0x005E TURBO_CURRENT                : 54764 mAh
+0x0070 ManufacturerInfo             : 0x6120
+
+Total number of SMBus reads         : = 42
+Total number of SMBus writes        : = 0
+Total number of SMBus failed reads  : = 0
+Total number of SMBus failed writes : = 0
+
+Run ended normally
+CPU time: 1.16 seconds
+Thu Jun 15 10:23:34 2017
+pi@pi-top:~/Downloads $ 
