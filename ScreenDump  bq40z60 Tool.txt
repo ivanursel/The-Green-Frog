@@ -1,0 +1,452 @@
+*** Texas Instruments bq40z60 status tool v0.9 - 17/07/2018 09:30:00 ***
+
+pigpio initialization OK
+i2c open OK
+
+Number of bytes returned (22) wrong (expected = 6)
+3
+Number of bytes returned (6) wrong (expected = 10)
+Key 1 = 0x0247
+Key 2 = 0x0000
+Key 3 = 0xFDFD
+Key 4 = 0xFDFD
+
+0x0001 Device Type                                                 : 0x0046
+- [1:0]  Device Number                                             : 0x4600
+- [3:2]  Version                                                   : 0x0013
+- [5:4]  Build Number                                              : 0x0013
+- [6]    Firmware Type                                             : 0x00
+- [8:7]  Impedance Track Version                                   : 0x0385
+- [9]    Reserved - Do not use                                     : 0x02
+- [10]   Reserved - Do not use                                     : 0x00
+0x0003 Hardware Version                                            : 0x600
+0x0004 Instruction Flash Signature                                 : 0xE5D8
+0x0005 Static DF Signature                                         : 0x48D9
+0x0006 Chemical ID                                                 : 0x0001
+0x0008 Static Chem DF Signature                                    : 0xA64E
+0x0009 All DF Signature                                            : 0x399F
+0x0050 SafetyAlert                                                 : 0x00000000
+0x0051 SafetyStatus                                                : 0x00000000
+0x0052 PFAlert                                                     : 0x00000000
+0x0053 PFStatus                                                    : 0x00000000
+0x0054 OperationStatus                                             : 0x00024700
+- RSVD       [31] Reserved - do not use                            : 0
+- RSVD       [30] Reserved - do not use                            : 0
+- EMSHUT     [29] Emergency Shutdown                               : 0
+- CB         [28] Cell Balancing                                   : 0
+- SLPCC      [27] CC Measurement in SLEEP mode                     : 0
+- SLPAD      [26] ADC Measurement in SLEEP mode                    : 0
+- SMBLCAL    [25] Auto CC calibration when the bus is low          : 0
+- INIT       [24] Initialization after full reset                  : 0
+- SLEEPM     [23] SLEEP mode triggered via command                 : 0
+- XL         [22] 400 kHz SMBus mode                               : 0
+- CAL_OFFSET [21] Calibration output (raw CC)                      : 0
+- CAL        [20] Calibration output (raw ADC and CC) generated    : 0
+- AUTOCALM   [19] Auto CC Offset Calibration by MAC AutoCCOffset() : 0
+- AUTH       [18] Authentication in progress                       : 0
+- LED        [17] LED Display                                      : 0
+- SDM        [16] Shutdown triggered via command                   : 0
+- SLEEP      [15] Sleep mode conditions met                        : 0
+- XCHG       [14] Charging disabled                                : 0
+- XDSG       [13] Discharging disabled                             : 0
+- PF         [12] Permanent Fault mode                             : 0
+- SS         [11] Safety mode                                      : 0
+- SDV        [10] Shutdown triggered via low pack voltage          : 0
+- SEC[1]     [9]  Security Status                                  : 1
+- SEC[0]     [8]  Security Status                                  : 0
+- BTP_INT    [7]  Battery Trip Point interrupt                     : 0
+- ACLW       [6]  AC Voltage below threshold                       : 1
+- FUSE       [5]  Fuse status                                      : 0
+- ACFET      [4]  AC FET status                                    : 0
+- PCHG       [3]  Pre-charge FET status                            : 0
+- CHG        [2]  Charge FET status                                : 1
+- DSG        [1]  Discharge FET status                             : 1
+- PRES       [0]  System Present                                   : 1
+0x0055 ChargingStatus                                              : 0x00040800
+- RSVD       [23] Reserved - do not use                            : 0
+- RSVD       [22] Reserved - do not use                            : 0
+- RSVD       [21] Reserved - do not use                            : 0
+- RSVD       [20] Reserved - do not use                            : 0
+- RSVD       [19] Reserved - do not use                            : 0
+- LCHG       [18] Low Charge Current Mode                          : 0
+- CHGSTAT    [17] Charger providing current to battery             : 0
+- CHRG       [16] Charger Enable                                   : 0
+- RSVD       [15] Reserved - do not use                            : 0
+- RSVD       [14] Reserved - do not use                            : 0
+- CVRD       [13] Voltage/Current Override Mode                    : 0
+- MLC[2]     [12] Multi-level Charging Mode Not supported - ignore : 0
+- MLC[1]     [11] Multi-level Charging Mode Not supported - ignore : 0
+- MLC[0]     [10] Multi-level Charging Mode Not supported - ignore : 1
+- CVR        [9]  Charging Voltage Rate of Change                  : 0
+- CCR        [8]  Charging Current Rate of Change                  : 0
+- VCT        [7]  Charge Termination                               : 0
+- MCHG       [6]  Maintenance Charge                               : 0
+- SU         [5]  Charge Suspend                                   : 0
+- IN         [4]  Charge Inhibit                                   : 0
+- HV         [3]  High Cell Voltage Charge Conditions              : 1
+- MV         [2]  Medium Cell Voltage Charge Conditions            : 0
+- LV         [1]  Low Cell Voltage Charge Conditions               : 0
+- PV         [0]  Pre-Charge Cell Voltage Charge Conditions        : 0
+Number of bytes returned (5) wrong (expected = 6)
+0x0056 GaugingStatus                                               : 0x089C405B
+- RSVD       [23] Reserved - do not use                            : 0
+- RSVD       [22] Reserved - do not use                            : 1
+- RSVD       [21] Reserved - do not use                            : 0
+- OCVFR      [20] Open Circuit Voltage Flat Region during RELAX    : 0
+- LDMD       [19] LOAD mode - battery under load                   : 0
+- RX         [18] Resistance Update to DataFlash                   : 0
+- QMAX       [17] QMax update to DataFlash                         : 0
+- VDQ        [16] Discharge qualified for learning                 : 0
+- NSFM       [15] Negative Ra resistance scaling mode              : 0
+- RSVD       [14] Reserved - do not use                            : 1
+- SLPQMAX    [13] OCV update in SLEEP Mode                         : 0
+- QEN        [12] Impedance Track - Ra and QMax updates occurring  : 0
+- VOK        [11] Voltages Ok for QMax update.                     : 0
+- RDIS       [10] Resistance table updates in DataFlash            : 0
+- RSVD       [9]  Reserved - Do not use                            : 0
+- REST       [8]  In RELAX mode and OCV updates taken              : 0
+- CF         [7]  Condition Flag                                   : 0
+- DSG        [6]  Discharge/Relax                                  : 1
+- EDV        [5]  End-of-Discharge Voltage reached during discharge: 0
+- BAL_EN     [4]  Cell balancing if possible                       : 0
+- TC         [3]  Terminate Charge                                 : 0
+- TD         [2]  Terminate Discharge                              : 0
+- FC         [1]  Fully Charged                                    : 0
+- FD         [0]  Fully Discharged                                 : 0
+0x0057 ManufacturingStatus                                         : 0xD806
+2018-07-17 15:40:16 i2cReadI2CBlockData: bad count (35)
+i2c read block failed
+0x0060 Lifetime Data Block 1                                       : 0x00000000
+- [1:0]   Cell 1 Max Voltage                                       : 0
+- [3:2]   Cell 2 Max Voltage                                       : 0
+- [5:4]   Cell 3 Max Voltage                                       : 0
+- [7:6]   Cell 4 Max Voltage                                       : 0
+- [9:8]   Cell 1 Min Voltage                                       : 0
+- [11:10] Cell 2 Min Voltage                                       : 0
+- [13:12] Cell 3 Min Voltage                                       : 0
+- [15:14] Cell 4 Min Voltage                                       : 0
+- [17:16] Max Delta Cell Voltage                                   : 0
+- [19:18] Max Charge Current                                       : 0
+- [21:20] Max Discharge Current                                    : 0
+- [23:22] Max Avg Dsg Current                                      : 0
+- [25:24] Max Avg Dsg Power                                        : 0
+- [26]    Max Temp Cell                                            : 0
+- [27]    Min Temp Cell                                            : 0
+- [28]    Max Delta Cell temp                                      : 0
+- [29]    Max Temp Int Sensor                                      : 0
+- [30]    Min Temp Int Sensor                                      : 0
+- [31]    Max Temp Fet                                             : 0
+0x0061 Lifetime Data Block 2                                       : 0x00000000
+- [0]     No. of Shutdowns                                         : 0
+- [1]     No. of Partial Resets                                    : 0
+- [2]     No. of Full Resets                                       : 0
+- [3]     No. of WDT resets                                        : 0
+- [4]     CB Time Cell 1                                           : 0
+- [5]     CB Time Cell 2                                           : 0
+- [6]     CB Time Cell 3                                           : 0
+- [7]     CB Time Cell 4                                           : 0
+0x0062 Lifetime Data Block 3                                       : 0x00000000
+- [1:0]   Total FW Runtime                                         : 0
+- [3:2]   Time Spent in UT                                         : 0
+- [5:4]   Time Spent in LT                                         : 0
+- [7:6]   Time Spent in STL                                        : 0
+- [9:8]   Time Spent in RT                                         : 0
+- [11:10] Time Spent in STH                                        : 0
+- [13:12] Time Spent in HT                                         : 0
+- [15:14] Time Spent in OT                                         : 0
+2018-07-17 15:40:17 i2cReadI2CBlockData: bad count (35)
+i2c read block failed
+0x0063 Lifetime Data Block 4                                       : 0x00000000
+- [1:0]   No. of COV Events                                        : 0
+- [3:2]   Last COV Event                                           : 0
+- [5:4]   No. of CUV Events                                        : 0
+- [7:6]   Last CUV Event                                           : 0
+- [9:8]   No. of OCD1 Events                                       : 0
+- [11:10] Last OCD1 Event                                          : 0
+- [13:12] No. of OCD2 Events                                       : 0
+- [15:14] Last OCD2 Event                                          : 0
+- [17:16] No. of OCC1 Events                                       : 0
+- [19:18] Last OCC1 Event                                          : 0
+- [21:20] No. of OCC2 Events                                       : 0
+- [23:22] Last OCC2 Event                                          : 0
+- [25:24] No. of AOLD Events                                       : 0
+- [27:26] Last AOLD Event                                          : 0
+- [29:28] No. of ASCD Events                                       : 0
+- [31:30] Last ASCD Event                                          : 0
+2018-07-17 15:40:17 i2cReadI2CBlockData: bad count (35)
+i2c read block failed
+0x0064 Lifetime Data Block 5                                       : 0x00000000
+- [1:0]   No. of ASCC Events                                       : 0
+- [3:2]   Last ASCC Event                                          : 0
+- [5:4]   No. of OTC Events                                        : 0
+- [7:6]   Last OTC Event                                           : 0
+- [9:8]   No. of OTD Events                                        : 0
+- [11:10] Last OTD Event                                           : 0
+- [13:12] No. of OTF Events                                        : 0
+- [15:14] Last OTF Event                                           : 0
+- [17:16] No. Valid Charge Term                                    : 0
+- [19:18] Last Valid Charge Term                                   : 0
+- [21:20] No. of Qmax Updates                                      : 0
+- [23:22] Last Qmax Update                                         : 0
+- [25:24] No. of Ra Updates                                        : 0
+- [27:26] Last Ra Update                                           : 0
+- [29:28] No. of Ra Disable                                        : 0
+- [31:30] Last Ra Disable                                          : 0
+- [1:0]   Cell Voltage 1                                           : 0
+- [3:2]   Cell Voltage 2                                           : 0
+- [5:4]   Cell Voltage 3                                           : 0
+- [7:6]   Cell Voltage 4                                           : 0
+- [9:8]   Voltage at the BAT pin                                   : 0
+- [11:10] PACK Voltage                                             : 0
+- [13:12] Cell Current 1                                           : 0
+- [15:14] Cell Current 2                                           : 0
+- [17:16] Cell Current 3                                           : 0
+- [19:18] Cell Current 4                                           : 0
+- [21:20] Cell Power 1                                             : 0
+- [23:22] Cell Power 2                                             : 0
+- [25:24] Cell Power 3                                             : 0
+- [27:26] Cell Power 4                                             : 0
+- [29:28] Power calculated                                         : 0
+- [31:30] Average Power                                            : 0
+0x0072 DAStatus2                                                   : 0x0000D50B
+- [1:0]   Int Temperature                                          : 54539
+- [3:2]   TS1 Temperature                                          : 52235
+- [5:4]   TS2 Temperature                                          : 52747
+- [7:6]   TS3 Temperature                                          : 54795
+- [9:8]   TS4 Temperature                                          : 55563
+- [11:10] Cell Temperature                                         : 52491
+- [13:12] FET Temperature                                          : 54795
+2018-07-17 15:40:18 i2cReadI2CBlockData: bad count (35)
+i2c read block failed
+0x0073 GaugeStatus1                                                : 0x00000000
+- [1:0]   True remaining capacity in mAh                           : 0
+- [3:2]   True remaining energy in cWh                             : 0
+- [5:4]   Initial capacity calculated                              : 0
+- [7:6]   Initial energy calculated                                : 0
+- [9:8]   Reserve Capacity                                         : 0
+- [11:10] Reserve Energy                                           : 0
+- [13:12] Temperature during the last simulation run.              : 0
+- [15:14] Current assumed ambient temperature                      : 0
+- [17:16] Ra table scaling factor of Cell 1                        : 0
+- [19:18] Ra table scaling factor of Cell 2                        : 0
+- [21:20] Ra table scaling factor of Cell 3                        : 0
+- [23:22] Ra table scaling factor of Cell 4                        : 0
+- [25:24] Last temperature compensated Resistance of Cell 1        : 0
+- [27:26] Last temperature compensated Resistance of Cell 2        : 0
+- [29:28] Last temperature compensated Resistance of Cell 3        : 0
+- [31:30] Last temperature compensated Resistance of Cell 4        : 0
+2018-07-17 15:40:18 i2cReadI2CBlockData: bad count (35)
+i2c read block failed
+0x0074 GaugeStatus2                                                : 0x00000000
+0x0075 GaugeStatus3                                                : 0xAD0BAD0B
+- [1:0]   QMax 0. QMax of Cell 1                                   : 44299
+- [3:2]   QMax 1. QMax of Cell 2                                   : 44299
+- [5:4]   QMax 2. QMax of Cell 3                                   : 53771
+- [7:6]   QMax 3. QMax of Cell 4                                   : 50699
+- [9:8]   QMax DOD0_0. DOD0 at last QMax update of Cell 1          : 0
+- [11:10] QMax DOD0_1. DOD0 at last QMax update of Cell 2          : 0
+- [13:12] QMax DOD0_2. DOD0 at last QMax update of Cell 3          : 0
+- [15:14] QMax DOD0_3. DOD0 at last QMax update of Cell 4          : 0
+- [17:16] QMax Passed Q. Pass capacity since last QMax update      : 26884
+- [19:18] QMax Time. Time passed since last QMax update            : 28163
+- [21:20] Temp k. Thermal Model temperature factor                 : 14083
+- [23:22] Temp a. Thermal Model temperature                        : 24586
+2018-07-17 15:40:19 i2cReadI2CBlockData: bad count (35)
+i2c read block failed
+0x0076 CBStatus                                                    : 0x00000000
+- [1:0]   Calculated cell balancing time of Cell 1                 : 0
+- [3:2]   Calculated cell balancing time of Cell 2                 : 0
+- [5:4]   Calculated cell balancing time of Cell 3                 : 0
+- [7:6]   Calculated cell balancing time of Cell 4                 : 0
+0x0077 State of Health FFC in mAh                                  : 2064350993
+0x0077 State of Health energy in cWh                               : 2064350993
+- [0]     Rolling 8-bit counter                                    : 127
+- [1]     Status, 1 = 0xF081, 2 = 0xF082                           : 11
+- [3:2]   Current (coulomb counter)                                : 31505
+- [5:4]   Cell Voltage 1                                           : 0
+- [7:6]   Cell Voltage 2                                           : 0
+- [9:8]   Cell Voltage 3                                           : 0
+- [11:10] Cell Voltage 4                                           : 0
+- [13:12] PACK Voltage                                             : 0
+- [15:14] BAT Voltage                                              : 0
+- [17:16] Cell Current 1                                           : 0
+- [19:18] Cell Current 2                                           : 0
+- [21:20] Cell Current 3                                           : 0
+- [23:22] Cell Current 4                                           : 0
+- [0]     Rolling 8-bit counter                                    : 127
+- [1]     Status, 1 when = 0xF081, 2 when = 0xF082                 : 11
+- [3:2]   Current (coulomb counter)                                : 31505
+- [5:4]   Cell Voltage 1                                           : 0
+- [7:6]   Cell Voltage 2                                           : 0
+- [9:8]   Cell Voltage 3                                           : 0
+- [11:10] Cell Voltage 4                                           : 0
+- [13:12] PACK Voltage                                             : 0
+- [15:14] BAT Voltage                                              : 0
+- [17:16] Cell Current 1                                           : 0
+- [19:18] Cell Current 2                                           : 0
+- [21:20] Cell Current 3                                           : 0
+- [23:22] Cell Current 4                                           : 0
+0x0001 RemainingCapacityAlarm                                      : 68 mAh/10 mWh
+0x0002 RemainingTimeAlarm                                          : 10 min
+0x0003 BatteryMode                                                 : 24577 
+0x0004 AtRate                                                      : 0 mA/10mW
+0x0005 AtRateTimeToFull                                            : 65535 min
+0x0006 AtRateTimeToEmpty                                           : 65535 min
+0x0007 AtRateOK                                                    : 1 0.1°K
+0x0008 Temperature                                                 : 3021 0.1°K
+0x0009 Voltage                                                     : 15168 mV
+0x000A Current                                                     : -374 mA
+0x000B AverageCurrent                                              : 65169 mA
+0x000C MaxError                                                    : 1 %
+0x000D RelativeStateOfCharge                                       : 53 %
+0x000E AbsoluteStateOfCharge                                       : 53 %
+0x000F RemainingCapacity                                           : 1523 mAh/10 mWh
+0x0010 FullChargeCapacity                                          : 2886 mAh/10 mWh
+0x0011 RunTimeToEmpty                                              : 237 min
+0x0012 AverageTimeToEmpty                                          : 248 min
+0x0013 AverageTimeToFull                                           : 65535 min
+0x0014 ChargingCurrent                                             : 1560 mA
+0x0015 ChargingVoltage                                             : 16800 mV
+0x0017 CycleCount                                                  : 25 cycles
+0x0018 DesignCapacity                                              : 2900 mAh/10 mWh
+0x0019 DesignVoltage                                               : 14800 mV
+0x001A SpecificationInfo                                           : 49 
+0x001C SerialNumber                                                : 36 
+0x0022 DeviceChemistry                                             : 19460 ASCII
+0x003C CellVoltage4                                                : 3795 mV
+0x003D CellVoltage3                                                : 3795 mV
+0x003E CellVoltage2                                                : 3792 mV
+0x003F CellVoltage1                                                : 3787 mV
+0x004F State of Health                                             : 100 %
+0x0050 SafetyAlert                                                 : 4 
+0x0051 SafetyStatus                                                : 4 
+0x0052 PFAlert                                                     : 4 
+0x0053 PFStatus                                                    : 4 
+0x0054 OperationStatus                                             : 18180 
+0x0055 ChargingStatus                                              : 2052 
+0x0056 GaugingStatus                                               : 16387 
+0x0057 ManufacturingStatus                                         : 55298 
+0x0060 Lifetime Data Block 1                                       : 32 
+0x0061 Lifetime Data Block 2                                       : 8 
+- [0]     No. of Shutdowns                                         : 127
+- [1]     No. of Partial Resets                                    : 11
+- [2]     No. of Full Resets                                       : 123
+- [3]     No. of WDT resets                                        : 17
+- [4]     CB Time Cell 1                                           : 0
+- [5]     CB Time Cell 2                                           : 0
+- [6]     CB Time Cell 3                                           : 0
+- [7]     CB Time Cell 4                                           : 0
+0x0062 Lifetime Data Block 3                                       : 16 
+- [1:0]   Total FW Runtime                                         : 32523
+- [3:2]   Time Spent in UT                                         : 31505
+- [5:4]   Time Spent in LT                                         : 0
+- [7:6]   Time Spent in STL                                        : 0
+- [9:8]   Time Spent in RT                                         : 0
+- [11:10] Time Spent in STH                                        : 0
+- [13:12] Time Spent in HT                                         : 0
+- [15:14] Time Spent in OT                                         : 0
+0x0063 Lifetime Data Block 4                                       : 32 
+- [1:0]   No. of COV Events                                        : 32523
+- [3:2]   Last COV Event                                           : 31505
+- [5:4]   No. of CUV Events                                        : 0
+- [7:6]   Last CUV Event                                           : 0
+- [9:8]   No. of OCD1 Events                                       : 0
+- [11:10] Last OCD1 Event                                          : 0
+- [13:12] No. of OCD2 Events                                       : 0
+- [15:14] Last OCD2 Event                                          : 0
+- [17:16] No. of OCC1 Events                                       : 0
+- [19:18] Last OCC1 Event                                          : 11
+- [21:20] No. of OCC2 Events                                       : 32512
+- [23:22] Last OCC2 Event                                          : 0
+- [25:24] No. of AOLD Events                                       : 0
+- [27:26] Last AOLD Event                                          : 0
+- [29:28] No. of ASCD Events                                       : 0
+- [31:30] Last ASCD Event                                          : 0
+0x0064 Lifetime Data Block 5                                       : 32 
+- [1:0]   No. of ASCC Events                                       : 32523
+- [3:2]   Last ASCC Event                                          : 31505
+- [5:4]   No. of OTC Events                                        : 0
+- [7:6]   Last OTC Event                                           : 0
+- [9:8]   No. of OTD Events                                        : 0
+- [11:10] Last OTD Event                                           : 0
+- [13:12] No. of OTF Events                                        : 0
+- [15:14] Last OTF Event                                           : 0
+- [17:16] No. Valid Charge Term                                    : 0
+- [19:18] Last Valid Charge Term                                   : 0
+- [21:20] No. of Qmax Updates                                      : 0
+- [23:22] Last Qmax Update                                         : 0
+- [25:24] No. of Ra Updates                                        : 0
+- [27:26] Last Ra Update                                           : 0
+- [29:28] No. of Ra Disable                                        : 0
+- [31:30] Last Ra Disable                                          : 0
+0x0070 ManufacturerInfo                                            : 24864 
+0x0071 DAStatus1                                                   : 0xCA20
+- [1:0]   Cell Voltage 1                                           : 32523
+- [3:2]   Cell Voltage 2                                           : 31505
+- [5:4]   Cell Voltage 3                                           : 0
+- [7:6]   Cell Voltage 4                                           : 0
+- [9:8]   Voltage at the BAT pin                                   : 0
+- [11:10] PACK Voltage                                             : 0
+- [13:12] Cell Current 1.                                          : 0
+- [15:14] Cell Current 2.                                          : 0
+- [17:16] Cell Current 3.                                          : 0
+- [19:18] Cell Current 4.                                          : 0
+- [21:20] Cell Power 1                                             : 0
+- [23:22] Cell Power 2                                             : 0
+- [25:24] Cell Power 3                                             : 0
+- [27:26] Cell Power 4                                             : 0
+- [29:28] Power calculated                                         : 0
+- [31:30] Average Power                                            : 0
+0x0072 DAStatus2                                                   : 0xD50E
+- [1:0]   Int Temperature                                          : 32523
+- [3:2]   TS1 Temperature                                          : 31505
+- [5:4]   TS2 Temperature                                          : 0
+- [7:6]   TS3 Temperature                                          : 0
+- [9:8]   TS4 Temperature                                          : 0
+- [11:10] Cell Temperature                                         : 0
+- [13:12] FET Temperature                                          : 0
+- [1:0]   True remaining capacity in mAh                           : 32523
+- [3:2]   True remaining energy in cWh                             : 31505
+- [5:4]   Initial capacity calculated                              : 0
+- [7:6]   Initial energy calculated                                : 0
+- [9:8]   Reserve Capacity                                         : 0
+- [11:10] Reserve Energy                                           : 0
+- [13:12] Temperature during the last simulation run.              : 0
+- [15:14] Current assumed ambient temperature                      : 0
+- [17:16] Ra table scaling factor of Cell 1                        : 0
+- [19:18] Ra table scaling factor of Cell 2                        : 0
+- [21:20] Ra table scaling factor of Cell 3                        : 0
+- [23:22] Ra table scaling factor of Cell 4                        : 0
+- [25:24] Last temperature compensated Resistance of Cell 1        : 0
+- [27:26] Last temperature compensated Resistance of Cell 2        : 0
+- [29:28] Last temperature compensated Resistance of Cell 3        : 0
+- [31:30] Last temperature compensated Resistance of Cell 4        : 0
+- [1:0]   QMax of Cell 1                                           : 32523
+- [3:2]   QMax of Cell 2                                           : 31505
+- [5:4]   QMax of Cell 3                                           : 0
+- [7:6]   QMax of Cell 4                                           : 0
+- [9:8]   DOD0 at last QMax update of Cell 1                       : 0
+- [11:10] DOD0 at last QMax update of Cell 2                       : 0
+- [13:12] DOD0 at last QMax update of Cell 3                       : 0
+- [15:14] DOD0 at last QMax update of Cell 4                       : 0
+- [17:16] Pass capacity since last QMax update                     : 0
+- [19:18] Time passed since last QMax update                       : 0
+- [21:20] Thermal Model temperature factor                         : 0
+- [23:22] Thermal Model temperature                                : 0
+0x0076 CBStatus                                                    : 8 
+- [1:0]   Cell Balance Time of Cell 1                              : 32523
+- [3:2]   Cell Balance Time of Cell 2                              : 31505
+- [5:4]   Cell Balance Time of Cell 3                              : 0
+- [7:6]   Cell Balance Time of Cell 4                              : 0
+0x0077 State of Health                                             : 0x7F04
+- [1:0]   State Of FCC in mAh                                      : 32523
+- [3:2]   State Of Health energy in cWh                            : 31505
+Number of bytes returned (6) wrong (expected = 10)
+
+Total number of SMBus reads         : = 50
+Total number of SMBus writes        : = 0
+Total number of SMBus failed reads  : = 0
+Total number of SMBus failed writes : = 0
+
+Run ended normally
+CPU time: 2.14 seconds
