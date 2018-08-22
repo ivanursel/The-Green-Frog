@@ -1,7 +1,7 @@
 //
 //  Copyright 2016-2018 Ivo J. L. A. Van Ursel
 //
-//  v0.9a - 05/08/18 09:39
+//  v0.9a - 22/08/18 15:24
 //
 
 #define   debug
@@ -308,7 +308,7 @@ int main(int argc, char **argv)
 
     start = clock();
 
-    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - 05/08/18 09:39 ***\n\n");
+    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - 22/08/18 15:24 ***\n\n");
 
     if (gpioInitialise() < 0) {
       printf("Failure: pigpio initialization failed\n");
@@ -333,28 +333,41 @@ int main(int argc, char **argv)
     numberoffailedwrites = 0;
 
 // Seal Device
-//  n = mac_read(0x0030, 4);
-//  usleep(1000000);
+//  n = i2cWriteWordData(i2cHandle, 0x00, 0x30);
+//  printf("%d\n", n);
 
 // Operation Status
-//  n = mac_read(0x54, 4);
-//  sealed = data[4] & 0b00000011;
-//  printf("%d\n", sealed);
-//  usleep(1000000);
+    n = mac_read(0x54, 4);
+    sealed = data[4] & 0b00000011;
 
-//  while (i2cWriteWordData(i2cHandle, 0x00, 0x1991) < 0);
-//  while (i2cWriteWordData(i2cHandle, 0x00, 0x1609) < 0);
-//  while (i2cWriteWordData(i2cHandle, 0x00, 0x2014) < 0);
-//  while (i2cWriteWordData(i2cHandle, 0x00, 0x1310) < 0);
+    switch (sealed) {
+      case 3:
+        printf("3: sealed\n");
+        break;
+      case 2:
+        printf("2: unsealed\n");
+        break;
+      case 1:
+        printf("1: full access\n");
+        break;
+      default:
+        printf("%d\n", sealed);
+        break;
+    }
 
+    while (i2cWriteWordData(i2cHandle, 0x00, 0x1991) < 0);
+    while (i2cWriteWordData(i2cHandle, 0x00, 0x1609) < 0);
+    while (i2cWriteWordData(i2cHandle, 0x00, 0x2014) < 0);
+    while (i2cWriteWordData(i2cHandle, 0x00, 0x1310) < 0);
+ 
 // Security Keys
-//  n = mac_read(0x35, 8);
-//  usleep(1000000);
+    n = mac_read(0x35, 8);
+    usleep(1000000);
 
-//  printf("Key 1 = 0x%04X\n", data[3] + (data[4] << 8));    // 0x1991
-//  printf("Key 2 = 0x%04X\n", data[5] + (data[6] << 8));    // 0x1609
-//  printf("Key 3 = 0x%04X\n", data[7] + (data[8] << 8));    // 0x2014
-//  printf("Key 4 = 0x%04X\n\n", data[9] + (data[10] << 8)); // 0x1310
+    printf("Key 1 = 0x%04X\n", data[3] + (data[4] << 8));    // 0x1991
+    printf("Key 2 = 0x%04X\n", data[5] + (data[6] << 8));    // 0x1609
+    printf("Key 3 = 0x%04X\n", data[7] + (data[8] << 8));    // 0x2014
+    printf("Key 4 = 0x%04X\n\n", data[9] + (data[10] << 8)); // 0x1310
 
 //  11.1.1 ManufacturerAccess() 0x0000
 //  A read word on this command returns the low word (16 bits) OperationStatus() data.
@@ -1528,33 +1541,33 @@ int main(int argc, char **argv)
 //  11.5 0x04 AtRate()
 //  This read/write word function sets the value used in calculating AtRateTimeToFull() and
 //  AtRateTimeToEmpty().
-//  readWord("AtRate", "mA/10mW", 0x04, -32768, 32767, 0);
+    readWord("AtRate", "mA/10mW", 0x04, -32768, 32767, 0);
 
 //  B15 B14 B13 B12 B11 B10 B9 B8
 
 //  CAPM CHGM AM RSVD RSVD RSVD PB CC
 
-//  printf("- CAPM       [15] %-49s: %d\n", "Capacity Mode", (data[4] & 0x80) > 0);
-//  printf("- CHGM       [14] %-49s: %d\n", "Manual Charge Control", (data[4] & 0x40) > 0);
-//  printf("- AM         [13] %-49s: %d\n", "Alarm Mode", (data[4] & 0x20) > 0);
-//  printf("- RSVD       [12] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x10) > 0);
-//  printf("- RSVD       [11] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x08) > 0);
-//  printf("- RSVD       [10] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x04) > 0);
-//  printf("- PB         [9]  %-49s: %d\n", "Sets the role of the pack and is not used", (data[4] & 0x02) > 0);
-//  printf("- CC         [8]  %-49s: %d\n", "Internal Charge Controller", (data[4] & 0x01) > 0);
+    printf("- CAPM       [15] %-49s: %d\n", "Capacity Mode", (data[4] & 0x80) > 0);
+    printf("- CHGM       [14] %-49s: %d\n", "Manual Charge Control", (data[4] & 0x40) > 0);
+    printf("- AM         [13] %-49s: %d\n", "Alarm Mode", (data[4] & 0x20) > 0);
+    printf("- RSVD       [12] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x10) > 0);
+    printf("- RSVD       [11] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x08) > 0);
+    printf("- RSVD       [10] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x04) > 0);
+    printf("- PB         [9]  %-49s: %d\n", "Sets the role of the pack and is not used", (data[4] & 0x02) > 0);
+    printf("- CC         [8]  %-49s: %d\n", "Internal Charge Controller", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  CF RSVD RSVD RSVD RSVD RSVD PBS ICC
 
-//  printf("- CF         [7]  %-49s: %d\n", "Conditioning needed", (data[3] & 0x80) > 0);
-//  printf("- RSVD       [6]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x40) > 0);
-//  printf("- RSVD       [5]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x20) > 0);
-//  printf("- RSVD       [4]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x10) > 0);
-//  printf("- RSVD       [3]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x08) > 0);
-//  printf("- RSVD       [2]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x04) > 0);
-//  printf("- PBS        [1]  %-49s: %d\n", "Primary battery support", (data[3] & 0x02) > 0);
-//  printf("- ICC        [0]  %-49s: %d\n\n", "Internal Charge Controller enabled", (data[3] & 0x01) > 0);
+    printf("- CF         [7]  %-49s: %d\n", "Conditioning needed", (data[3] & 0x80) > 0);
+    printf("- RSVD       [6]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x40) > 0);
+    printf("- RSVD       [5]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x20) > 0);
+    printf("- RSVD       [4]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x10) > 0);
+    printf("- RSVD       [3]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x08) > 0);
+    printf("- RSVD       [2]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x04) > 0);
+    printf("- PBS        [1]  %-49s: %d\n", "Primary battery support", (data[3] & 0x02) > 0);
+    printf("- ICC        [0]  %-49s: %d\n\n", "Internal Charge Controller enabled", (data[3] & 0x01) > 0);
 
 //  11.6 0x05 AtRateTimeToFull()
 //  This word read function returns the remaining time to fully charge the battery stack.
@@ -1698,13 +1711,13 @@ int main(int argc, char **argv)
     printf("- EC[3]      [3]  %-49s: %d\n", "Error Code See Error Code Table", (data[3] & 0x08) > 0);
     printf("- EC[2]      [2]  %-49s: %d\n", "Error Code See Error Code Table", (data[3] & 0x04) > 0);
     printf("- EC[1]      [1]  %-49s: %d\n", "Error Code See Error Code Table", (data[3] & 0x02) > 0);
-    printf("- EC[0]      [0]  %-49s: %d\n", "Error Code See Error Code Table", (data[3] & 0x01) > 0);
+    printf("- EC[0]      [0]  %-49s: %d\n\n", "Error Code See Error Code Table", (data[3] & 0x01) > 0);
 
 //  11.24 0x17 CycleCount()
 //  This read word function returns the number of discharge cycles the battery has experienced. The default
 //  value is stored in data flash value Cycle Count, which is updated in runtime.
 //  0x17 CycleCount() R R/W R/W Word U2 0 65535 cycles
-  readWord("CycleCount", "cycles", 0x17, 0, 65535, 0); // <<--
+    readWord("CycleCount", "cycles", 0x17, 0, 65535, 0); // <<--
 
 //  11.25 0x18 DesignCapacity()
 //  This read word function returns the theoretical pack capacity. The default value is stored in data flash
@@ -1713,13 +1726,13 @@ int main(int argc, char **argv)
 //  ", (data[4] & 0x40) > 0);0 mAh/6336 10 mWh
 //  NOTE: If BatteryMode()[CAPM] = 0, then the data reports in mAh.
 //  If BatteryMode()[CAPM] = 1, then the data reports in 10 mWh.
-  readWord("DesignCapacity", "mAh/10 mWh", 0x18, 65535, 0, (data[4] & 0x40) > 0); // <<--
+    readWord("DesignCapacity", "mAh/10 mWh", 0x18, 65535, 0, (data[4] & 0x40) > 0); // <<--
 
 //  11.26 0x19 DesignVoltage()
 //  This read word function returns the theoretical pack voltage. The default value is stored in data flash value
 //  Design Voltage.
 //  0x19 DesignVoltage() R R/W R/W Word U2 7000 18000 14400 mV
-  readWord("DesignVoltage", "mV", 0x19, 7000, 18000, 14400); // <<--
+    readWord("DesignVoltage", "mV", 0x19, 7000, 18000, 14400); // <<--
 
 //  11.27 0x1A SpecificationInfo()
 //  0x1A SpecificationInfo() R R/W R/W Word H2 0x0000 0xFFFF
@@ -1747,7 +1760,7 @@ int main(int argc, char **argv)
 //  11.29 0x1C SerialNumber()
 //  This read word function returns the assigned pack serial number.
 //  0x1C SerialNumber() R R/W R/W Word H2 0x0000 0xFFFF 0x0001
-//  readWord("SerialNumber", "", 0x1C, 0x0000, 0xFFFF, 0x0001);
+    readWord("SerialNumber", "", 0x1C, 0x0000, 0xFFFF, 0x0001);
 
 //  11.30 0x20 ManufacturerName()
 //  This read block function returns the pack manufacturer's name.
@@ -1769,7 +1782,7 @@ int main(int argc, char **argv)
 //  mode. It is also used to return measured voltage, current, and temperature data for calibration purposes in
 //  CALIBRATION mode.
 //  readWord("ManufacturerData()/CalibrationData", "", 0x23, 0, 0, 0);
- 
+
 //  CALIBRATION mode.
 //  0x23 ManufacturerData() R R R Block H14+1
 //  0x23 CalibrationData() R R R Block H2+S24
@@ -1829,11 +1842,11 @@ int main(int argc, char **argv)
 //  This read-word command returns the state of health (SoH) information of the battery in percentage of
 //  design capacity and design energy.
     readWord("State of Health", "%", 0x4F, 0, 0, 0); // <<--
- 
+
 //  11.42 0x50 SafetyAlert
 //  This command returns the SafetyAlert() flags
 //  0x50 SafetyAlert() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("SafetyAlert", "", 0x50, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("SafetyAlert", "", 0x50, 0x00000000, 0xFFFFFFFF, 0);
 
 //  11.1.36.1 SafetyAlert() High Word
 
@@ -1841,27 +1854,27 @@ int main(int argc, char **argv)
 
 //  RSVD RSVD ACOV COT UTD UTC PCHGC CHGV
 
-//  printf("- RSVD       [31] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x80) > 0);
-//  printf("- RSVD       [30] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x40) > 0);
-//  printf("- ACOV       [29] %-49s: %d\n", "n/a", (data[6] & 0x20) > 0);
-//  printf("- COT        [28] %-49s: %d\n", "n/a", (data[6] & 0x10) > 0);
-//  printf("- UTD        [27] %-49s: %d\n", "Under temperature During Discharge", (data[6] & 0x08) > 0);
-//  printf("- UTC        [26] %-49s: %d\n", "Under temperature During Charge", (data[6] & 0x04) > 0);
-//  printf("- PCHGC      [25] %-49s: %d\n", "Over Pre-Charge Current", (data[6] & 0x02) > 0);
-//  printf("- CHGV       [24] %-49s: %d\n", "Over Charging Voltage", (data[6] & 0x01) > 0);
+    printf("- RSVD       [31] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x80) > 0);
+    printf("- RSVD       [30] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x40) > 0);
+    printf("- ACOV       [29] %-49s: %d\n", "n/a", (data[6] & 0x20) > 0);
+    printf("- COT        [28] %-49s: %d\n", "n/a", (data[6] & 0x10) > 0);
+    printf("- UTD        [27] %-49s: %d\n", "Under temperature During Discharge", (data[6] & 0x08) > 0);
+    printf("- UTC        [26] %-49s: %d\n", "Under temperature During Charge", (data[6] & 0x04) > 0);
+    printf("- PCHGC      [25] %-49s: %d\n", "Over Pre-Charge Current", (data[6] & 0x02) > 0);
+    printf("- CHGV       [24] %-49s: %d\n", "Over Charging Voltage", (data[6] & 0x01) > 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  CHGC OC RSVD CTO PTOS RSVD RSVD OTF
 
-//  printf("- CHGC       [23] %-49s: %d\n", "Over Charging Current", (data[5] & 0x80) > 0);
-//  printf("- OC         [22] %-49s: %d\n", "Over Charge", (data[5] & 0x40) > 0);
-//  printf("- RSVD       [21] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x20) > 0);
-//  printf("- CTO        [20] %-49s: %d\n", "Charge Timeout", (data[5] & 0x10) > 0);
-//  printf("- PTOS       [19] %-49s: %d\n", "Precharge Timeout Suspend", (data[5] & 0x08) > 0);
-//  printf("- RSVD       [18] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x04) > 0);
-//  printf("- RSVD       [17] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x02) > 0);
-//  printf("- OTF        [16] %-49s: %d\n", "n/a", (data[5] & 0x01) > 0);
+    printf("- CHGC       [23] %-49s: %d\n", "Over Charging Current", (data[5] & 0x80) > 0);
+    printf("- OC         [22] %-49s: %d\n", "Over Charge", (data[5] & 0x40) > 0);
+    printf("- RSVD       [21] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x20) > 0);
+    printf("- CTO        [20] %-49s: %d\n", "Charge Timeout", (data[5] & 0x10) > 0);
+    printf("- PTOS       [19] %-49s: %d\n", "Precharge Timeout Suspend", (data[5] & 0x08) > 0);
+    printf("- RSVD       [18] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x04) > 0);
+    printf("- RSVD       [17] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x02) > 0);
+    printf("- OTF        [16] %-49s: %d\n", "n/a", (data[5] & 0x01) > 0);
 
 //  11.1.36.2 SafetyAlert() Low Word 
 
@@ -1869,32 +1882,32 @@ int main(int argc, char **argv)
 
 //  RSVD CUVC OTD OTC ASCDL RSVD ASCCL RSVD
 
-//  printf("- RSVD       [15] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x80) > 0);
-//  printf("- CUVC       [14] %-49s: %d\n", "Cell Undervoltage Compensated", (data[4] & 0x40) > 0);
-//  printf("- OTD        [13] %-49s: %d\n", "Over Temperature during Discharge", (data[4] & 0x20) > 0);
-//  printf("- OTC        [12] %-49s: %d\n", "Over Temperature during Charge", (data[4] & 0x10) > 0);
-//  printf("- ASCDL      [11] %-49s: %d\n", "Short-circuit during Discharge Latch", (data[4] & 0x08) > 0);
-//  printf("- RSVD       [10] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x04) > 0);
-//  printf("- ASCCL      [9]  %-49s: %d\n", "Short-circuit during Charge Latch", (data[4] & 0x02) > 0);
-//  printf("- RSVD       [8]  %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x01) > 0);
+    printf("- RSVD       [15] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x80) > 0);
+    printf("- CUVC       [14] %-49s: %d\n", "Cell Undervoltage Compensated", (data[4] & 0x40) > 0);
+    printf("- OTD        [13] %-49s: %d\n", "Over Temperature during Discharge", (data[4] & 0x20) > 0);
+    printf("- OTC        [12] %-49s: %d\n", "Over Temperature during Charge", (data[4] & 0x10) > 0);
+    printf("- ASCDL      [11] %-49s: %d\n", "Short-circuit during Discharge Latch", (data[4] & 0x08) > 0);
+    printf("- RSVD       [10] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x04) > 0);
+    printf("- ASCCL      [9]  %-49s: %d\n", "Short-circuit during Charge Latch", (data[4] & 0x02) > 0);
+    printf("- RSVD       [8]  %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  AOLDL AOLD OCD2 OCD1 OCC2 OCC1 COV CUV
 
-//  printf("- AOLDL      [7]  %-49s: %d\n", "Overload during Discharge Latch", (data[3] & 0x80) > 0);
-//  printf("- AOLD       [6]  %-49s: %d\n", "Overload during Discharge 1", (data[3] & 0x40) > 0);
-//  printf("- OCD2       [5]  %-49s: %d\n", "Over Current during Discharge 2", (data[3] & 0x20) > 0);
-//  printf("- OCD1       [4]  %-49s: %d\n", "Over Current during Discharge 1", (data[3] & 0x10) > 0);
-//  printf("- OCC2       [3]  %-49s: %d\n", "Over Current during Charge 2", (data[3] & 0x08) > 0);
-//  printf("- OCC1       [2]  %-49s: %d\n", "Over Current during Charge 1", (data[3] & 0x04) > 0);
-//  printf("- COV        [1]  %-49s: %d\n", "Cell Over Voltage", (data[3] & 0x02) > 0);
-//  printf("- CUV        [0]  %-49s: %d\n\n", "Cell Under Voltage", (data[3] & 0x01) > 0);
+    printf("- AOLDL      [7]  %-49s: %d\n", "Overload during Discharge Latch", (data[3] & 0x80) > 0);
+    printf("- AOLD       [6]  %-49s: %d\n", "Overload during Discharge 1", (data[3] & 0x40) > 0);
+    printf("- OCD2       [5]  %-49s: %d\n", "Over Current during Discharge 2", (data[3] & 0x20) > 0);
+    printf("- OCD1       [4]  %-49s: %d\n", "Over Current during Discharge 1", (data[3] & 0x10) > 0);
+    printf("- OCC2       [3]  %-49s: %d\n", "Over Current during Charge 2", (data[3] & 0x08) > 0);
+    printf("- OCC1       [2]  %-49s: %d\n", "Over Current during Charge 1", (data[3] & 0x04) > 0);
+    printf("- COV        [1]  %-49s: %d\n", "Cell Over Voltage", (data[3] & 0x02) > 0);
+    printf("- CUV        [0]  %-49s: %d\n\n", "Cell Under Voltage", (data[3] & 0x01) > 0);
 
 //  11.43 0x51 SafetyStatus
 //  This command returns the SafetyStatus() flags.
 //  0x51 SafetyStatus() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("SafetyStatus", "", 0x51, 0, 0x00000000, 0xFFFFFFFF);
+    readWord("SafetyStatus", "", 0x51, 0, 0x00000000, 0xFFFFFFFF);
 
 //  11.1.37.1 SafetyStatus() High Word
 
@@ -1902,27 +1915,27 @@ int main(int argc, char **argv)
 
 //  RSVD RSVD ACOV COT UTD UTC PCHGC CHGV
 
-//  printf("- RSVD       [31] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x80) > 0);
-//  printf("- RSVD       [30] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x40) > 0);
-//  printf("- ACOV       [29] %-49s: %d\n", "n/a", (data[6] & 0x20) > 0);
-//  printf("- COT        [28] %-49s: %d\n", "n/a", (data[6] & 0x10) > 0);
-//  printf("- UTD        [27] %-49s: %d\n", "Under temperature During Discharge", (data[6] & 0x08) > 0);
-//  printf("- UTC        [26] %-49s: %d\n", "Under temperature During Charge", (data[6] & 0x04) > 0);
-//  printf("- PCHGC      [25] %-49s: %d\n", "Over Pre-Charge Current", (data[6] & 0x02) > 0);
-//  printf("- CHGV       [24] %-49s: %d\n", "Over Charging Voltage", (data[6] & 0x01) > 0);
+    printf("- RSVD       [31] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x80) > 0);
+    printf("- RSVD       [30] %-49s: %d\n", "Reserved - Do not use", (data[6] & 0x40) > 0);
+    printf("- ACOV       [29] %-49s: %d\n", "n/a", (data[6] & 0x20) > 0);
+    printf("- COT        [28] %-49s: %d\n", "n/a", (data[6] & 0x10) > 0);
+    printf("- UTD        [27] %-49s: %d\n", "Under temperature During Discharge", (data[6] & 0x08) > 0);
+    printf("- UTC        [26] %-49s: %d\n", "Under temperature During Charge", (data[6] & 0x04) > 0);
+    printf("- PCHGC      [25] %-49s: %d\n", "Over Pre-Charge Current", (data[6] & 0x02) > 0);
+    printf("- CHGV       [24] %-49s: %d\n", "Over Charging Voltage", (data[6] & 0x01) > 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  CHGC OC RSVD CTO PTOS RSVD RSVD OTF
 
-//  printf("- CHGC       [23] %-49s: %d\n", "Over Charging Current", (data[5] & 0x80) > 0);
-//  printf("- OC         [22] %-49s: %d\n", "Over Charge", (data[5] & 0x40) > 0);
-//  printf("- RSVD       [21] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x20) > 0);
-//  printf("- CTO        [20] %-49s: %d\n", "Charge Timeout", (data[5] & 0x10) > 0);
-//  printf("- PTOS       [19] %-49s: %d\n", "Precharge Timeout Suspend", (data[5] & 0x08) > 0);
-//  printf("- RSVD       [18] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x04) > 0);
-//  printf("- RSVD       [17] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x02) > 0);
-//  printf("- OTF        [16] %-49s: %d\n", "n/a", (data[5] & 0x01) > 0);
+    printf("- CHGC       [23] %-49s: %d\n", "Over Charging Current", (data[5] & 0x80) > 0);
+    printf("- OC         [22] %-49s: %d\n", "Over Charge", (data[5] & 0x40) > 0);
+    printf("- RSVD       [21] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x20) > 0);
+    printf("- CTO        [20] %-49s: %d\n", "Charge Timeout", (data[5] & 0x10) > 0);
+    printf("- PTOS       [19] %-49s: %d\n", "Precharge Timeout Suspend", (data[5] & 0x08) > 0);
+    printf("- RSVD       [18] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x04) > 0);
+    printf("- RSVD       [17] %-49s: %d\n", "Reserved - Do not use", (data[5] & 0x02) > 0);
+    printf("- OTF        [16] %-49s: %d\n", "n/a", (data[5] & 0x01) > 0);
 
 //  11.1.37.2 SafetyStatus() Low Word
 
@@ -1930,32 +1943,32 @@ int main(int argc, char **argv)
 
 //  RSVD CUVC OTD OTC ASCDL RSVD ASCCL RSVD
 
-//  printf("- RSVD       [15] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x80) > 0);
-//  printf("- CUVC       [14] %-49s: %d\n", "Cell Undervoltage Compensated", (data[4] & 0x40) > 0);
-//  printf("- OTD        [13] %-49s: %d\n", "Over Temperature during Discharge", (data[4] & 0x20) > 0);
-//  printf("- OTC        [12] %-49s: %d\n", "Over Temperature during Charge", (data[4] & 0x10) > 0);
-//  printf("- ASCDL      [11] %-49s: %d\n", "Short-circuit during Discharge Latch", (data[4] & 0x08) > 0);
-//  printf("- RSVD       [10] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x04) > 0);
-//  printf("- ASCCL      [9]  %-49s: %d\n", "Short-circuit during Charge Latch", (data[4] & 0x02) > 0);
-//  printf("- RSVD       [8]  %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x01) > 0);
+    printf("- RSVD       [15] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x80) > 0);
+    printf("- CUVC       [14] %-49s: %d\n", "Cell Undervoltage Compensated", (data[4] & 0x40) > 0);
+    printf("- OTD        [13] %-49s: %d\n", "Over Temperature during Discharge", (data[4] & 0x20) > 0);
+    printf("- OTC        [12] %-49s: %d\n", "Over Temperature during Charge", (data[4] & 0x10) > 0);
+    printf("- ASCDL      [11] %-49s: %d\n", "Short-circuit during Discharge Latch", (data[4] & 0x08) > 0);
+    printf("- RSVD       [10] %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x04) > 0);
+    printf("- ASCCL      [9]  %-49s: %d\n", "Short-circuit during Charge Latch", (data[4] & 0x02) > 0);
+    printf("- RSVD       [8]  %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  AOLDL AOLD OCD2 OCD1 OCC2 OCC1 COV CUV
 
-//  printf("- AOLDL      [7]  %-49s: %d\n", "Overload during Discharge Latch", (data[3] & 0x80) > 0);
-//  printf("- AOLD       [6]  %-49s: %d\n", "Overload during Discharge", (data[3] & 0x40) > 0);
-//  printf("- OCD2       [5]  %-49s: %d\n", "Over Current during Discharge 2", (data[3] & 0x20) > 0);
-//  printf("- OCD1       [4]  %-49s: %d\n", "Over Current during Discharge 1", (data[3] & 0x10) > 0);
-//  printf("- OCC2       [3]  %-49s: %d\n", "Over Current during Charge 2", (data[3] & 0x08) > 0);
-//  printf("- OCC1       [2]  %-49s: %d\n", "Over Current during Charge 1", (data[3] & 0x04) > 0);
-//  printf("- COV        [1]  %-49s: %d\n", "Cell Over Voltage", (data[3] & 0x02) > 0);
-//  printf("- CUV        [0]  %-49s: %d\n\n", "Cell Under Voltage", (data[3] & 0x01) > 0);
+    printf("- AOLDL      [7]  %-49s: %d\n", "Overload during Discharge Latch", (data[3] & 0x80) > 0);
+    printf("- AOLD       [6]  %-49s: %d\n", "Overload during Discharge", (data[3] & 0x40) > 0);
+    printf("- OCD2       [5]  %-49s: %d\n", "Over Current during Discharge 2", (data[3] & 0x20) > 0);
+    printf("- OCD1       [4]  %-49s: %d\n", "Over Current during Discharge 1", (data[3] & 0x10) > 0);
+    printf("- OCC2       [3]  %-49s: %d\n", "Over Current during Charge 2", (data[3] & 0x08) > 0);
+    printf("- OCC1       [2]  %-49s: %d\n", "Over Current during Charge 1", (data[3] & 0x04) > 0);
+    printf("- COV        [1]  %-49s: %d\n", "Cell Over Voltage", (data[3] & 0x02) > 0);
+    printf("- CUV        [0]  %-49s: %d\n\n", "Cell Under Voltage", (data[3] & 0x01) > 0);
 
 //  11.44 0x52 PFAlert
 //  This command returns the PFAlert() flags.
 //  0x52 PFAlert() — R R Block H4 0x00000000, 0xFFFFFFFF — —
-//  readWord("PFAlert", "", 0x52, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("PFAlert", "", 0x52, 0x00000000, 0xFFFFFFFF, 0);
 
 //  11.1.38.1 PFAlert() High Word
 
@@ -1963,27 +1976,27 @@ int main(int argc, char **argv)
 
 //  TS4 TS3 TS2 TS1 RSVD RSVD OPNC RSVD
 
-//  printf("- TS4        [31] %-49s: %d\n", "Open Thermistor - TS4 Failure", (data[6] & 0x80) > 0);
-//  printf("- TS3        [30] %-49s: %d\n", "Open Thermistor - TS3 Failure", (data[6] & 0x40) > 0);
-//  printf("- TS2        [29] %-49s: %d\n", "Open Thermistor - TS2 Failure", (data[6] & 0x20) > 0);
-//  printf("- TS1        [28] %-49s: %d\n", "Open Thermistor - TS1 Failure", (data[6] & 0x10) > 0);
-//  printf("- RSVD       [27] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x08) > 0);
-//  printf("- RSVD       [26] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x04) > 0);
-//  printf("- OPNC       [25] %-49s: %d\n", "Open Cell Tab Connection Failure", (data[6] & 0x02) > 0);
-//  printf("- RSVD       [24] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x01) > 0);
+    printf("- TS4        [31] %-49s: %d\n", "Open Thermistor - TS4 Failure", (data[6] & 0x80) > 0);
+    printf("- TS3        [30] %-49s: %d\n", "Open Thermistor - TS3 Failure", (data[6] & 0x40) > 0);
+    printf("- TS2        [29] %-49s: %d\n", "Open Thermistor - TS2 Failure", (data[6] & 0x20) > 0);
+    printf("- TS1        [28] %-49s: %d\n", "Open Thermistor - TS1 Failure", (data[6] & 0x10) > 0);
+    printf("- RSVD       [27] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x08) > 0);
+    printf("- RSVD       [26] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x04) > 0);
+    printf("- OPNC       [25] %-49s: %d\n", "Open Cell Tab Connection Failure", (data[6] & 0x02) > 0);
+    printf("- RSVD       [24] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x01) > 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  RSVD 2LVL AFEC AFER FUSE RSVD DFETF CFETF
 
-//  printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use.", (data[5] & 0x80) > 0);
-//  printf("- 2LVL       [22] %-49s: %d\n", "Second Level Protector Failure", (data[5] & 0x40) > 0);
-//  printf("- AFEC       [21] %-49s: %d\n", "AFE Communication Failure", (data[5] & 0x20) > 0);
-//  printf("- AFER       [20] %-49s: %d\n", "AFE Register Failure", (data[5] & 0x10) > 0);
-//  printf("- FUSE       [19] %-49s: %d\n", "Chemical Fuse Failure", (data[5] & 0x08) > 0);
-//  printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use.", (data[5] & 0x04) > 0);
-//  printf("- DFETF      [17] %-49s: %d\n", "Discharge FET Failure", (data[5] & 0x02) > 0);
-//  printf("- CFETF      [16] %-49s: %d\n", "Charge FET Failure", (data[5] & 0x01) > 0);
+    printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use.", (data[5] & 0x80) > 0);
+    printf("- 2LVL       [22] %-49s: %d\n", "Second Level Protector Failure", (data[5] & 0x40) > 0);
+    printf("- AFEC       [21] %-49s: %d\n", "AFE Communication Failure", (data[5] & 0x20) > 0);
+    printf("- AFER       [20] %-49s: %d\n", "AFE Register Failure", (data[5] & 0x10) > 0);
+    printf("- FUSE       [19] %-49s: %d\n", "Chemical Fuse Failure", (data[5] & 0x08) > 0);
+    printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use.", (data[5] & 0x04) > 0);
+    printf("- DFETF      [17] %-49s: %d\n", "Discharge FET Failure", (data[5] & 0x02) > 0);
+    printf("- CFETF      [16] %-49s: %d\n", "Charge FET Failure", (data[5] & 0x01) > 0);
 
 //  11.1.38.2 PFAlert() Low Word
 
@@ -1991,32 +2004,32 @@ int main(int argc, char **argv)
 
 //  RSVD RSVD RSVD VIMA VIMR CD IMP CB
 
-//  printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
-//  printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
-//  printf("- RSVD       [13] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x20) > 0);
-//  printf("- VIMA       [12] %-49s: %d\n", "Voltage Imbalance while Pack Active", (data[4] & 0x10) > 0);
-//  printf("- VIMR       [11] %-49s: %d\n", "Voltage Imbalance while Pack Resting", (data[4] & 0x08) > 0);
-//  printf("- CD         [10] %-49s: %d\n", "Capacity Degradation Failure", (data[4] & 0x04) > 0);
-//  printf("- IMP        [9]  %-49s: %d\n", "Impedance Failure", (data[4] & 0x02) > 0);
-//  printf("- CB         [8]  %-49s: %d\n", "Cell Balancing Failure", (data[4] & 0x01) > 0);
+    printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
+    printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
+    printf("- RSVD       [13] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x20) > 0);
+    printf("- VIMA       [12] %-49s: %d\n", "Voltage Imbalance while Pack Active", (data[4] & 0x10) > 0);
+    printf("- VIMR       [11] %-49s: %d\n", "Voltage Imbalance while Pack Resting", (data[4] & 0x08) > 0);
+    printf("- CD         [10] %-49s: %d\n", "Capacity Degradation Failure", (data[4] & 0x04) > 0);
+    printf("- IMP        [9]  %-49s: %d\n", "Impedance Failure", (data[4] & 0x02) > 0);
+    printf("- CB         [8]  %-49s: %d\n", "Cell Balancing Failure", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  QIM SOTF RSVD SOT SOCD SOCC SOV SUV
 
-//  printf("- QIM        [7]  %-49s: %d\n", "QMax Imbalance Failure", (data[3] & 0x80) > 0);
-//  printf("- SOTF       [6]  %-49s: %d\n", "Safety Over-Temperature Failure", (data[3] & 0x40) > 0);
-//  printf("- RSVD       [5]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x20) > 0);
-//  printf("- SOT        [4]  %-49s: %d\n", "Safety Over-Temperature Cell Failure", (data[3] & 0x10) > 0);
-//  printf("- SOCD       [3]  %-49s: %d\n", "n/a", (data[3] & 0x08) > 0);
-//  printf("- SOCC       [2]  %-49s: %d\n", "n/a", (data[3] & 0x04) > 0);
-//  printf("- SOV        [1]  %-49s: %d\n", "Safety Cell Over-Voltage Failure", (data[3] & 0x02) > 0);
-//  printf("- SUV        [0]  %-49s: %d\n\n", "Safety Cell Under-Voltage Failure", (data[3] & 0x01) > 0);
+    printf("- QIM        [7]  %-49s: %d\n", "QMax Imbalance Failure", (data[3] & 0x80) > 0);
+    printf("- SOTF       [6]  %-49s: %d\n", "Safety Over-Temperature Failure", (data[3] & 0x40) > 0);
+    printf("- RSVD       [5]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x20) > 0);
+    printf("- SOT        [4]  %-49s: %d\n", "Safety Over-Temperature Cell Failure", (data[3] & 0x10) > 0);
+    printf("- SOCD       [3]  %-49s: %d\n", "n/a", (data[3] & 0x08) > 0);
+    printf("- SOCC       [2]  %-49s: %d\n", "n/a", (data[3] & 0x04) > 0);
+    printf("- SOV        [1]  %-49s: %d\n", "Safety Cell Over-Voltage Failure", (data[3] & 0x02) > 0);
+    printf("- SUV        [0]  %-49s: %d\n\n", "Safety Cell Under-Voltage Failure", (data[3] & 0x01) > 0);
 
 //  11.45 0x53 PFStatus
 //  This command returns the PFStatus() flags.
 //  0x53 PFStatus() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("PFStatus", "", 0x53, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("PFStatus", "", 0x53, 0x00000000, 0xFFFFFFFF, 0);
 
 //  11.1.39.1 PFStatus() High Word
 
@@ -2024,27 +2037,27 @@ int main(int argc, char **argv)
 
 //  TS4 TS3 TS2 TS1 RSVD RSVD OPNC RSVD
 
-//  printf("- TS4        [31] %-49s: %d\n", "Open Thermistor - TS4 Failure", (data[6] & 0x80) > 0);
-//  printf("- TS3        [30] %-49s: %d\n", "Open Thermistor - TS3 Failure", (data[6] & 0x40) > 0);
-//  printf("- TS2        [29] %-49s: %d\n", "Open Thermistor - TS2 Failure", (data[6] & 0x20) > 0);
-//  printf("- TS1        [28] %-49s: %d\n", "Open Thermistor - TS1 Failure", (data[6] & 0x10) > 0);
-//  printf("- RSVD       [27] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x08) > 0);
-//  printf("- RSVD       [26] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x04) > 0);
-//  printf("- OPNC       [25] %-49s: %d\n", "Open Cell Tab Connection Failure", (data[6] & 0x02) > 0);
-//  printf("- RSVD       [24] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x01) > 0);
+    printf("- TS4        [31] %-49s: %d\n", "Open Thermistor - TS4 Failure", (data[6] & 0x80) > 0);
+    printf("- TS3        [30] %-49s: %d\n", "Open Thermistor - TS3 Failure", (data[6] & 0x40) > 0);
+    printf("- TS2        [29] %-49s: %d\n", "Open Thermistor - TS2 Failure", (data[6] & 0x20) > 0);
+    printf("- TS1        [28] %-49s: %d\n", "Open Thermistor - TS1 Failure", (data[6] & 0x10) > 0);
+    printf("- RSVD       [27] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x08) > 0);
+    printf("- RSVD       [26] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x04) > 0);
+    printf("- OPNC       [25] %-49s: %d\n", "Open Cell Tab Connection Failure", (data[6] & 0x02) > 0);
+    printf("- RSVD       [24] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x01) > 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  RSVD 2LVL AFEC AFER FUSE RSVD DFETF CFETF
 
-//  printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
-//  printf("- 2LVL       [22] %-49s: %d\n", "Second Level Protector Failure", (data[5] & 0x40) > 0);
-//  printf("- AFEC       [21] %-49s: %d\n", "AFE Communication Failure", (data[5] & 0x20) > 0);
-//  printf("- AFER       [20] %-49s: %d\n", "AFE Register Failure", (data[5] & 0x10) > 0);
-//  printf("- FUSE       [19] %-49s: %d\n", "Chemical Fuse Failure", (data[5] & 0x08) > 0);
-//  printf("- RSVD       [18] %-49s: %d\n", "Reserved - do not use", (data[3] & 0x04) > 0);
-//  printf("- DFETF      [17] %-49s: %d\n", "Discharge FET Failure", (data[5] & 0x02) > 0);
-//  printf("- CFETF      [16] %-49s: %d\n", "Charge FET Failure", (data[5] & 0x01) > 0);
+    printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
+    printf("- 2LVL       [22] %-49s: %d\n", "Second Level Protector Failure", (data[5] & 0x40) > 0);
+    printf("- AFEC       [21] %-49s: %d\n", "AFE Communication Failure", (data[5] & 0x20) > 0);
+    printf("- AFER       [20] %-49s: %d\n", "AFE Register Failure", (data[5] & 0x10) > 0);
+    printf("- FUSE       [19] %-49s: %d\n", "Chemical Fuse Failure", (data[5] & 0x08) > 0);
+    printf("- RSVD       [18] %-49s: %d\n", "Reserved - do not use", (data[3] & 0x04) > 0);
+    printf("- DFETF      [17] %-49s: %d\n", "Discharge FET Failure", (data[5] & 0x02) > 0);
+    printf("- CFETF      [16] %-49s: %d\n", "Charge FET Failure", (data[5] & 0x01) > 0);
 
 //  11.1.39.2 PFStatus() Low Word
 
@@ -2052,32 +2065,32 @@ int main(int argc, char **argv)
 
 //  RSVD RSVD RSVD VIMA VIMR CD IMP CB
 
-//  printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
-//  printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
-//  printf("- RSVD       [13] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x20) > 0);
-//  printf("- VIMA       [12] %-49s: %d\n", "Voltage Imbalance while Pack Active", (data[4] & 0x10) > 0);
-//  printf("- VIMR       [11] %-49s: %d\n", "Voltage Imbalance while Pack Resting", (data[4] & 0x08) > 0);
-//  printf("- CD         [10] %-49s: %d\n", "Capacity Degradation Failure", (data[4] & 0x04) > 0);
-//  printf("- IMP        [9]  %-49s: %d\n", "Impedance Failure", (data[4] & 0x02) > 0);
-//  printf("- CB         [8]  %-49s: %d\n", "Cell Balancing Failure", (data[4] & 0x01) > 0);
+    printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
+    printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
+    printf("- RSVD       [13] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x20) > 0);
+    printf("- VIMA       [12] %-49s: %d\n", "Voltage Imbalance while Pack Active", (data[4] & 0x10) > 0);
+    printf("- VIMR       [11] %-49s: %d\n", "Voltage Imbalance while Pack Resting", (data[4] & 0x08) > 0);
+    printf("- CD         [10] %-49s: %d\n", "Capacity Degradation Failure", (data[4] & 0x04) > 0);
+    printf("- IMP        [9]  %-49s: %d\n", "Impedance Failure", (data[4] & 0x02) > 0);
+    printf("- CB         [8]  %-49s: %d\n", "Cell Balancing Failure", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  QIM SOTF RSVD SOT SOCD SOCC SOV SUV
 
-//  printf("- QIM        [7]  %-49s: %d\n", "QMax Imbalance Failure", (data[3] & 0x80) > 0);
-//  printf("- SOTF       [6]  %-49s: %d\n", "Safety Over-Temperature Failure", (data[3] & 0x40) > 0);
-//  printf("- RSVD       [5]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x20) > 0);
-//  printf("- SOT        [4]  %-49s: %d\n", "Safety Over-Temperature Cell Failure", (data[3] & 0x10) > 0);
-//  printf("- SOCD       [3]  %-49s: %d\n", "n/a", (data[3] & 0x08) > 0);
-//  printf("- SOCC       [2]  %-49s: %d\n", "n/a", (data[3] & 0x04) > 0);
-//  printf("- SOV        [1]  %-49s: %d\n", "Safety Cell Over-Voltage Failure", (data[3] & 0x02) > 0);
-//  printf("- SUV        [0]  %-49s: %d\n\n", "Safety Cell Under-Voltage Failure", (data[3] & 0x01) > 0);
+    printf("- QIM        [7]  %-49s: %d\n", "QMax Imbalance Failure", (data[3] & 0x80) > 0);
+    printf("- SOTF       [6]  %-49s: %d\n", "Safety Over-Temperature Failure", (data[3] & 0x40) > 0);
+    printf("- RSVD       [5]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x20) > 0);
+    printf("- SOT        [4]  %-49s: %d\n", "Safety Over-Temperature Cell Failure", (data[3] & 0x10) > 0);
+    printf("- SOCD       [3]  %-49s: %d\n", "n/a", (data[3] & 0x08) > 0);
+    printf("- SOCC       [2]  %-49s: %d\n", "n/a", (data[3] & 0x04) > 0);
+    printf("- SOV        [1]  %-49s: %d\n", "Safety Cell Over-Voltage Failure", (data[3] & 0x02) > 0);
+    printf("- SUV        [0]  %-49s: %d\n\n", "Safety Cell Under-Voltage Failure", (data[3] & 0x01) > 0);
 
 //  11.46 0x54 OperationStatus
 //  This command returns the OperationStatus() flags.
 //  0x54 OperationStatus() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("OperationStatus", "hex", 0x54, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("OperationStatus", "hex", 0x54, 0x00000000, 0xFFFFFFFF, 0);
 
 //  11.1.40.1 OperationStatus() High Word
 
@@ -2085,27 +2098,27 @@ int main(int argc, char **argv)
 
 //  RSVD RSVD EMSHUT CB SLPCC SLPAD SMBLCAL INIT
 
-//  printf("- RSVD       [31] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x80) > 0);
-//  printf("- RSVD       [30] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x40) > 0);
-//  printf("- EMSHUT     [29] %-49s: %d\n", "Emergency Shutdown", (data[6] & 0x20) > 0);
-//  printf("- CB         [28] %-49s: %d\n", "Cell Balancing", (data[6] & 0x10) > 0);
-//  printf("- SLPCC      [27] %-49s: %d\n", "CC Measurement in SLEEP mode", (data[6] & 0x08) > 0);
-//  printf("- SLPAD      [26] %-49s: %d\n", "ADC Measurement in SLEEP mode", (data[6] & 0x04) > 0);
-//  printf("- SMBLCAL    [25] %-49s: %d\n", "Auto CC calibration when the bus is low", (data[6] & 0x02) > 0);
-//  printf("- INIT       [24] %-49s: %d\n", "Initialization after full reset", (data[6] & 0x01) > 0);
+    printf("- RSVD       [31] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x80) > 0);
+    printf("- RSVD       [30] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x40) > 0);
+    printf("- EMSHUT     [29] %-49s: %d\n", "Emergency Shutdown", (data[6] & 0x20) > 0);
+    printf("- CB         [28] %-49s: %d\n", "Cell Balancing", (data[6] & 0x10) > 0);
+    printf("- SLPCC      [27] %-49s: %d\n", "CC Measurement in SLEEP mode", (data[6] & 0x08) > 0);
+    printf("- SLPAD      [26] %-49s: %d\n", "ADC Measurement in SLEEP mode", (data[6] & 0x04) > 0);
+    printf("- SMBLCAL    [25] %-49s: %d\n", "Auto CC calibration when the bus is low", (data[6] & 0x02) > 0);
+    printf("- INIT       [24] %-49s: %d\n", "Initialization after full reset", (data[6] & 0x01) > 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  SLEEPM XL CAL_OFFSET CAL AUTOCALM AUTH LED SDM
 
-//  printf("- SLEEPM     [23] %-49s: %d\n", "SLEEP mode triggered via command", (data[5] & 0x80) > 0);
-//  printf("- XL         [22] %-49s: %d\n", "400 kHz SMBus mode", (data[5] & 0x40) > 0);
-//  printf("- CAL_OFFSET [21] %-49s: %d\n", "Calibration output (raw CC) ", (data[5] & 0x20) > 0);
-//  printf("- CAL        [20] %-49s: %d\n", "Calibration output (raw ADC and CC) generated", (data[5] & 0x10) > 0);
-//  printf("- AUTOCALM   [19] %-49s: %d\n", "Auto CC Offset Calibration by MAC AutoCCOffset()", (data[5] & 0x08) > 0);
-//  printf("- AUTH       [18] %-49s: %d\n", "Authentication in progress", (data[5] & 0x04) > 0);
-//  printf("- LED        [17] %-49s: %d\n", "LED Display", (data[5] & 0x02) > 0);
-//  printf("- SDM        [16] %-49s: %d\n", "Shutdown triggered via command", (data[5] & 0x01) > 0);
+    printf("- SLEEPM     [23] %-49s: %d\n", "SLEEP mode triggered via command", (data[5] & 0x80) > 0);
+    printf("- XL         [22] %-49s: %d\n", "400 kHz SMBus mode", (data[5] & 0x40) > 0);
+    printf("- CAL_OFFSET [21] %-49s: %d\n", "Calibration output (raw CC) ", (data[5] & 0x20) > 0);
+    printf("- CAL        [20] %-49s: %d\n", "Calibration output (raw ADC and CC) generated", (data[5] & 0x10) > 0);
+    printf("- AUTOCALM   [19] %-49s: %d\n", "Auto CC Offset Calibration by MAC AutoCCOffset()", (data[5] & 0x08) > 0);
+    printf("- AUTH       [18] %-49s: %d\n", "Authentication in progress", (data[5] & 0x04) > 0);
+    printf("- LED        [17] %-49s: %d\n", "LED Display", (data[5] & 0x02) > 0);
+    printf("- SDM        [16] %-49s: %d\n", "Shutdown triggered via command", (data[5] & 0x01) > 0);
 
 //  11.1.40.2 OperationStatus() Low Word
 
@@ -2113,89 +2126,89 @@ int main(int argc, char **argv)
 
 //  SLEEP XCHG XDSG PF SS SDV SEC[1] SEC[0]
 
-//  printf("- SLEEP      [15] %-49s: %d\n", "Sleep mode conditions met", (data[4] & 0x80) > 0);
-//  printf("- XCHG       [14] %-49s: %d\n", "Charging disabled", (data[4] & 0x40) > 0);
-//  printf("- XDSG       [13] %-49s: %d\n", "Discharging disabled", (data[4] & 0x20) > 0);
-//  printf("- PF         [12] %-49s: %d\n", "Permanent Fault mode", (data[4] & 0x10) > 0);
-//  printf("- SS         [11] %-49s: %d\n", "Safety mode", (data[4] & 0x08) > 0);
-//  printf("- SDV        [10] %-49s: %d\n", "Shutdown triggered via low pack voltage", (data[4] & 0x04) > 0);
-//  printf("- SEC[1]     [9]  %-49s: %d\n", "Security Status", (data[4] & 0x02) > 0);
-//  printf("- SEC[0]     [8]  %-49s: %d\n", "Security Status", (data[4] & 0x01) > 0);
+    printf("- SLEEP      [15] %-49s: %d\n", "Sleep mode conditions met", (data[4] & 0x80) > 0);
+    printf("- XCHG       [14] %-49s: %d\n", "Charging disabled", (data[4] & 0x40) > 0);
+    printf("- XDSG       [13] %-49s: %d\n", "Discharging disabled", (data[4] & 0x20) > 0);
+    printf("- PF         [12] %-49s: %d\n", "Permanent Fault mode", (data[4] & 0x10) > 0);
+    printf("- SS         [11] %-49s: %d\n", "Safety mode", (data[4] & 0x08) > 0);
+    printf("- SDV        [10] %-49s: %d\n", "Shutdown triggered via low pack voltage", (data[4] & 0x04) > 0);
+    printf("- SEC[1]     [9]  %-49s: %d\n", "Security Status", (data[4] & 0x02) > 0);
+    printf("- SEC[0]     [8]  %-49s: %d\n", "Security Status", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  BTP_INT ACLW FUSE ACFET PCHG CHG DSG PRES
 
-//  printf("- BTP_INT    [7]  %-49s: %d\n", "Battery Trip Point interrupt", (data[3] & 0x80) > 0);
-//  printf("- ACLW       [6]  %-49s: %d\n", "AC Voltage below threshold", (data[3] & 0x40) > 0);
-//  printf("- FUSE       [5]  %-49s: %d\n", "Fuse status", (data[3] & 0x20) > 0);
-//  printf("- ACFET      [4]  %-49s: %d\n", "AC FET status", (data[3] & 0x10) > 0);
-//  printf("- PCHG       [3]  %-49s: %d\n", "Pre-charge FET status", (data[3] & 0x08) > 0);
-//  printf("- CHG        [2]  %-49s: %d\n", "Charge FET status", (data[3] & 0x04) > 0);
-//  printf("- DSG        [1]  %-49s: %d\n", "Discharge FET status", (data[3] & 0x02) > 0);
-//  printf("- PRES       [0]  %-49s: %d\n\n", "System Present", (data[3] & 0x01) > 0);
+    printf("- BTP_INT    [7]  %-49s: %d\n", "Battery Trip Point interrupt", (data[3] & 0x80) > 0);
+    printf("- ACLW       [6]  %-49s: %d\n", "AC Voltage below threshold", (data[3] & 0x40) > 0);
+    printf("- FUSE       [5]  %-49s: %d\n", "Fuse status", (data[3] & 0x20) > 0);
+    printf("- ACFET      [4]  %-49s: %d\n", "AC FET status", (data[3] & 0x10) > 0);
+    printf("- PCHG       [3]  %-49s: %d\n", "Pre-charge FET status", (data[3] & 0x08) > 0);
+    printf("- CHG        [2]  %-49s: %d\n", "Charge FET status", (data[3] & 0x04) > 0);
+    printf("- DSG        [1]  %-49s: %d\n", "Discharge FET status", (data[3] & 0x02) > 0);
+    printf("- PRES       [0]  %-49s: %d\n\n", "System Present", (data[3] & 0x01) > 0);
 
 //  11.47 0x55 ChargingStatus
 //  This command returns the ChargingStatus() flags.
 //  0x55 ChargingStatus() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("ChargingStatus", "hex", 0x55, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("ChargingStatus", "hex", 0x55, 0x00000000, 0xFFFFFFFF, 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  RSVD RSVD RSVD RSVD RSVD LCHG CHGSTAT CHRG
 
-//  printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
-//  printf("- RSVD       [22] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x40) > 0);
-//  printf("- RSVD       [21] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x20) > 0);
-//  printf("- RSVD       [20] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x10) > 0);
-//  printf("- RSVD       [19] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x08) > 0);
-//  printf("- LCHG       [18] %-49s: %d\n", "Low Charge Current Mode ", (data[5] & 0x04) > 0);
-//  printf("- CHGSTAT    [17] %-49s: %d\n", "Charger providing current to battery", (data[5] & 0x02) > 0);
-//  printf("- CHRG       [16] %-49s: %d\n", "Charger Enable", (data[5] & 0x01) > 0);
+    printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
+    printf("- RSVD       [22] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x40) > 0);
+    printf("- RSVD       [21] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x20) > 0);
+    printf("- RSVD       [20] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x10) > 0);
+    printf("- RSVD       [19] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x08) > 0);
+    printf("- LCHG       [18] %-49s: %d\n", "Low Charge Current Mode ", (data[5] & 0x04) > 0);
+    printf("- CHGSTAT    [17] %-49s: %d\n", "Charger providing current to battery", (data[5] & 0x02) > 0);
+    printf("- CHRG       [16] %-49s: %d\n", "Charger Enable", (data[5] & 0x01) > 0);
 
 //  B15 B14 B13 B12 B11 B10 B9 B8
 
 //  RSVD RSVD CVRD MLC[2] MLC[1] MLC[0] CVR CCR
 
-//  printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
-//  printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
-//  printf("- CVRD       [13] %-49s: %d\n", "Voltage/Current Override Mode", (data[4] & 0x20) > 0);
-//  printf("- MLC[2]     [12] %-49s: %d\n", "Multi-level Charging Mode Not supported - ignore", (data[4] & 0x10) > 0);
-//  printf("- MLC[1]     [11] %-49s: %d\n", "Multi-level Charging Mode Not supported - ignore", (data[4] & 0x08) > 0);
-//  printf("- MLC[0]     [10] %-49s: %d\n", "Multi-level Charging Mode Not supported - ignore", (data[4] & 0x04) > 0);
-//  printf("- CVR        [9]  %-49s: %d\n", "Charging Voltage Rate of Change", (data[4] & 0x02) > 0);
-//  printf("- CCR        [8]  %-49s: %d\n", "Charging Current Rate of Change", (data[4] & 0x01) > 0);
+    printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
+    printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
+    printf("- CVRD       [13] %-49s: %d\n", "Voltage/Current Override Mode", (data[4] & 0x20) > 0);
+    printf("- MLC[2]     [12] %-49s: %d\n", "Multi-level Charging Mode Not supported - ignore", (data[4] & 0x10) > 0);
+    printf("- MLC[1]     [11] %-49s: %d\n", "Multi-level Charging Mode Not supported - ignore", (data[4] & 0x08) > 0);
+    printf("- MLC[0]     [10] %-49s: %d\n", "Multi-level Charging Mode Not supported - ignore", (data[4] & 0x04) > 0);
+    printf("- CVR        [9]  %-49s: %d\n", "Charging Voltage Rate of Change", (data[4] & 0x02) > 0);
+    printf("- CCR        [8]  %-49s: %d\n", "Charging Current Rate of Change", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  VCT MCHG SU IN HV MV LV PV
 
-//  printf("- VCT        [7]  %-49s: %d\n", "Charge Termination", (data[3] & 0x80) > 0);
-//  printf("- MCHG       [6]  %-49s: %d\n", "Maintenance Charge", (data[3] & 0x40) > 0);
-//  printf("- SU         [5]  %-49s: %d\n", "Charge Suspend", (data[3] & 0x20) > 0);
-//  printf("- IN         [4]  %-49s: %d\n", "Charge Inhibit", (data[3] & 0x10) > 0);
-//  printf("- HV         [3]  %-49s: %d\n", "High Cell Voltage Charge Conditions", (data[3] & 0x08) > 0);
-//  printf("- MV         [2]  %-49s: %d\n", "Medium Cell Voltage Charge Conditions", (data[3] & 0x04) > 0);
-//  printf("- LV         [1]  %-49s: %d\n", "Low Cell Voltage Charge Conditions", (data[3] & 0x02) > 0);
-//  printf("- PV         [0]  %-49s: %d\n\n", "Pre-Charge Cell Voltage Charge Conditions", (data[3] & 0x01) > 0);
+    printf("- VCT        [7]  %-49s: %d\n", "Charge Termination", (data[3] & 0x80) > 0);
+    printf("- MCHG       [6]  %-49s: %d\n", "Maintenance Charge", (data[3] & 0x40) > 0);
+    printf("- SU         [5]  %-49s: %d\n", "Charge Suspend", (data[3] & 0x20) > 0);
+    printf("- IN         [4]  %-49s: %d\n", "Charge Inhibit", (data[3] & 0x10) > 0);
+    printf("- HV         [3]  %-49s: %d\n", "High Cell Voltage Charge Conditions", (data[3] & 0x08) > 0);
+    printf("- MV         [2]  %-49s: %d\n", "Medium Cell Voltage Charge Conditions", (data[3] & 0x04) > 0);
+    printf("- LV         [1]  %-49s: %d\n", "Low Cell Voltage Charge Conditions", (data[3] & 0x02) > 0);
+    printf("- PV         [0]  %-49s: %d\n\n", "Pre-Charge Cell Voltage Charge Conditions", (data[3] & 0x01) > 0);
 
 //  11.48 0x56 GaugingStatus
 //  This command returns the GaugingStatus() flags.
 //  0x56 GaugingStatus() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("GaugingStatus", "hex", 0x56, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("GaugingStatus", "hex", 0x56, 0x00000000, 0xFFFFFFFF, 0);
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
 
 //  RSVD RSVD RSVD OCVFR LDMD RX QMAX VDQ
 
-//  printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
-//  printf("- RSVD       [22] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x40) > 0);
-//  printf("- RSVD       [21] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x20) > 0);
-//  printf("- OCVFR      [20] %-49s: %d\n", "Open Circuit Voltage Flat Region during RELAX", (data[5] & 0x10) > 0);
-//  printf("- LDMD       [19] %-49s: %d\n", "LOAD mode - battery under load", (data[5] & 0x08) > 0);
-//  printf("- RX         [18] %-49s: %d\n", "Resistance Update to DataFlash", (data[5] & 0x04) > 0);
-//  printf("- QMAX       [17] %-49s: %d\n", "QMax update to DataFlash", (data[5] & 0x02) > 0);
-//  printf("- VDQ        [16] %-49s: %d\n", "Discharge qualified for learning", (data[5] & 0x01) > 0);
+    printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
+    printf("- RSVD       [22] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x40) > 0);
+    printf("- RSVD       [21] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x20) > 0);
+    printf("- OCVFR      [20] %-49s: %d\n", "Open Circuit Voltage Flat Region during RELAX", (data[5] & 0x10) > 0);
+    printf("- LDMD       [19] %-49s: %d\n", "LOAD mode - battery under load", (data[5] & 0x08) > 0);
+    printf("- RX         [18] %-49s: %d\n", "Resistance Update to DataFlash", (data[5] & 0x04) > 0);
+    printf("- QMAX       [17] %-49s: %d\n", "QMax update to DataFlash", (data[5] & 0x02) > 0);
+    printf("- VDQ        [16] %-49s: %d\n", "Discharge qualified for learning", (data[5] & 0x01) > 0);
 
 //  11.1.42.1 GaugingStatus Low Word
 
@@ -2203,58 +2216,58 @@ int main(int argc, char **argv)
 
 //  NSFM RSVD SLPQMAX QEN VOK RDIS RSVD REST
 
-//  printf("- NSFM       [15] %-49s: %d\n", "Negative Ra resistance scaling mode", (data[4] & 0x80) > 0);
-//  printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
-//  printf("- SLPQMAX    [13] %-49s: %d\n", "OCV update in SLEEP Mode", (data[4] & 0x20) > 0);
-//  printf("- QEN        [12] %-49s: %d\n", "Impedance Track - Ra and QMax updates occurring", (data[4] & 0x10) > 0);
-//  printf("- VOK        [11] %-49s: %d\n", "Voltages Ok for QMax update.", (data[4] & 0x08) > 0);
-//  printf("- RDIS       [10] %-49s: %d\n", "Resistance table updates in DataFlash", (data[4] & 0x04) > 0);
-//  printf("- RSVD       [9]  %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x02) > 0);
-//  printf("- REST       [8]  %-49s: %d\n", "In RELAX mode and OCV updates taken", (data[4] & 0x01) > 0);
+    printf("- NSFM       [15] %-49s: %d\n", "Negative Ra resistance scaling mode", (data[4] & 0x80) > 0);
+    printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
+    printf("- SLPQMAX    [13] %-49s: %d\n", "OCV update in SLEEP Mode", (data[4] & 0x20) > 0);
+    printf("- QEN        [12] %-49s: %d\n", "Impedance Track - Ra and QMax updates occurring", (data[4] & 0x10) > 0);
+    printf("- VOK        [11] %-49s: %d\n", "Voltages Ok for QMax update.", (data[4] & 0x08) > 0);
+    printf("- RDIS       [10] %-49s: %d\n", "Resistance table updates in DataFlash", (data[4] & 0x04) > 0);
+    printf("- RSVD       [9]  %-49s: %d\n", "Reserved - Do not use", (data[4] & 0x02) > 0);
+    printf("- REST       [8]  %-49s: %d\n", "In RELAX mode and OCV updates taken", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  CF DSG EDV BAL_EN TC TD FC FD
 
-//  printf("- CF         [7]  %-49s: %d\n", "Condition Flag", (data[3] & 0x80) > 0);
-//  printf("- DSG        [6]  %-49s: %d\n", "Discharge/Relax", (data[3] & 0x40) > 0);
-//  printf("- EDV        [5]  %-49s: %d\n", "End-of-Discharge Voltage reached during discharge", (data[3] & 0x20) > 0);
-//  printf("- BAL_EN     [4]  %-49s: %d\n", "Cell balancing if possible ", (data[3] & 0x10) > 0);
-//  printf("- TC         [3]  %-49s: %d\n", "Terminate Charge", (data[3] & 0x08) > 0);
-//  printf("- TD         [2]  %-49s: %d\n", "Terminate Discharge", (data[3] & 0x04) > 0);
-//  printf("- FC         [1]  %-49s: %d\n", "Fully Charged", (data[3] & 0x02) > 0);
-//  printf("- FD         [0]  %-49s: %d\n\n", "Fully Discharged", (data[3] & 0x01) > 0);
+    printf("- CF         [7]  %-49s: %d\n", "Condition Flag", (data[3] & 0x80) > 0);
+    printf("- DSG        [6]  %-49s: %d\n", "Discharge/Relax", (data[3] & 0x40) > 0);
+    printf("- EDV        [5]  %-49s: %d\n", "End-of-Discharge Voltage reached during discharge", (data[3] & 0x20) > 0);
+    printf("- BAL_EN     [4]  %-49s: %d\n", "Cell balancing if possible ", (data[3] & 0x10) > 0);
+    printf("- TC         [3]  %-49s: %d\n", "Terminate Charge", (data[3] & 0x08) > 0);
+    printf("- TD         [2]  %-49s: %d\n", "Terminate Discharge", (data[3] & 0x04) > 0);
+    printf("- FC         [1]  %-49s: %d\n", "Fully Charged", (data[3] & 0x02) > 0);
+    printf("- FD         [0]  %-49s: %d\n\n", "Fully Discharged", (data[3] & 0x01) > 0);
 
 //  11.49 0x57 ManufacturingStatus
 //  This command returns the ManufacturingStatus() flags.
 //  0x57 ManufacturingStatus() — R R Block H4 0x00000000 0xFFFFFFFF — —
-//  readWord("ManufacturingStatus", "hex", 0x57, 0x00000000, 0xFFFFFFFF, 0);
+    readWord("ManufacturingStatus", "hex", 0x57, 0x00000000, 0xFFFFFFFF, 0);
 
 //  B15 B14 B13 B12 B11 B10 B9 B8
 
 //  RSVD RSVD RSVD RSVD RSVD CHGR_EN LED_EN FUSE_EN
 
-//  printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
-//  printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
-//  printf("- RSVD       [13] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x20) > 0);
-//  printf("- RSVD       [12] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x10) > 0);
-//  printf("- RSVD       [11] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x08) > 0);
-//  printf("- CHGR_EN    [10] %-49s: %d\n", "Charger Enabled, independent of Adapter presences", (data[4] & 0x04) > 0);
-//  printf("- LED_EN     [9]  %-49s: %d\n", "LED outputs", (data[4] & 0x02) > 0);
-//  printf("- FUSE_EN    [8]  %-49s: %d\n", "Fuse control", (data[4] & 0x01) > 0);
+    printf("- RSVD       [15] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x80) > 0);
+    printf("- RSVD       [14] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x40) > 0);
+    printf("- RSVD       [13] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x20) > 0);
+    printf("- RSVD       [12] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x10) > 0);
+    printf("- RSVD       [11] %-49s: %d\n", "Reserved - do not use", (data[4] & 0x08) > 0);
+    printf("- CHGR_EN    [10] %-49s: %d\n", "Charger Enabled, independent of Adapter presences", (data[4] & 0x04) > 0);
+    printf("- LED_EN     [9]  %-49s: %d\n", "LED outputs", (data[4] & 0x02) > 0);
+    printf("- FUSE_EN    [8]  %-49s: %d\n", "Fuse control", (data[4] & 0x01) > 0);
 
 //  B7 B6 B5 B4 B3 B2 B1 B0
 
 //  BBR_EN PF_EN LF_EN FET_EN GAUGE_EN RSVD RSVD RSVD
 
-//  printf("- BBR_EN     [7]  %-49s: %d\n", "Black Box Recorder", (data[3] & 0x80) > 0);
-//  printf("- PF_EN      [6]  %-49s: %d\n", "Permanent Faults", (data[3] & 0x40) > 0);
-//  printf("- LF_EN      [5]  %-49s: %d\n", "Lifetime Recording", (data[3] & 0x20) > 0);
-//  printf("- FET_EN     [4]  %-49s: %d\n", "FET Control by firmware", (data[3] & 0x10) > 0);
-//  printf("- GAUGE_EN   [3]  %-49s: %d\n", "Battery Fuel Gauging", (data[3] & 0x08) > 0);
-//  printf("- RSVD       [2]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x04) > 0);
-//  printf("- RSVD       [1]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x02) > 0);
-//  printf("- RSVD       [0]  %-49s: %d\n\n", "Reserved - do not use", (data[3] & 0x01) > 0);
+    printf("- BBR_EN     [7]  %-49s: %d\n", "Black Box Recorder", (data[3] & 0x80) > 0);
+    printf("- PF_EN      [6]  %-49s: %d\n", "Permanent Faults", (data[3] & 0x40) > 0);
+    printf("- LF_EN      [5]  %-49s: %d\n", "Lifetime Recording", (data[3] & 0x20) > 0);
+    printf("- FET_EN     [4]  %-49s: %d\n", "FET Control by firmware", (data[3] & 0x10) > 0);
+    printf("- GAUGE_EN   [3]  %-49s: %d\n", "Battery Fuel Gauging", (data[3] & 0x08) > 0);
+    printf("- RSVD       [2]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x04) > 0);
+    printf("- RSVD       [1]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x02) > 0);
+    printf("- RSVD       [0]  %-49s: %d\n\n", "Reserved - do not use", (data[3] & 0x01) > 0);
 
 //  11.50 0x58 AFE Register
 //  This command returns a snapshot of the AFE register settings.
@@ -2308,78 +2321,78 @@ int main(int argc, char **argv)
 //  11.57 0x60 Lifetime Data Block 1
 //  This command returns the first block of Lifetime data.
 //  0x60 LifeTimeDataBlock1() — R R Block — — — — —
-//  readWord("Lifetime Data Block 1", "", 0x60, 0, 0, 0);
+    readWord("Lifetime Data Block 1", "", 0x60, 0, 0, 0);
 
 //  11.58 0x61 Lifetime Data Block 2
 //  This command returns the second block of Lifetime data.
 //  0x61 LifeTimeDataBlock2() — R R Block — — — — —
-//  readWord("Lifetime Data Block 2", "", 0x61, 0, 0, 0);
+    readWord("Lifetime Data Block 2", "", 0x61, 0, 0, 0);
 
-//  printf("- [0]     %-57s: %d\n", "No. of Shutdowns", data[3]);
-//  printf("- [1]     %-57s: %d\n", "No. of Partial Resets", data[4]);
-//  printf("- [2]     %-57s: %d\n", "No. of Full Resets", data[5]);
-//  printf("- [3]     %-57s: %d\n", "No. of WDT resets", data[6]);
-//  printf("- [4]     %-57s: %d\n", "CB Time Cell 1", data[7]);
-//  printf("- [5]     %-57s: %d\n", "CB Time Cell 2", data[8]);
-//  printf("- [6]     %-57s: %d\n", "CB Time Cell 3", data[9]);
-//  printf("- [7]     %-57s: %d\n\n", "CB Time Cell 4", data[10]);
+    printf("- [0]     %-57s: %d\n", "No. of Shutdowns", data[3]);
+    printf("- [1]     %-57s: %d\n", "No. of Partial Resets", data[4]);
+    printf("- [2]     %-57s: %d\n", "No. of Full Resets", data[5]);
+    printf("- [3]     %-57s: %d\n", "No. of WDT resets", data[6]);
+    printf("- [4]     %-57s: %d\n", "CB Time Cell 1", data[7]);
+    printf("- [5]     %-57s: %d\n", "CB Time Cell 2", data[8]);
+    printf("- [6]     %-57s: %d\n", "CB Time Cell 3", data[9]);
+    printf("- [7]     %-57s: %d\n\n", "CB Time Cell 4", data[10]);
 
 //  11.59 0x62 Lifetime Data Block 3
 //  This command returns the third block of Lifetime data.
-//  readWord("Lifetime Data Block 3", "", 0x62, 0, 0, 0);
+    readWord("Lifetime Data Block 3", "", 0x62, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "Total FW Runtime", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n", "Time Spent in UT", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "Time Spent in LT", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n", "Time Spent in STL", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d\n", "Time Spent in RT", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d\n", "Time Spent in STH", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d\n", "Time Spent in HT", data[16] + (data[15] << 8));
-//  printf("- [15:14] %-57s: %d\n\n", "Time Spent in OT", data[18] + (data[17] << 8));
+    printf("- [1:0]   %-57s: %d\n", "Total FW Runtime", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n", "Time Spent in UT", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "Time Spent in LT", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n", "Time Spent in STL", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d\n", "Time Spent in RT", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d\n", "Time Spent in STH", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d\n", "Time Spent in HT", data[16] + (data[15] << 8));
+    printf("- [15:14] %-57s: %d\n\n", "Time Spent in OT", data[18] + (data[17] << 8));
 
 //  11.60 0x63 Lifetime Data Block 4
 //  This command returns the third block of Lifetime data.
 //  0x63 LifeTimeDataBlock4() — R R Block — — — — —
-//  readWord("Lifetime Data Block 4", "", 0x63, 0, 0, 0);
+    readWord("Lifetime Data Block 4", "", 0x63, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "No. of COV Events", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n", "Last COV Event", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "No. of CUV Events", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n", "Last CUV Event", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d\n", "No. of OCD1 Events", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d\n", "Last OCD1 Event", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d\n", "No. of OCD2 Events", data[16] + (data[15] << 8));
-//  printf("- [15:14] %-57s: %d\n", "Last OCD2 Event", data[18] + (data[17] << 8));
-//  printf("- [17:16] %-57s: %d\n", "No. of OCC1 Events", data[20] + (data[19] << 8));
-//  printf("- [19:18] %-57s: %d\n", "Last OCC1 Event", data[4] + (data[21] << 8));
-//  printf("- [21:20] %-57s: %d\n", "No. of OCC2 Events", data[22] + (data[3] << 8));
-//  printf("- [23:22] %-57s: %d\n", "Last OCC2 Event", data[24] + (data[23] << 8));
-//  printf("- [25:24] %-57s: %d\n", "No. of AOLD Events", data[26] + (data[25] << 8));
-//  printf("- [27:26] %-57s: %d\n", "Last AOLD Event", data[28] + (data[27] << 8));
-//  printf("- [29:28] %-57s: %d\n", "No. of ASCD Events", data[32] + (data[31] << 8));
-//  printf("- [31:30] %-57s: %d\n\n", "Last ASCD Event", data[34] + (data[33] << 8));
+    printf("- [1:0]   %-57s: %d\n", "No. of COV Events", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n", "Last COV Event", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "No. of CUV Events", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n", "Last CUV Event", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d\n", "No. of OCD1 Events", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d\n", "Last OCD1 Event", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d\n", "No. of OCD2 Events", data[16] + (data[15] << 8));
+    printf("- [15:14] %-57s: %d\n", "Last OCD2 Event", data[18] + (data[17] << 8));
+    printf("- [17:16] %-57s: %d\n", "No. of OCC1 Events", data[20] + (data[19] << 8));
+    printf("- [19:18] %-57s: %d\n", "Last OCC1 Event", data[4] + (data[21] << 8));
+    printf("- [21:20] %-57s: %d\n", "No. of OCC2 Events", data[22] + (data[3] << 8));
+    printf("- [23:22] %-57s: %d\n", "Last OCC2 Event", data[24] + (data[23] << 8));
+    printf("- [25:24] %-57s: %d\n", "No. of AOLD Events", data[26] + (data[25] << 8));
+    printf("- [27:26] %-57s: %d\n", "Last AOLD Event", data[28] + (data[27] << 8));
+    printf("- [29:28] %-57s: %d\n", "No. of ASCD Events", data[32] + (data[31] << 8));
+    printf("- [31:30] %-57s: %d\n\n", "Last ASCD Event", data[34] + (data[33] << 8));
 
 //  11.61 0x64 Lifetime Data Block 5
 //  This command returns the third block of Lifetime data.
 //  0x64 LifeTimeDataBlock5() — R R Block — — — — —
-//  readWord("Lifetime Data Block 5", "", 0x64, 0, 0, 0);
+    readWord("Lifetime Data Block 5", "", 0x64, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "No. of ASCC Events", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n", "Last ASCC Event", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "No. of OTC Events", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n", "Last OTC Event", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d\n", "No. of OTD Events", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d\n", "Last OTD Event", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d\n", "No. of OTF Events", data[16] + (data[15] << 8));
-//  printf("- [15:14] %-57s: %d\n", "Last OTF Event", data[18] + (data[17] << 8));
-//  printf("- [17:16] %-57s: %d\n", "No. Valid Charge Term", data[20] + (data[19] << 8));
-//  printf("- [19:18] %-57s: %d\n", "Last Valid Charge Term", data[22] + (data[21] << 8)); 
-//  printf("- [21:20] %-57s: %d\n", "No. of Qmax Updates", data[24] + (data[23] << 8));
-//  printf("- [23:22] %-57s: %d\n", "Last Qmax Update", data[26] + (data[25] << 8));
-//  printf("- [25:24] %-57s: %d\n", "No. of Ra Updates", data[28] + (data[27] << 8));
-//  printf("- [27:26] %-57s: %d\n", "Last Ra Update", data[30] + (data[29] << 8));
-//  printf("- [29:28] %-57s: %d\n", "No. of Ra Disable", data[32] + (data[31] << 8));
-//  printf("- [31:30] %-57s: %d\n\n", "Last Ra Disable", data[34] + (data[33] << 8));
+    printf("- [1:0]   %-57s: %d\n", "No. of ASCC Events", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n", "Last ASCC Event", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "No. of OTC Events", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n", "Last OTC Event", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d\n", "No. of OTD Events", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d\n", "Last OTD Event", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d\n", "No. of OTF Events", data[16] + (data[15] << 8));
+    printf("- [15:14] %-57s: %d\n", "Last OTF Event", data[18] + (data[17] << 8));
+    printf("- [17:16] %-57s: %d\n", "No. Valid Charge Term", data[20] + (data[19] << 8));
+    printf("- [19:18] %-57s: %d\n", "Last Valid Charge Term", data[22] + (data[21] << 8)); 
+    printf("- [21:20] %-57s: %d\n", "No. of Qmax Updates", data[24] + (data[23] << 8));
+    printf("- [23:22] %-57s: %d\n", "Last Qmax Update", data[26] + (data[25] << 8));
+    printf("- [25:24] %-57s: %d\n", "No. of Ra Updates", data[28] + (data[27] << 8));
+    printf("- [27:26] %-57s: %d\n", "Last Ra Update", data[30] + (data[29] << 8));
+    printf("- [29:28] %-57s: %d\n", "No. of Ra Disable", data[32] + (data[31] << 8));
+    printf("- [31:30] %-57s: %d\n\n", "Last Ra Disable", data[34] + (data[33] << 8));
 
 //  11.62 0x70 ManufacturerInfo
 //  This command returns 32 bytes manufacturer information.
@@ -2390,63 +2403,63 @@ int main(int argc, char **argv)
 //  This command returns the CellVoltages, PackVoltage, BatVoltage, CellCurrents, CellPowers, Power, and
 //  AveragePower.
 //  0x71 DAStatus1() — R R Block — — — — —
-//  readWord("DAStatus1", "hex", 0x71, 0, 0, 0);
+    readWord("DAStatus1", "hex", 0x71, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d mV\n", "Cell Voltage 1", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d mV\n", "Cell Voltage 2", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d mV\n", "Cell Voltage 3", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d mV\n", "Cell Voltage 4", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d mV\n", "Voltage at the BAT pin", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d mV\n", "PACK Voltage", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d mA\n", "Cell Current 1.", data[16] + (data[15] << 8));
-//  printf("- [15:14] %-57s: %d mA\n", "Cell Current 2.", data[18] + (data[17] << 8));
-//  printf("- [17:16] %-57s: %d mA\n", "Cell Current 3.", data[20] + (data[19] << 8));
-//  printf("- [19:18] %-57s: %d mA\n", "Cell Current 4.", data[22] + (data[21] << 8));
-//  printf("- [21:20] %-57s: %d\n", "Cell Power 1", data[24] + (data[23] << 8));
-//  printf("- [23:22] %-57s: %d\n", "Cell Power 2", data[26] + (data[25] << 8));
-//  printf("- [25:24] %-57s: %d\n", "Cell Power 3", data[28] + (data[27] << 8));
-//  printf("- [27:26] %-57s: %d\n", "Cell Power 4", data[30] + (data[29] << 8));
-//  printf("- [29:28] %-57s: %d\n", "Power calculated", data[32] + (data[31] << 8));
-//  printf("- [31:30] %-57s: %d\n\n", "Average Power", data[34] + (data[33] << 8));
+    printf("- [1:0]   %-57s: %d mV\n", "Cell Voltage 1", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d mV\n", "Cell Voltage 2", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d mV\n", "Cell Voltage 3", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d mV\n", "Cell Voltage 4", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d mV\n", "Voltage at the BAT pin", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d mV\n", "PACK Voltage", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d mA\n", "Cell Current 1.", data[16] + (data[15] << 8));
+    printf("- [15:14] %-57s: %d mA\n", "Cell Current 2.", data[18] + (data[17] << 8));
+    printf("- [17:16] %-57s: %d mA\n", "Cell Current 3.", data[20] + (data[19] << 8));
+    printf("- [19:18] %-57s: %d mA\n", "Cell Current 4.", data[22] + (data[21] << 8));
+    printf("- [21:20] %-57s: %d\n", "Cell Power 1", data[24] + (data[23] << 8));
+    printf("- [23:22] %-57s: %d\n", "Cell Power 2", data[26] + (data[25] << 8));
+    printf("- [25:24] %-57s: %d\n", "Cell Power 3", data[28] + (data[27] << 8));
+    printf("- [27:26] %-57s: %d\n", "Cell Power 4", data[30] + (data[29] << 8));
+    printf("- [29:28] %-57s: %d\n", "Power calculated", data[32] + (data[31] << 8));
+    printf("- [31:30] %-57s: %d\n\n", "Average Power", data[34] + (data[33] << 8));
 
 //  11.64 0x72 DAStatus2
 //  This command returns the internal temp sensor, TS1, TS2, TS3, TS4, Cell Temp, and FETTemp.
 //  0x72 DAStatus2() — R R Block — — — — —
-//  readWord("DAStatus2", "hex", 0x72, 0, 0, 0);
+    readWord("DAStatus2", "hex", 0x72, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "Int Temperature", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n", "TS1 Temperature", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "TS2 Temperature", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n", "TS3 Temperature", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d\n", "TS4 Temperature", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d\n", "Cell Temperature", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d\n\n", "FET Temperature", data[16] + (data[15] << 8));
+    printf("- [1:0]   %-57s: %d\n", "Int Temperature", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n", "TS1 Temperature", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "TS2 Temperature", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n", "TS3 Temperature", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d\n", "TS4 Temperature", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d\n", "Cell Temperature", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d\n\n", "FET Temperature", data[16] + (data[15] << 8));
 
 //  11.65 0x73 GaugeStatus1
 //  This command instructs the device to return the 32 bytes of Impedance Track related gauging information.
-//  readWord("GaugeStatus1", "hex", 0x73, 0, 0, 0);
+    readWord("GaugeStatus1", "hex", 0x73, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d mAh\n", "True remaining capacity in mAh", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d cWh\n", "True remaining energy in cWh", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "Initial capacity calculated", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n", "Initial energy calculated", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d\n", "Reserve Capacity", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d\n", "Reserve Energy", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d\n", "Temperature during the last simulation run.", data[16] + (data[15] << 8));
-//  printf("- [15:14] %-57s: %d\n", "Current assumed ambient temperature", data[18] + (data[17] << 8));
-//  printf("- [17:16] %-57s: %d\n", "Ra table scaling factor of Cell 1", data[20] + (data[19] << 8));
-//  printf("- [19:18] %-57s: %d\n", "Ra table scaling factor of Cell 2", data[22] + (data[21] << 8));
-//  printf("- [21:20] %-57s: %d\n", "Ra table scaling factor of Cell 3", data[24] + (data[23] << 8));
-//  printf("- [23:22] %-57s: %d\n", "Ra table scaling factor of Cell 4", data[26] + (data[25] << 8));
-//  printf("- [25:24] %-57s: %d\n", "Last temperature compensated Resistance of Cell 1", data[28] + (data[27] << 8));
-//  printf("- [27:26] %-57s: %d\n", "Last temperature compensated Resistance of Cell 2", data[30] + (data[29] << 8));
-//  printf("- [29:28] %-57s: %d\n", "Last temperature compensated Resistance of Cell 3", data[32] + (data[31] << 8));
-//  printf("- [31:30] %-57s: %d\n\n", "Last temperature compensated Resistance of Cell 4", data[34] + (data[33] << 8));
+    printf("- [1:0]   %-57s: %d mAh\n", "True remaining capacity in mAh", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d cWh\n", "True remaining energy in cWh", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "Initial capacity calculated", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n", "Initial energy calculated", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d\n", "Reserve Capacity", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d\n", "Reserve Energy", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d\n", "Temperature during the last simulation run.", data[16] + (data[15] << 8));
+    printf("- [15:14] %-57s: %d\n", "Current assumed ambient temperature", data[18] + (data[17] << 8));
+    printf("- [17:16] %-57s: %d\n", "Ra table scaling factor of Cell 1", data[20] + (data[19] << 8));
+    printf("- [19:18] %-57s: %d\n", "Ra table scaling factor of Cell 2", data[22] + (data[21] << 8));
+    printf("- [21:20] %-57s: %d\n", "Ra table scaling factor of Cell 3", data[24] + (data[23] << 8));
+    printf("- [23:22] %-57s: %d\n", "Ra table scaling factor of Cell 4", data[26] + (data[25] << 8));
+    printf("- [25:24] %-57s: %d\n", "Last temperature compensated Resistance of Cell 1", data[28] + (data[27] << 8));
+    printf("- [27:26] %-57s: %d\n", "Last temperature compensated Resistance of Cell 2", data[30] + (data[29] << 8));
+    printf("- [29:28] %-57s: %d\n", "Last temperature compensated Resistance of Cell 3", data[32] + (data[31] << 8));
+    printf("- [31:30] %-57s: %d\n\n", "Last temperature compensated Resistance of Cell 4", data[34] + (data[33] << 8));
 
 //  11.66 0x74 GaugeStatus2
 //  This command instructs the device to return the 32 bytes of Impedance Track related gauging information.
 //  0x74 GaugeStatus2() — R R Block — — — — —
-//  readWord("GaugeStatus2", "hex", 0x74, 0, 0, 0);
+    readWord("GaugeStatus2", "hex", 0x74, 0, 0, 0);
 
 //  0 Pack Grid. Active pack grid point (minimum of CellGrid0 to Cell Grid3)
 //  1
@@ -2482,43 +2495,43 @@ int main(int argc, char **argv)
 
 //  11.67 0x75 GaugeStatus3
 //  This command instructs the device to return the 32 bytes Impedance Track related gauging information.
-//  readWord("GaugeStatus3", "hex", 0x75, 0, 0, 0);
+    readWord("GaugeStatus3", "hex", 0x75, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "QMax of Cell 1", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n", "QMax of Cell 2", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "QMax of Cell 3", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n", "QMax of Cell 4", data[10] + (data[9] << 8));
-//  printf("- [9:8]   %-57s: %d\n", "DOD0 at last QMax update of Cell 1", data[12] + (data[11] << 8));
-//  printf("- [11:10] %-57s: %d\n", "DOD0 at last QMax update of Cell 2", data[14] + (data[13] << 8));
-//  printf("- [13:12] %-57s: %d\n", "DOD0 at last QMax update of Cell 3", data[16] + (data[15] << 8));
-//  printf("- [15:14] %-57s: %d\n", "DOD0 at last QMax update of Cell 4", data[18] + (data[17] << 8));
-//  printf("- [17:16] %-57s: %d\n", "Pass capacity since last QMax update", data[20] + (data[19] << 8));
-//  printf("- [19:18] %-57s: %d\n", "Time passed since last QMax update", data[22] + (data[21] << 8));
-//  printf("- [21:20] %-57s: %d\n", "Thermal Model temperature factor", data[24] + (data[23] << 8));
-//  printf("- [23:22] %-57s: %d\n\n", "Thermal Model temperature", data[26] + (data[25] <<  8));
+    printf("- [1:0]   %-57s: %d\n", "QMax of Cell 1", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n", "QMax of Cell 2", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "QMax of Cell 3", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n", "QMax of Cell 4", data[10] + (data[9] << 8));
+    printf("- [9:8]   %-57s: %d\n", "DOD0 at last QMax update of Cell 1", data[12] + (data[11] << 8));
+    printf("- [11:10] %-57s: %d\n", "DOD0 at last QMax update of Cell 2", data[14] + (data[13] << 8));
+    printf("- [13:12] %-57s: %d\n", "DOD0 at last QMax update of Cell 3", data[16] + (data[15] << 8));
+    printf("- [15:14] %-57s: %d\n", "DOD0 at last QMax update of Cell 4", data[18] + (data[17] << 8));
+    printf("- [17:16] %-57s: %d\n", "Pass capacity since last QMax update", data[20] + (data[19] << 8));
+    printf("- [19:18] %-57s: %d\n", "Time passed since last QMax update", data[22] + (data[21] << 8));
+    printf("- [21:20] %-57s: %d\n", "Thermal Model temperature factor", data[24] + (data[23] << 8));
+    printf("- [23:22] %-57s: %d\n\n", "Thermal Model temperature", data[26] + (data[25] <<  8));
 
 //  11.68 0x76 CBStatus
 //  This command instructs the device to return the 32 bytes of cell balancing information.
-//  readWord("CBStatus", "", 0x76, 0, 0, 0);
+    readWord("CBStatus", "", 0x76, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "Cell Balance Time of Cell 1", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n", "Cell Balance Time of Cell 2", data[6] + (data[5] << 8));
-//  printf("- [5:4]   %-57s: %d\n", "Cell Balance Time of Cell 3", data[8] + (data[7] << 8));
-//  printf("- [7:6]   %-57s: %d\n\n", "Cell Balance Time of Cell 4", data[10] + (data[9] << 8));
+    printf("- [1:0]   %-57s: %d\n", "Cell Balance Time of Cell 1", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n", "Cell Balance Time of Cell 2", data[6] + (data[5] << 8));
+    printf("- [5:4]   %-57s: %d\n", "Cell Balance Time of Cell 3", data[8] + (data[7] << 8));
+    printf("- [7:6]   %-57s: %d\n\n", "Cell Balance Time of Cell 4", data[10] + (data[9] << 8));
 
 //  11.1.57 ManufacturerAccess() 0x0077 State of Health
 //  This command returns the 4 bytes of State of Health FCC in mAh and energy in cWh.
-//  readWord("State of Health", "hex", 0x77, 0, 0, 0);
+    readWord("State of Health", "hex", 0x77, 0, 0, 0);
 
-//  printf("- [1:0]   %-57s: %d\n", "State Of FCC in mAh", data[4] + (data[3] << 8));
-//  printf("- [3:2]   %-57s: %d\n\n", "State Of Health energy in cWh", data[6] + (data[5] << 8));
+    printf("- [1:0]   %-57s: %d\n", "State Of FCC in mAh", data[4] + (data[3] << 8));
+    printf("- [3:2]   %-57s: %d\n\n", "State Of Health energy in cWh", data[6] + (data[5] << 8));
 
 // Reset Device
 //  n = mac_read(0x0041, 4);
 //  printf("0x0041 %-60s: 0x%08X\n", "Device Reset", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 // Seal device
-//  n = mac_read(0x35, 8);
+//  n = i2cWriteWordData(i2cHandle, 0x00, 0x30);
 
     printf("\nTotal number of SMBus reads         : = %d\n", numberofreads);
     printf("Total number of SMBus writes        : = %d\n", numberofwrites);
