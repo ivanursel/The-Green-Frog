@@ -1,7 +1,7 @@
 //
 //  Copyright 2016-2018 Ivo J. L. A. Van Ursel
 //
-//  v0.9a - Sat Sep 1 14:56:12 2018
+//  v0.9a - Mon Sep 3 13:22:12 2018
 //
 
 #define   debug
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 
     start = clock();
 
-    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Sat Sep 1 14:56:12 2018 ***\n\n");
+    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Mon Sep 3 13:22:12 2018 ***\n\n");
 
     if (gpioInitialise() < 0) {
       printf("Failure: pigpio initialization failed\n");
@@ -346,13 +346,13 @@ int main(int argc, char **argv)
       case 3:
         while (i2cWriteWordData(i2cHandle, 0x00, 0x1991) < 0);
         while (i2cWriteWordData(i2cHandle, 0x00, 0x1609) < 0);
-        printf("3: sealed - please restart\n");
+        printf(KRED"3: sealed - please restart bq40z60 Tool\n"NONE);
         return -1;
         break;
       case 2:
         while (i2cWriteWordData(i2cHandle, 0x00, 0x2014) < 0);
         while (i2cWriteWordData(i2cHandle, 0x00, 0x1310) < 0);
-        printf("2: unsealed - please restart\n");
+        printf(KRED"2: unsealed - please restart bq40z60 Tool\n"NONE);
         return -1;
         break;
       case 1:
@@ -371,7 +371,13 @@ int main(int argc, char **argv)
     printf("Key 3 = 0x%04X\n", data[7] + (data[8] << 8));    // 0x2014
     printf("Key 4 = 0x%04X\n\n", data[9] + (data[10] << 8)); // 0x1310;
 
-//  11.1.1 ManufacturerAccess() 0x0000
+    if ((data[3] + (data[4] << 8) != 0x1991) || (data[5] + (data[6] << 8) != 0x1609) || (data[7] + (data[8] << 8) != 0x2014) || (data[9] + (data[10] << 8) != 0x1310))
+    {
+      printf(KRED"please restart bq40z60 Tool\n"NONE);
+      return -1;
+    }
+
+//  11.1.1 ManufacturerAccess() 0x0000 - read
 //  A read word on this command returns the low word (16 bits) OperationStatus() data.
 //  n = mac_read(0x0000, 2);
 //  printf("0x0000 %-60s: 0x%02X\n", "", data[4] + (data[3] << 8));
@@ -393,57 +399,57 @@ int main(int argc, char **argv)
 //  printf("- DSG        [1]  %-49s: %d\n", "Discharge FET status", (data[3] & 0x02) > 0);
 //  printf("- PRES       [0]  %-49s: %d\n\n", "System Present", (data[3] & 0x01) > 0);
 
-//  11.1.2 ManufacturerAccess() 0x0001 Device Type
+//  11.1.2 ManufacturerAccess() 0x0001 Device Type - read
 //  The device can be checked for the IC part number via this command that returns 2 bytes in Little Endian.
-//  n = mac_read(0x0001, 2);
-//  printf("0x0001 %-60s: 0x%04X\n", "Device Type", data[4] + (data[3] << 8));
+    n = mac_read(0x0001, 2);
+    printf("0x0001 %-60s: 0x%04X\n", "Device Type", data[4] + (data[3] << 8));
 
-//  11.1.3 ManufacturerAccess() 0x0002 Firmware Version
+//  11.1.3 ManufacturerAccess() 0x0002 Firmware Version - read
 //  The device can be checked for the firmware version of the IC via this command that returns 11 bytes.
-//  n = mac_read(0x0002, 11);
+    n = mac_read(0x0002, 11);
 
-//  printf("- [1:0]  %-58s: 0x%04X\n", "Device Number", data[4] + (data[3] << 8));
-//  printf("- [3:2]  %-58s: 0x%04X\n", "Version", data[6] + (data[5] << 8));
-//  printf("- [5:4]  %-58s: 0x%04X\n", "Build Number", data[8] + (data[7] << 8));
-//  printf("- [6]    %-58s: 0x%02X\n", "Firmware Type", data[9]);
-//  printf("- [8:7]  %-58s: 0x%04X\n", "Impedance Track Version", data[11] + (data[10] << 8));
-//  printf("- [9]    %-58s: 0x%02X\n", "Reserved - Do not use", data[12]);
-//  printf("- [10]   %-58s: 0x%02X\n\n", "Reserved - Do not use", data[13]);
+    printf("- [1:0]  %-58s: 0x%04X\n", "Device Number", data[4] + (data[3] << 8));
+    printf("- [3:2]  %-58s: 0x%04X\n", "Version", data[6] + (data[5] << 8));
+    printf("- [5:4]  %-58s: 0x%04X\n", "Build Number", data[8] + (data[7] << 8));
+    printf("- [6]    %-58s: 0x%02X\n", "Firmware Type", data[9]);
+    printf("- [8:7]  %-58s: 0x%04X\n", "Impedance Track Version", data[11] + (data[10] << 8));
+    printf("- [9]    %-58s: 0x%02X\n", "Reserved - Do not use", data[12]);
+    printf("- [10]   %-58s: 0x%02X\n\n", "Reserved - Do not use", data[13]);
 
-//  11.1.4 ManufacturerAccess() 0x0003 Hardware Version
+//  11.1.4 ManufacturerAccess() 0x0003 Hardware Version - read
 //  The hardware revision is returned on a subsequent read.
-//  n = mac_read(0x0003, 2);
-//  printf("0x0003 %-60s: 0x%04X\n", "Hardware Version", data[4] + (data[3] << 8));
+    n = mac_read(0x0003, 2);
+    printf("0x0003 %-60s: 0x%04X\n", "Hardware Version", data[4] + (data[3] << 8));
 
-//  11.1.5 ManufacturerAccess() 0x0004 Instruction Flash Signature
+//  11.1.5 ManufacturerAccess() 0x0004 Instruction Flash Signature - read
 //  The IF signature returns on a subsequent read after a wait time of 250 ms.
-//  n = mac_read(0x0004, 2);
-//  printf("0x0004 %-60s: 0x%02X\n", "Instruction Flash Signature", data[4] + (data[3] << 8));
+    n = mac_read(0x0004, 2);
+    printf("0x0004 %-60s: 0x%02X\n", "Instruction Flash Signature", data[4] + (data[3] << 8));
 
-//  11.1.6 ManufacturerAccess() 0x0005 Static DF Signature
+//  11.1.6 ManufacturerAccess() 0x0005 Static DF Signature - read
 //  The 2-byte signature of all static DF returns after a wait time of 250 ms.
 //  NOTE: MSB is set to 1 if the calculated signature does not match the signature stored in DF.
-//  n = mac_read(0x0005, 2);
-//  printf("0x0005 %-60s: 0x%04X\n", "Static DF Signature", data[4] + (data[3] << 8));
+    n = mac_read(0x0005, 2);
+    printf("0x0005 %-60s: 0x%04X\n", "Static DF Signature", data[4] + (data[3] << 8));
 
-//  11.1.7 ManufacturerAccess() 0x0006 Chemical ID
+//  11.1.7 ManufacturerAccess() 0x0006 Chemical ID - read
 //  The 2 byte chemical ID of the OCV tables used in the gauging algorithm is returned.
-//  n = mac_read(0x0006, 2);
-//  printf("0x0006 %-60s: 0x%04X\n", "Chemical ID", data[4] + (data[3] << 8));
+    n = mac_read(0x0006, 2);
+    printf("0x0006 %-60s: 0x%04X\n", "Chemical ID", data[4] + (data[3] << 8));
 
-//  11.1.8 ManufacturerAccess() 0x0008 Static Chem DF Signature
+//  11.1.8 ManufacturerAccess() 0x0008 Static Chem DF Signature - read
 //  The 2-byte signature of all static chemistry DF returns after a wait time of 250 ms.
 //  NOTE: MSB is set to 1 if the calculated signature does not match the signature stored in DF.
-//  n = mac_read(0x0008, 2);
-//  printf("0x0008 %-60s: 0x%04X\n", "Static Chem DF Signature", data[4] + (data[3] << 8));
+    n = mac_read(0x0008, 2);
+    printf("0x0008 %-60s: 0x%04X\n", "Static Chem DF Signature", data[4] + (data[3] << 8));
 
-//  11.1.9 ManufacturerAccess() 0x0009 All DF Signature
+//  11.1.9 ManufacturerAccess() 0x0009 All DF Signature - read
 //  The 2-byte signature of all DF parameters returns after a wait time of 250 ms.
 //  NOTE: MSB is set to 1 if the calculated signature does not match the signature stored in DF, but it
 //  is normally expected that this signature will change due to update of lifetime, gauging, and
 //  other information.
-//  n = mac_read(0x0009, 2);
-//  printf("0x0009 %-60s: 0x%04X\n", "All DF Signature", data[4] + (data[3] << 8));
+    n = mac_read(0x0009, 2);
+    printf("0x0009 %-60s: 0x%04X\n", "All DF Signature", data[4] + (data[3] << 8));
 
 /* This is no-mans-land, keep out! */
 /*  Wolfijzers en schietgeweren!   */
@@ -656,7 +662,7 @@ int main(int argc, char **argv)
 //  n = mac_read(0x002E, 4);
 //  printf("0x002E %-60s: 0x%08X\n", "Lifetime Data Flash", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
-//  11.1.31 ManufacturerAccess() 0x002F Lifetime Data SPEED UP Mode
+//  11.1.31 ManufacturerAccess() 0x002F Lifetime Data SPEED UP Mode - write
 //  Lifetime Data generally updates at 10-hr intervals. For ease of evaluation testing, this command enables a
 //  lifetime SPEED UP mode, and Lifetime Data will be updated approximately every 5 s. When the lifetime
 //  SPEED UP mode is enabled, ManufacturingStatus[LT_TEST] = 1.
@@ -664,14 +670,14 @@ int main(int argc, char **argv)
 //  n = mac_read(0x002F, 4);
 //  printf("0x002F %-60s: 0x%08X\n", "Lifetime Data SPEED UP Mode", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
-//  11.1.32 ManufacturerAccess() 0x0030 Seal Device
+//  11.1.32 ManufacturerAccess() 0x0030 Seal Device - write
 //  This command seals the device for the field, disabling certain SBS commands and access to data flash.
 //  See the SBS commands description for details.
 //  When the device is sealed, OperationStatus()[SEC1, SEC0] = 2'b11.
 //  n = mac_read(0x0030, 4);
 //  printf("0x0030 %-60s: 0x%08X\n", "Seal Device", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
-//  11.1.33 ManufacturerAccess() 0x0035 Security Keys
+//  11.1.33 ManufacturerAccess() 0x0035 Security Keys - read/write
 //  This is a read/write command for the 8 bytes of UNSEAL and FULL ACCESS keys.
 //  When reading the keys, data can be read from ManufacturerData() or Alternate ManufacturerAccess().
 //  The keys are return in the following format: aaAAbbBBccCCddDD, where:
@@ -723,7 +729,7 @@ int main(int argc, char **argv)
 /* This is the end of no-mans land, keep out! */
 /*        Wolfijzers en schietgeweren!        */
 
-//  11.1.36 ManufacturerAccess() 0x0050 SafetyAlert
+//  11.1.36 ManufacturerAccess() 0x0050 SafetyAlert - read
 //  This command returns the 4 bytes of SafetyAlert() flags on AlternateManufacturerAccess() or ManufacturerData().
 //  n = mac_read(0x0050, 4);
 //  printf("0x0050 %-60s: 0x%08X\n", "SafetyAlert", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -784,7 +790,7 @@ int main(int argc, char **argv)
 //  printf("- COV        [1]  %-49s: %d\n", "Cell Over Voltage", (data[3] & 0x02) > 0);
 //  printf("- CUV        [0]  %-49s: %d\n\n", "Cell Under Voltage", (data[3] & 0x01) > 0);
 
-//  11.1.37 ManufacturerAccess() 0x0051 SafetyStatus
+//  11.1.37 ManufacturerAccess() 0x0051 SafetyStatus - read
 //  This command returns the 4 bytes of SafetyStatus() flags.
 //  n = mac_read(0x0051, 4);
 //  printf("0x0051 %-60s: 0x%08X\n", "SafetyStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -845,7 +851,7 @@ int main(int argc, char **argv)
 //  printf("- COV        [1]  %-49s: %d\n", "Cell Over Voltage", (data[3] & 0x02) > 0);
 //  printf("- CUV        [0]  %-49s: %d\n\n", "Cell Under Voltage", (data[3] & 0x01) > 0);
 
-//  11.1.38 ManufacturerAccess() 0x0052 PFAlert
+//  11.1.38 ManufacturerAccess() 0x0052 PFAlert - read
 //  This command, returns indications of pending safety issues, such as temperature
 //  or voltages that have risen high enough to trigger a PFAlert failure. 4 bytes are returned.
 //  n = mac_read(0x0052, 4);
@@ -871,7 +877,7 @@ int main(int argc, char **argv)
 //  RSVD 2LVL AFEC AFER FUSE RSVD DFETF CFETF
 
 //  printf("- RSVD       [23] %-49s: %d\n", "Reserved - do not use", (data[5] & 0x80) > 0);
-//  printf("- 2LVL       [22] %-49s: %d\n", "Second Level Protector Failure", (data[5] & 0x40) > 0);
+//  printf("- 2LVL       [22] %-49s: %d\n", "Second L - readevel Protector Failure", (data[5] & 0x40) > 0);
 //  printf("- AFEC       [21] %-49s: %d\n", "AFE Communication Failure", (data[5] & 0x20) > 0);
 //  printf("- AFER       [20] %-49s: %d\n", "AFE Register Failure", (data[5] & 0x10) > 0);
 //  printf("- FUSE       [19] %-49s: %d\n", "Chemical Fuse Failure", (data[5] & 0x08) > 0);
@@ -907,7 +913,7 @@ int main(int argc, char **argv)
 //  printf("- SOV        [1]  %-49s: %d\n", "Safety Cell Over-Voltage Failure", (data[3] & 0x02) > 0);
 //  printf("- SUV        [0]  %-49s: %d\n\n", "Safety Cell Under-Voltage Failure", (data[3] & 0x01) > 0);
 
-//  11.1.39 ManufacturerAccess() 0x0053 PFStatus
+//  11.1.39 ManufacturerAccess() 0x0053 PFStatus - read
 //  This command returns the 4 bytes of PFStatus() flags.
 //  n = mac_read(0x0053, 4);
 //  printf("0x0053 %-60s: 0x%08X\n", "PFStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -968,7 +974,7 @@ int main(int argc, char **argv)
 //  printf("- SOV        [1]  %-49s: %d\n", "Safety Cell Over-Voltage Failure", (data[3] & 0x02) > 0);
 //  printf("- SUV        [0]  %-49s: %d\n\n", "Safety Cell Under-Voltage Failure", (data[3] & 0x01) > 0);
 
-//  11.1.40 ManufacturerAccess() 0x0054 OperationStatus
+//  11.1.40 ManufacturerAccess() 0x0054 OperationStatus - read
 //  This command returns the 4 bytes of OperationStatus() flags.
 //  n = mac_read(0x0054, 4);
 //  printf("0x0054 %-60s: 0x%08X\n", "OperationStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1029,7 +1035,7 @@ int main(int argc, char **argv)
 //  printf("- DSG        [1]  %-49s: %d\n", "Discharge FET status", (data[3] & 0x02) > 0);
 //  printf("- PRES       [0]  %-49s: %d\n\n", "System Present", (data[3] & 0x01) > 0);
 
-//  11.1.41 ManufacturerAccess() 0x0055 ChargingStatus
+//  11.1.41 ManufacturerAccess() 0x0055 ChargingStatus - read
 //  This command returns the 1 byte of ChargerStatus() flags and 2 bytes of ChargingStatus() flags.
 //  n = mac_read(0x0055, 4);
 //  printf("0x0055 %-60s: 0x%08X\n", "ChargingStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1073,7 +1079,7 @@ int main(int argc, char **argv)
 //  printf("- LV         [1]  %-49s: %d\n", "Low Cell Voltage Charge Conditions", (data[3] & 0x02) > 0);
 //  printf("- PV         [0]  %-49s: %d\n\n", "Pre-Charge Cell Voltage Charge Conditions", (data[3] & 0x01) > 0);
 
-//  11.1.42 ManufacturerAccess() 0x0056 GaugingStatus
+//  11.1.42 ManufacturerAccess() 0x0056 GaugingStatus - read
 //  This command returns the 3 bytes of GaugingStatus() flags.
 //  n = mac_read(0x0056, 4);
 //  printf("0x0056 %-60s: 0x%08X\n", "GaugingStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1119,7 +1125,7 @@ int main(int argc, char **argv)
 //  printf("- FC         [1]  %-49s: %d\n", "Fully Charged", (data[3] & 0x02) > 0);
 //  printf("- FD         [0]  %-49s: %d\n\n", "Fully Discharged", (data[3] & 0x01) > 0);
 
-//  11.1.43 ManufacturerAccess() 0x0057 ManufacturingStatus
+//  11.1.43 ManufacturerAccess() 0x0057 ManufacturingStatus - read
 //  This command returns the 2 bytes of ManufacturingStatus() flags.
 //  n = mac_read(0x0057, 2);
 //  printf("0x0057 %-60s: 0x%08X\n", "ManufacturingStatus", data[4] + (data[3] << 8));
@@ -1150,7 +1156,7 @@ int main(int argc, char **argv)
 //  printf("- RSVD       [1]  %-49s: %d\n", "Reserved - do not use", (data[3] & 0x02) > 0);
 //  printf("- RSVD       [0]  %-49s: %d\n\n", "Reserved - do not use", (data[3] & 0x01) > 0);
 
-//  11.1.44 ManufacturerAccess() 0x0058 AFE Register
+//  11.1.44 ManufacturerAccess() 0x0058 AFE Register - read
 //  This command returns the 21 byte AFERegister() values.
 //  These are the AFE hardware registers and are intended for internal debug use only.
 //  n = mac_read(0x0058, 22);
@@ -1178,7 +1184,7 @@ int main(int argc, char **argv)
 //  printf("- [19] %-60s: %d\n", "AFE SCD1", data[22]);
 //  printf("- [20] %-60s: %d\n\n", "AFE SCD2", data[23]);
 
-//  11.1.45 ManufacturerAccess() 0x0060 Lifetime Data Block 1
+//  11.1.45 ManufacturerAccess() 0x0060 Lifetime Data Block 1 - read
 //  This command returns the 31 bytes of Lifetime data.
 //  n = mac_read(0x0060, 32);
 //  printf("0x0060 %-60s: 0x%08X\n", "Lifetime Data Block 1", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1203,7 +1209,7 @@ int main(int argc, char **argv)
 //  printf("- [30]    %-57s: %d\n", "Min Temp Int Sensor", data[38] + (data[37] << 8));
 //  printf("- [31]    %-57s: %d\n\n", "Max Temp Fet", data[40] + (data[39] << 8));
 
-//  11.1.46 ManufacturerAccess() 0x0061 Lifetime Data Block 2
+//  11.1.46 ManufacturerAccess() 0x0061 Lifetime Data Block 2 - read
 //  This command returns the 7 bytes of Lifetime data.
 //  n = mac_read(0x0061, 8);
 //  printf("0x0061 %-60s: 0x%08X\n", "Lifetime Data Block 2", data[3]);
@@ -1217,7 +1223,7 @@ int main(int argc, char **argv)
 //  printf("- [6]     %-57s: %d\n", "CB Time Cell 3", data[9]);
 //  printf("- [7]     %-57s: %d\n\n", "CB Time Cell 4", data[10]);
 
-//  11.1.47 ManufacturerAccess() 0x0062 Lifetime Data Block 3
+//  11.1.47 ManufacturerAccess() 0x0062 Lifetime Data Block 3 - read
 //  This command returns the 16 bytes of Lifetime data.
 //  n = mac_read(0x0062, 16);
 //  printf("0x0062 %-60s: 0x%08X\n", "Lifetime Data Block 3", data[4] + (data[3] << 8));
@@ -1231,7 +1237,7 @@ int main(int argc, char **argv)
 //  printf("- [13:12] %-57s: %d\n", "Time Spent in HT", data[16] + (data[15] << 8));
 //  printf("- [15:14] %-57s: %d\n\n", "Time Spent in OT", data[18] + (data[17] << 8));
 
-//  11.1.48 ManufacturerAccess() 0x0063 Lifetime Data Block 4
+//  11.1.48 ManufacturerAccess() 0x0063 Lifetime Data Block 4 - read
 //  This command returns the 31 bytes of Lifetime data.
 //  n = mac_read(0x0063, 32);
 //  printf("0x0063 %-60s: 0x%08X\n", "Lifetime Data Block 4", data[4] + (data[3] << 8));
@@ -1274,12 +1280,12 @@ int main(int argc, char **argv)
 //  printf("- [29:28] %-57s: %d\n", "No. of Ra Disable", data[32] + (data[31] << 8));
 //  printf("- [31:30] %-57s: %d\n\n", "Last Ra Disable", data[34] + (data[33] << 8));
 
-//  11.1.50 ManufacturerAccess() 0x0070 ManufacturerInfo
+//  11.1.50 ManufacturerAccess() 0x0070 ManufacturerInfo - read
 //  This command returns the 32 bytes of ManufacturerInfo.
 //  n = mac_read(0x0070, 32);
 //  printf("0x0070 %-60s: 0x%08X\n", "ManufacturerInfo", data[4] + (data[3] << 8));
 
-//  11.1.51 ManufacturerAccess() 0x0071 DAStatus1
+//  11.1.51 ManufacturerAccess() 0x0071 DAStatus1 - read
 //  This command returns 32 bytes containing CellVoltages, PackVoltage, BatVoltage, CellCurrents,
 //  CellPowers, Power, and AveragePower on AlternateManufacturerAccess() or ManufacturerData().
 //  n = mac_read(0x0071, 32);
@@ -1302,7 +1308,7 @@ int main(int argc, char **argv)
 //  printf("- [29:28] %-57s: %d\n", "Power calculated", data[32] + (data[31] << 8));
 //  printf("- [31:30] %-57s: %d\n\n", "Average Power", data[34] + (data[33] << 8));
 
-//  11.1.52 ManufacturerAccess() 0x0072 DAStatus2
+//  11.1.52 ManufacturerAccess() 0x0072 DAStatus2 - read
 //  This command returns 14 bytes containing the temperatures from the internal temp sensor, TS1, TS2,
 //  TS3, TS4, Cell Temp, and FETTemp.
 //  n = mac_read(0x0072, 14);
@@ -1316,7 +1322,7 @@ int main(int argc, char **argv)
 //  printf("- [11:10] %-57s: %d\n", "Cell Temperature", data[14] + (data[13] << 8));
 //  printf("- [13:12] %-57s: %d\n\n", "FET Temperature", data[16] + (data[15] << 8));
 
-//  11.1.53 ManufacturerAccess() 0x0073 GaugeStatus1
+//  11.1.53 ManufacturerAccess() 0x0073 GaugeStatus1 - read
 //  This command returns the 32 bytes of Impedance Track related gauging information.
 //  n = mac_read(0x0073, 32);
 //  printf("0x0073 %-60s: 0x%08X\n", "GaugeStatus1", data[4] + (data[3] << 8));
@@ -1338,7 +1344,7 @@ int main(int argc, char **argv)
 //  printf("- [29:28] %-57s: %d\n", "Last temperature compensated Resistance of Cell 3", data[32] + (data[31] << 8));
 //  printf("- [31:30] %-57s: %d\n\n", "Last temperature compensated Resistance of Cell 4", data[34] + (data[33] << 8));
 
-//  11.1.54 ManufacturerAccess() 0x0074 GaugeStatus2
+//  11.1.54 ManufacturerAccess() 0x0074 GaugeStatus2 - read
 //  This command returns the 32 bytes of Impedance Track related gauging information.
 //  n = mac_read(0x0074, 32);
 //  printf("0x0074 %-60s: 0x%08X\n", "GaugeStatus2", data[4] + (data[3] << 8));
@@ -1375,7 +1381,7 @@ int main(int argc, char **argv)
 //  printf("- [29:28] %-57s: %d\n", "2.Depth of discharge at end of charge of Cell 3", data[28] + (data[27] << 8));
 //  printf("- [31:30] %-57s: %d\n", "3. Depth of discharge at end of charge of Cell 4", data[30] + (data[29] << 8));
 
-//  11.1.55 ManufacturerAccess() 0x0075 GaugeStatus3
+//  11.1.55 ManufacturerAccess() 0x0075 GaugeStatus3 - read
 //  This command returns the 32 bytes Impedance Track related gauging information.
 //  n = mac_read(0x0075, 24);
 //  printf("0x0075 %-60s: 0x%08X\n", "GaugeStatus3", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1393,7 +1399,7 @@ int main(int argc, char **argv)
 //  printf("- [21:20] %-57s: %d\n", "Temp k. Thermal Model temperature factor", data[24] + (data[23] << 8));
 //  printf("- [23:22] %-57s: %d\n\n", "Temp a. Thermal Model temperature", data[26] + (data[25] << 8));
 
-//  11.1.56 ManufacturerAccess() 0x0076 CBStatus
+//  11.1.56 ManufacturerAccess() 0x0076 CBStatus - read
 //  This command returns the 32 bytes of cell-balancing–related information.
 //  n = mac_read(0x0076, 32);
 //  printf("0x0076 %-60s: 0x%08X\n", "CBStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1403,7 +1409,7 @@ int main(int argc, char **argv)
 //  printf("- [5:4]   %-57s: %d\n", "Calculated cell balancing time of Cell 3", data[8] + (data[7] << 8));
 //  printf("- [7:6]   %-57s: %d\n\n", "Calculated cell balancing time of Cell 4", data[10] + (data[9] << 8));
 
-//  11.1.57 ManufacturerAccess() 0x0077 State of Health
+//  11.1.57 ManufacturerAccess() 0x0077 State of Health - read
 //  This command returns the 4 bytes of State of Health FCC in mAh and energy in cWh.
 //  n = mac_read(0x0077, 4);
 //  printf("0x0077 %-60s: %d\n", "State of Health FFC in mAh", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
@@ -1482,8 +1488,8 @@ int main(int argc, char **argv)
 //  This command instructs the device to output the raw values for calibration purposes on
 //  AlternateManufacturerAccess() or ManufacturerData(). All values are updated every 250 ms and the
 //  format of each value is 2's complement, MSB first. This mode includes an internal short on the coulomb
-//  counter inputs for measuring offset.format of each value is 2's complement, MSB first. This mode includes an internal short on the coulomb
-//  counter inputs for measuring offset.
+//  counter inputs for measuring offset.format of each value is 2's complement, MSB first.
+//  This mode includes an internal short on the coulomb counter inputs for measuring offset.
 //  n = mac_read(0xF082, 2);
 //  printf("0xF082 %-60s: 0x%02X\n", "Output CC and ADC for Calibration", data[4] + (data[3] << 8));
 
@@ -2075,7 +2081,7 @@ int main(int argc, char **argv)
 //  RSVD RSVD EMSHUT CB SLPCC SLPAD SMBLCAL INIT
 
     printf("- RSVD       [31] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x80) > 0);
-    printf("- RSVD       [30] %-49s: %d\n", "Reserved - do not use", (data[6] & 0x40) > 0);
+    printf("- RSVD       [30] %-49s: %d\n", "Reserved - do not use", ( data[6] & 0x40) > 0);
     printf("- EMSHUT     [29] %-49s: %d\n", "Emergency Shutdown", (data[6] & 0x20) > 0);
     printf("- CB         [28] %-49s: %d\n", "Cell Balancing", (data[6] & 0x10) > 0);
     printf("- SLPCC      [27] %-49s: %d\n", "CC Measurement in SLEEP mode", (data[6] & 0x08) > 0);
@@ -2250,6 +2256,28 @@ int main(int argc, char **argv)
 //  0x58 AFERegister() — R R Block — — — — —
 //  readWord("AFERegister", "", 0x58, 0, 0, 0);
 
+//  printf("- [0]  %-60s: %d\n", "AFE Hardware interrupt status", data[3]);
+//  printf("- [1]  %-60s: %d\n", "AFE FET status", data[4]);
+//  printf("- [2]  %-60s: %d\n", "AFE RXIN. AFE I/O port input status", data[5]);
+//  printf("- [3]  %-60s: %d\n", "AFE Latch Status. AFE protection latch status", data[6]);
+//  printf("- [4]  %-60s: %d\n", "AFE Interrupt Enable", data[7]);
+//  printf("- [5]  %-60s: %d\n", "AFE Control. AFE FET control enable setting", data[8]);
+//  printf("- [6]  %-60s: %d\n", "AFE RXIEN. AFE I/O input enable settings", data[9]);
+//  printf("- [7]  %-60s: %d\n", "AFE RLOUT. AFE I/O pins output status", data[10]);
+//  printf("- [8]  %-60s: %d\n", "AFE RHOUT. AFE I/O pins output status", data[11]);
+//  printf("- [9]  %-60s: %d\n", "AFE RHINT. AFE I/O pins interrupt status", data[12]);
+//  printf("- [10] %-60s: %d\n", "AFE Cell Balance", data[13]);
+//  printf("- [11] %-60s: %d\n", "AFE ADC/CC Control", data[14]);
+//  printf("- [12] %-60s: %d\n", "AFE ADC Mux Control", data[15]);
+//  printf("- [13] %-60s: %d\n", "AFE LED Control", data[16]);
+//  printf("- [14] %-60s: %d\n", "AFE Control", data[17]);
+//  printf("- [15] %-60s: %d\n", "AFE Timer Control", data[18]);
+//  printf("- [16] %-60s: %d\n", "AFE Protection", data[19]);
+//  printf("- [17] %-60s: %d\n", "AFE OCD", data[20]);
+//  printf("- [18] %-60s: %d\n", "AFE SCC", data[21]);
+//  printf("- [19] %-60s: %d\n", "AFE SCD1", data[22]);
+//  printf("- [20] %-60s: %d\n\n", "AFE SCD2", data[23]);
+
 //  11.51 0x59 TURBO_POWER
 //  TURBO_POWER reports the maximal peak power value, MAX_POWER. The gauge computes a new
 //  RAM value every second. TURBO_POWER() is initialized to the result of the max power calculation at
@@ -2298,6 +2326,26 @@ int main(int argc, char **argv)
 //  This command returns the first block of Lifetime data.
 //  0x60 LifeTimeDataBlock1() — R R Block — — — — —
     readWord("Lifetime Data Block 1", "", 0x60, 0, 0, 0);
+
+//  printf("- [1:0]   %-57s: %d\n", "Cell 1 Max Voltage", data[4] + (data[3] << 8));
+//  printf("- [3:2]   %-57s: %d\n", "Cell 2 Max Voltage", data[6] + (data[5] << 8));
+//  printf("- [5:4]   %-57s: %d\n", "Cell 3 Max Voltage", data[8] + (data[7] << 8));
+//  printf("- [7:6]   %-57s: %d\n", "Cell 4 Max Voltage", data[10] + (data[9] << 8));
+//  printf("- [9:8]   %-57s: %d\n", "Cell 1 Min Voltage", data[12] + (data[11] << 8));
+//  printf("- [11:10] %-57s: %d\n", "Cell 2 Min Voltage", data[14] + (data[13] << 8));
+//  printf("- [13:12] %-57s: %d\n", "Cell 3 Min Voltage", data[16] + (data[15] << 8));
+//  printf("- [15:14] %-57s: %d\n", "Cell 4 Min Voltage", data[18] + (data[17] << 8));
+//  printf("- [17:16] %-57s: %d\n", "Max Delta Cell Voltage", data[20] + (data[19] << 8));
+//  printf("- [19:18] %-57s: %d\n", "Max Charge Current", data[22] + (data[21] << 8));
+//  printf("- [21:20] %-57s: %d\n", "Max Discharge Current", data[24] + (data[23] << 8));
+//  printf("- [23:22] %-57s: %d\n", "Max Avg Dsg Current", data[26] + (data[25] << 8));
+//  printf("- [25:24] %-57s: %d\n", "Max Avg Dsg Power", data[28] + (data[27] << 8));
+//  printf("- [26]    %-57s: %d\n", "Max Temp Cell", data[30] + (data[29] << 8));
+//  printf("- [27]    %-57s: %d\n", "Min Temp Cell", data[32] + (data[31] << 8));
+//  printf("- [28]    %-57s: %d\n", "Max Delta Cell temp", data[34] + (data[33] << 8));
+//  printf("- [29]    %-57s: %d\n", "Max Temp Int Sensor", data[36] + (data[35] << 8));
+//  printf("- [30]    %-57s: %d\n", "Min Temp Int Sensor", data[38] + (data[37] << 8));
+//  printf("- [31]    %-57s: %d\n\n", "Max Temp Fet", data[40] + (data[39] << 8));
 
 //  11.58 0x61 Lifetime Data Block 2
 //  This command returns the second block of Lifetime data.
