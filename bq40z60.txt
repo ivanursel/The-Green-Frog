@@ -1,0 +1,496 @@
+
+*** Texas Instruments bq40z60 status tool v0.9a - Tue Sep  4 13:28:31 2018 ***
+
+pigpio initialization OK
+i2c open OK
+
+[31m3: sealed - please restart bq40z60 Tool
+[0m
+*** Texas Instruments bq40z60 status tool v0.9a - Tue Sep  4 13:28:31 2018 ***
+
+pigpio initialization OK
+i2c open OK
+
+[31m2: unsealed - please restart bq40z60 Tool
+[0m
+*** Texas Instruments bq40z60 status tool v0.9a - Tue Sep  4 13:28:31 2018 ***
+
+pigpio initialization OK
+i2c open OK
+
+1: full access
+[31mi2c write command failed
+[0mKey 1 = 0x0000
+Key 2 = 0x0000
+Key 3 = 0x0000
+Key 4 = 0x0000
+
+[31mplease restart bq40z60 Tool
+[0m
+*** Texas Instruments bq40z60 status tool v0.9a - Tue Sep  4 13:28:31 2018 ***
+
+pigpio initialization OK
+i2c open OK
+
+1: full access
+Key 1 = 0x1991
+Key 2 = 0x1609
+Key 3 = 0x2014
+Key 4 = 0x1310
+
+0x0001 Device Type                                                 : 0x0046
+- [1:0]  Device Number                                             : 0x4600
+- [3:2]  Version                                                   : 0x0013
+- [5:4]  Build Number                                              : 0x0013
+- [6]    Firmware Type                                             : 0x00
+- [8:7]  Impedance Track Version                                   : 0x0385
+- [9]    Reserved - Do not use                                     : 0x02
+- [10]   Reserved - Do not use                                     : 0x00
+
+0x0003 Hardware Version                                            : 0x0600
+0x0004 Instruction Flash Signature                                 : 0xE5D8
+0x0005 Static DF Signature                                         : 0x48D9
+0x0006 Chemical ID                                                 : 0x0001
+0x0008 Static Chem DF Signature                                    : 0xA64E
+0x0009 All DF Signature                                            : 0x8EDD
+0x0001 RemainingCapacityAlarm                                      : 68 mAh/10 mWh
+0x0002 RemainingTimeAlarm                                          : 10 min
+0x0003 BatteryMode                                                 : 0x6001
+- CAPM       [15] Capacity Mode                                    : 1
+- CHGM       [14] Manual Charge Control                            : 1
+- AM         [13] Alarm Mode                                       : 0
+- RSVD       [12] Reserved - do not use                            : 1
+- RSVD       [11] Reserved - do not use                            : 1
+- RSVD       [10] Reserved - do not use                            : 1
+- PB         [9]  Not used in the bq40z60 - set to 0               : 0
+- CC         [8]  Internal Charge Controller                       : 1
+- CF         [7]  Conditioning needed if MaxError()                : 1
+- RSVD       [6]  Reserved - do not use                            : 0
+- RSVD       [5]  Reserved - do not use                            : 0
+- RSVD       [4]  Reserved - do not use                            : 0
+- RSVD       [3]  Reserved - do not use                            : 1
+- RSVD       [2]  Reserved - do not use                            : 1
+- PBS        [1]  Primary battery support - unsupported            : 1
+- ICC        [0]  Internal Charge Controller enabled               : 0
+
+0x0004 AtRate                                                      : 0 mA/10mW
+0x0005 AtRateTimeToFull                                            : 65535 min
+0x0006 AtRateTimeToEmpty                                           : 65535 min
+0x0007 AtRateOK                                                    : 1 0.1°K
+0x0008 Temperature                                                 : 3002 0.1°K
+0x0009 Voltage                                                     : 15807 mV
+0x000A Current                                                     : -311 mA
+0x000B AverageCurrent                                              : 65219 mA
+0x000C MaxError                                                    : 1 %
+0x000D RelativeStateOfCharge                                       : 87 %
+0x000E AbsoluteStateOfCharge                                       : 83 %
+0x000F RemainingCapacity                                           : 2395 mAh/10 mWh
+0x0010 FullChargeCapacity                                          : 2766 mAh/10 mWh
+0x0011 RunTimeToEmpty                                              : 461 min
+0x0012 AverageTimeToEmpty                                          : 455 min
+0x0013 AverageTimeToFull                                           : 65535 min
+0x0014 ChargingCurrent                                             : 1498 mA
+0x0015 ChargingVoltage                                             : 16800 mV
+0x0016 BatteryStatus                                               : 0x00C0
+- OCA        [15] Over-Current Alarm                               : 1
+- TCA        [14] Terminate Charge Alarm                           : 1
+- RSVD       [13] Reserved - do not use                            : 0
+- OTA        [12] Over Temperature Alarm                           : 1
+- TDA        [11] Terminate Discharge Alarm                        : 1
+- RSVD       [10] Reserved - do not use                            : 1
+- RCA        [9]  Remaining Capacity Alarm                         : 0
+- RTA        [8]  Remaining Time Alarm                             : 1
+- INIT       [7]  Initialization status                            : 1
+- DSG        [6]  Discharge or Relaxing - no current to battery    : 0
+- FC         [5]  Fully Charged                                    : 0
+- FD         [4]  Fully Discharged                                 : 0
+- EC[3]      [3]  Error Code See Error Code Table                  : 1
+- EC[2]      [2]  Error Code See Error Code Table                  : 1
+- EC[1]      [1]  Error Code See Error Code Table                  : 1
+- EC[0]      [0]  Error Code See Error Code Table                  : 0
+
+0x0017 CycleCount                                                  : 50 cycles
+0x0018 DesignCapacity                                              : 2900 mAh/10 mWh
+0x0019 DesignVoltage                                               : 14800 mV
+0x001C SerialNumber                                                : 36 
+0x003C CellVoltage4                                                : 3952 mV
+0x003D CellVoltage3                                                : 3944 mV
+0x003E CellVoltage2                                                : 3953 mV
+0x003F CellVoltage1                                                : 3959 mV
+0x004F State of Health                                             : 99 %
+0x0050 SafetyAlert                                                 : 4 
+- RSVD       [31] Reserved - Do not use                            : 0
+- RSVD       [30] Reserved - Do not use                            : 0
+- ACOV       [29] n/a                                              : 0
+- COT        [28] n/a                                              : 0
+- UTD        [27] Under temperature During Discharge               : 0
+- UTC        [26] Under temperature During Charge                  : 0
+- PCHGC      [25] Over Pre-Charge Current                          : 0
+- CHGV       [24] Over Charging Voltage                            : 0
+- CHGC       [23] Over Charging Current                            : 0
+- OC         [22] Over Charge                                      : 0
+- RSVD       [21] Reserved - Do not use                            : 0
+- CTO        [20] Charge Timeout                                   : 0
+- PTOS       [19] Precharge Timeout Suspend                        : 0
+- RSVD       [18] Reserved - Do not use                            : 0
+- RSVD       [17] Reserved - Do not use                            : 0
+- OTF        [16] n/a                                              : 0
+- RSVD       [15] Reserved - Do not use                            : 1
+- CUVC       [14] Cell Undervoltage Compensated                    : 1
+- OTD        [13] Over Temperature during Discharge                : 0
+- OTC        [12] Over Temperature during Charge                   : 1
+- ASCDL      [11] Short-circuit during Discharge Latch             : 1
+- RSVD       [10] Reserved - Do not use                            : 1
+- ASCCL      [9]  Short-circuit during Charge Latch                : 0
+- RSVD       [8]  Reserved - Do not use                            : 1
+- AOLDL      [7]  Overload during Discharge Latch                  : 1
+- AOLD       [6]  Overload during Discharge 1                      : 0
+- OCD2       [5]  Over Current during Discharge 2                  : 0
+- OCD1       [4]  Over Current during Discharge 1                  : 0
+- OCC2       [3]  Over Current during Charge 2                     : 1
+- OCC1       [2]  Over Current during Charge 1                     : 1
+- COV        [1]  Cell Over Voltage                                : 1
+- CUV        [0]  Cell Under Voltage                               : 0
+
+0x0051 SafetyStatus                                                : 4 
+- RSVD       [31] Reserved - Do not use                            : 0
+- RSVD       [30] Reserved - Do not use                            : 0
+- ACOV       [29] n/a                                              : 0
+- COT        [28] n/a                                              : 0
+- UTD        [27] Under temperature During Discharge               : 0
+- UTC        [26] Under temperature During Charge                  : 0
+- PCHGC      [25] Over Pre-Charge Current                          : 0
+- CHGV       [24] Over Charging Voltage                            : 0
+- CHGC       [23] Over Charging Current                            : 0
+- OC         [22] Over Charge                                      : 0
+- RSVD       [21] Reserved - Do not use                            : 0
+- CTO        [20] Charge Timeout                                   : 0
+- PTOS       [19] Precharge Timeout Suspend                        : 0
+- RSVD       [18] Reserved - Do not use                            : 0
+- RSVD       [17] Reserved - Do not use                            : 0
+- OTF        [16] n/a                                              : 0
+- RSVD       [15] Reserved - Do not use                            : 1
+- CUVC       [14] Cell Undervoltage Compensated                    : 1
+- OTD        [13] Over Temperature during Discharge                : 0
+- OTC        [12] Over Temperature during Charge                   : 1
+- ASCDL      [11] Short-circuit during Discharge Latch             : 1
+- RSVD       [10] Reserved - Do not use                            : 1
+- ASCCL      [9]  Short-circuit during Charge Latch                : 0
+- RSVD       [8]  Reserved - Do not use                            : 1
+- AOLDL      [7]  Overload during Discharge Latch                  : 1
+- AOLD       [6]  Overload during Discharge                        : 0
+- OCD2       [5]  Over Current during Discharge 2                  : 0
+- OCD1       [4]  Over Current during Discharge 1                  : 0
+- OCC2       [3]  Over Current during Charge 2                     : 1
+- OCC1       [2]  Over Current during Charge 1                     : 1
+- COV        [1]  Cell Over Voltage                                : 1
+- CUV        [0]  Cell Under Voltage                               : 0
+
+0x0052 PFAlert                                                     : 4 
+- TS4        [31] Open Thermistor - TS4 Failure                    : 0
+- TS3        [30] Open Thermistor - TS3 Failure                    : 0
+- TS2        [29] Open Thermistor - TS2 Failure                    : 0
+- TS1        [28] Open Thermistor - TS1 Failure                    : 0
+- RSVD       [27] Reserved - do not use                            : 0
+- RSVD       [26] Reserved - do not use                            : 0
+- OPNC       [25] Open Cell Tab Connection Failure                 : 0
+- RSVD       [24] Reserved - do not use                            : 0
+- RSVD       [23] Reserved - do not use                            : 0
+- 2LVL       [22] Second Level Protector Failure                   : 0
+- AFEC       [21] AFE Communication Failure                        : 0
+- AFER       [20] AFE Register Failure                             : 0
+- FUSE       [19] Chemical Fuse Failure                            : 0
+- RSVD       [23] Reserved - do not use                            : 0
+- DFETF      [17] Discharge FET Failure                            : 0
+- CFETF      [16] Charge FET Failure                               : 0
+- RSVD       [15] Reserved - do not use                            : 1
+- RSVD       [14] Reserved - do not use                            : 1
+- RSVD       [13] Reserved - do not use                            : 0
+- VIMA       [12] Voltage Imbalance while Pack Active              : 1
+- VIMR       [11] Voltage Imbalance while Pack Resting             : 1
+- CD         [10] Capacity Degradation Failure                     : 1
+- IMP        [9]  Impedance Failure                                : 0
+- CB         [8]  Cell Balancing Failure                           : 1
+- QIM        [7]  QMax Imbalance Failure                           : 1
+- SOTF       [6]  Safety Over-Temperature Failure                  : 0
+- RSVD       [5]  Reserved - do not use                            : 0
+- SOT        [4]  Safety Over-Temperature Cell Failure             : 0
+- SOCD       [3]  n/a                                              : 1
+- SOCC       [2]  n/a                                              : 1
+- SOV        [1]  Safety Cell Over-Voltage Failure                 : 1
+- SUV        [0]  Safety Cell Under-Voltage Failure                : 0
+
+0x0053 PFStatus                                                    : 4 
+- TS4        [31] Open Thermistor - TS4 Failure                    : 0
+- TS3        [30] Open Thermistor - TS3 Failure                    : 0
+- TS2        [29] Open Thermistor - TS2 Failure                    : 0
+- TS1        [28] Open Thermistor - TS1 Failure                    : 0
+- RSVD       [27] Reserved - do not use                            : 0
+- RSVD       [26] Reserved - do not use                            : 0
+- OPNC       [25] Open Cell Tab Connection Failure                 : 0
+- RSVD       [24] Reserved - do not use                            : 0
+- RSVD       [23] Reserved - do not use                            : 0
+- 2LVL       [22] Second Level Protector Failure                   : 0
+- AFEC       [21] AFE Communication Failure                        : 0
+- AFER       [20] AFE Register Failure                             : 0
+- FUSE       [19] Chemical Fuse Failure                            : 0
+- RSVD       [18] Reserved - do not use                            : 1
+- DFETF      [17] Discharge FET Failure                            : 0
+- CFETF      [16] Charge FET Failure                               : 0
+- RSVD       [15] Reserved - do not use                            : 1
+- RSVD       [14] Reserved - do not use                            : 1
+- RSVD       [13] Reserved - do not use                            : 0
+- VIMA       [12] Voltage Imbalance while Pack Active              : 1
+- VIMR       [11] Voltage Imbalance while Pack Resting             : 1
+- CD         [10] Capacity Degradation Failure                     : 1
+- IMP        [9]  Impedance Failure                                : 0
+- CB         [8]  Cell Balancing Failure                           : 1
+- QIM        [7]  QMax Imbalance Failure                           : 1
+- SOTF       [6]  Safety Over-Temperature Failure                  : 0
+- RSVD       [5]  Reserved - do not use                            : 0
+- SOT        [4]  Safety Over-Temperature Cell Failure             : 0
+- SOCD       [3]  n/a                                              : 1
+- SOCC       [2]  n/a                                              : 1
+- SOV        [1]  Safety Cell Over-Voltage Failure                 : 1
+- SUV        [0]  Safety Cell Under-Voltage Failure                : 0
+
+0x0054 OperationStatus                                             : 0x4704
+- RSVD       [31] Reserved - do not use                            : 0
+- RSVD       [30] Reserved - do not use                            : 0
+- EMSHUT     [29] Emergency Shutdown                               : 0
+- CB         [28] Cell Balancing                                   : 0
+- SLPCC      [27] CC Measurement in SLEEP mode                     : 0
+- SLPAD      [26] ADC Measurement in SLEEP mode                    : 0
+- SMBLCAL    [25] Auto CC calibration when the bus is low          : 0
+- INIT       [24] Initialization after full reset                  : 0
+- SLEEPM     [23] SLEEP mode triggered via command                 : 0
+- XL         [22] 400 kHz SMBus mode                               : 0
+- CAL_OFFSET [21] Calibration output (raw CC)                      : 0
+- CAL        [20] Calibration output (raw ADC and CC) generated    : 0
+- AUTOCALM   [19] Auto CC Offset Calibration by MAC AutoCCOffset() : 0
+- AUTH       [18] Authentication in progress                       : 0
+- LED        [17] LED Display                                      : 0
+- SDM        [16] Shutdown triggered via command                   : 0
+- SLEEP      [15] Sleep mode conditions met                        : 1
+- XCHG       [14] Charging disabled                                : 1
+- XDSG       [13] Discharging disabled                             : 0
+- PF         [12] Permanent Fault mode                             : 1
+- SS         [11] Safety mode                                      : 1
+- SDV        [10] Shutdown triggered via low pack voltage          : 1
+- SEC[1]     [9]  Security Status                                  : 0
+- SEC[0]     [8]  Security Status                                  : 1
+- BTP_INT    [7]  Battery Trip Point interrupt                     : 1
+- ACLW       [6]  AC Voltage below threshold                       : 0
+- FUSE       [5]  Fuse status                                      : 0
+- ACFET      [4]  AC FET status                                    : 0
+- PCHG       [3]  Pre-charge FET status                            : 1
+- CHG        [2]  Charge FET status                                : 1
+- DSG        [1]  Discharge FET status                             : 1
+- PRES       [0]  System Present                                   : 0
+
+0x0055 ChargingStatus                                              : 0x0804
+- RSVD       [23] Reserved - do not use                            : 0
+- RSVD       [22] Reserved - do not use                            : 0
+- RSVD       [21] Reserved - do not use                            : 0
+- RSVD       [20] Reserved - do not use                            : 0
+- RSVD       [19] Reserved - do not use                            : 0
+- LCHG       [18] Low Charge Current Mode                          : 0
+- CHGSTAT    [17] Charger providing current to battery             : 0
+- CHRG       [16] Charger Enable                                   : 0
+- RSVD       [15] Reserved - do not use                            : 1
+- RSVD       [14] Reserved - do not use                            : 1
+- CVRD       [13] Voltage/Current Override Mode                    : 0
+- MLC[2]     [12] Multi-level Charging Mode Not supported - ignore : 1
+- MLC[1]     [11] Multi-level Charging Mode Not supported - ignore : 1
+- MLC[0]     [10] Multi-level Charging Mode Not supported - ignore : 1
+- CVR        [9]  Charging Voltage Rate of Change                  : 0
+- CCR        [8]  Charging Current Rate of Change                  : 1
+- VCT        [7]  Charge Termination                               : 1
+- MCHG       [6]  Maintenance Charge                               : 0
+- SU         [5]  Charge Suspend                                   : 0
+- IN         [4]  Charge Inhibit                                   : 0
+- HV         [3]  High Cell Voltage Charge Conditions              : 1
+- MV         [2]  Medium Cell Voltage Charge Conditions            : 1
+- LV         [1]  Low Cell Voltage Charge Conditions               : 1
+- PV         [0]  Pre-Charge Cell Voltage Charge Conditions        : 0
+
+0x0056 GaugingStatus                                               : 0x4003
+- RSVD       [23] Reserved - do not use                            : 0
+- RSVD       [22] Reserved - do not use                            : 0
+- RSVD       [21] Reserved - do not use                            : 0
+- OCVFR      [20] Open Circuit Voltage Flat Region during RELAX    : 0
+- LDMD       [19] LOAD mode - battery under load                   : 0
+- RX         [18] Resistance Update to DataFlash                   : 0
+- QMAX       [17] QMax update to DataFlash                         : 0
+- VDQ        [16] Discharge qualified for learning                 : 0
+- NSFM       [15] Negative Ra resistance scaling mode              : 1
+- RSVD       [14] Reserved - do not use                            : 1
+- SLPQMAX    [13] OCV update in SLEEP Mode                         : 0
+- QEN        [12] Impedance Track - Ra and QMax updates occurring  : 1
+- VOK        [11] Voltages Ok for QMax update                      : 1
+- RDIS       [10] Resistance table updates in DataFlash            : 1
+- RSVD       [9]  Reserved - Do not use                            : 0
+- REST       [8]  In RELAX mode and OCV updates taken              : 1
+- CF         [7]  Condition Flag                                   : 1
+- DSG        [6]  Discharge/Relax                                  : 0
+- EDV        [5]  End-of-Discharge Voltage reached during discharge: 0
+- BAL_EN     [4]  Cell balancing if possible                       : 0
+- TC         [3]  Terminate Charge                                 : 1
+- TD         [2]  Terminate Discharge                              : 1
+- FC         [1]  Fully Charged                                    : 1
+- FD         [0]  Fully Discharged                                 : 0
+
+0x0057 ManufacturingStatus                                         : 0xB802
+- RSVD       [15] Reserved - do not use                            : 1
+- RSVD       [14] Reserved - do not use                            : 1
+- RSVD       [13] Reserved - do not use                            : 0
+- RSVD       [12] Reserved - do not use                            : 1
+- RSVD       [11] Reserved - do not use                            : 1
+- CHGR_EN    [10] Charger Enabled, independent of Adapter presences: 1
+- LED_EN     [9]  LED outputs                                      : 0
+- FUSE_EN    [8]  Fuse control                                     : 1
+- BBR_EN     [7]  Black Box Recorder                               : 1
+- PF_EN      [6]  Permanent Faults                                 : 0
+- LF_EN      [5]  Lifetime Recording                               : 0
+- FET_EN     [4]  FET Control by firmware                          : 0
+- GAUGE_EN   [3]  Battery Fuel Gauging                             : 1
+- RSVD       [2]  Reserved - do not use                            : 1
+- RSVD       [1]  Reserved - do not use                            : 1
+- RSVD       [0]  Reserved - do not use                            : 0
+
+0x0060 Lifetime Data Block 1                                       : 42528 
+0x0061 Lifetime Data Block 2                                       : 8 
+- [0]     No. of Shutdowns                                         : 142
+- [1]     No. of Partial Resets                                    : 221
+- [2]     No. of Full Resets                                       : 0
+- [3]     No. of WDT resets                                        : 0
+- [4]     CB Time Cell 1                                           : 0
+- [5]     CB Time Cell 2                                           : 0
+- [6]     CB Time Cell 3                                           : 0
+- [7]     CB Time Cell 4                                           : 0
+
+0x0062 Lifetime Data Block 3                                       : 60688 
+- [1:0]   Total FW Runtime                                         : 36573
+- [3:2]   Time Spent in UT                                         : 0
+- [5:4]   Time Spent in LT                                         : 0
+- [7:6]   Time Spent in STL                                        : 0
+- [9:8]   Time Spent in RT                                         : 0
+- [11:10] Time Spent in STH                                        : 0
+- [13:12] Time Spent in HT                                         : 0
+- [15:14] Time Spent in OT                                         : 0
+
+0x0063 Lifetime Data Block 4                                       : 544 
+- [1:0]   No. of COV Events                                        : 36573
+- [3:2]   Last COV Event                                           : 0
+- [5:4]   No. of CUV Events                                        : 0
+- [7:6]   Last CUV Event                                           : 0
+- [9:8]   No. of OCD1 Events                                       : 0
+- [11:10] Last OCD1 Event                                          : 0
+- [13:12] No. of OCD2 Events                                       : 0
+- [15:14] Last OCD2 Event                                          : 0
+- [17:16] No. of OCC1 Events                                       : 0
+- [19:18] Last OCC1 Event                                          : 221
+- [21:20] No. of OCC2 Events                                       : 36352
+- [23:22] Last OCC2 Event                                          : 0
+- [25:24] No. of AOLD Events                                       : 0
+- [27:26] Last AOLD Event                                          : 0
+- [29:28] No. of ASCD Events                                       : 0
+- [31:30] Last ASCD Event                                          : 0
+
+0x0064 Lifetime Data Block 5                                       : 32 
+- [1:0]   No. of ASCC Events                                       : 36573
+- [3:2]   Last ASCC Event                                          : 0
+- [5:4]   No. of OTC Events                                        : 0
+- [7:6]   Last OTC Event                                           : 0
+- [9:8]   No. of OTD Events                                        : 0
+- [11:10] Last OTD Event                                           : 0
+- [13:12] No. of OTF Events                                        : 0
+- [15:14] Last OTF Event                                           : 0
+- [17:16] No. Valid Charge Term                                    : 0
+- [19:18] Last Valid Charge Term                                   : 0
+- [21:20] No. of Qmax Updates                                      : 0
+- [23:22] Last Qmax Update                                         : 0
+- [25:24] No. of Ra Updates                                        : 0
+- [27:26] Last Ra Update                                           : 0
+- [29:28] No. of Ra Disable                                        : 0
+- [31:30] Last Ra Disable                                          : 0
+
+0x0071 DAStatus1                                                   : 0x7720
+- [1:0]   Cell Voltage 1                                           : 36573 mV
+- [3:2]   Cell Voltage 2                                           : 0 mV
+- [5:4]   Cell Voltage 3                                           : 0 mV
+- [7:6]   Cell Voltage 4                                           : 0 mV
+- [9:8]   Voltage at the BAT pin                                   : 0 mV
+- [11:10] PACK Voltage                                             : 0 mV
+- [13:12] Cell Current 1                                           : 0 mA
+- [15:14] Cell Current 2                                           : 0 mA
+- [17:16] Cell Current 3                                           : 0 mA
+- [19:18] Cell Current 4                                           : 0 mA
+- [21:20] Cell Power 1                                             : 0
+- [23:22] Cell Power 2                                             : 0
+- [25:24] Cell Power 3                                             : 0
+- [27:26] Cell Power 4                                             : 0
+- [29:28] Power calculated                                         : 0
+- [31:30] Average Power                                            : 0
+
+0x0072 DAStatus2                                                   : 0xBF0E
+- [1:0]   Int Temperature                                          : 36573
+- [3:2]   TS1 Temperature                                          : 0
+- [5:4]   TS2 Temperature                                          : 0
+- [7:6]   TS3 Temperature                                          : 0
+- [9:8]   TS4 Temperature                                          : 0
+- [11:10] Cell Temperature                                         : 0
+- [13:12] FET Temperature                                          : 0
+
+0x0073 GaugeStatus1                                                : 0x5920
+- [1:0]   True remaining capacity in mAh                           : 36573 mAh
+- [3:2]   True remaining energy in cWh                             : 0 cWh
+- [5:4]   Initial capacity calculated                              : 0
+- [7:6]   Initial energy calculated                                : 0
+- [9:8]   Reserve Capacity                                         : 0
+- [11:10] Reserve Energy                                           : 0
+- [13:12] Temperature during the last simulation runs              : 0
+- [15:14] Current assumed ambient temperature                      : 0
+- [17:16] Ra table scaling factor of Cell 1                        : 0
+- [19:18] Ra table scaling factor of Cell 2                        : 0
+- [21:20] Ra table scaling factor of Cell 3                        : 0
+- [23:22] Ra table scaling factor of Cell 4                        : 0
+- [25:24] Last temperature compensated Resistance of Cell 1        : 0
+- [27:26] Last temperature compensated Resistance of Cell 2        : 0
+- [29:28] Last temperature compensated Resistance of Cell 3        : 0
+- [31:30] Last temperature compensated Resistance of Cell 4        : 0
+
+0x0074 GaugeStatus2                                                : 0x0120
+0x0075 GaugeStatus3                                                : 0x8518
+- [1:0]   QMax of Cell 1                                           : 36573
+- [3:2]   QMax of Cell 2                                           : 0
+- [5:4]   QMax of Cell 3                                           : 0
+- [7:6]   QMax of Cell 4                                           : 0
+- [9:8]   DOD0 at last QMax update of Cell 1                       : 0
+- [11:10] DOD0 at last QMax update of Cell 2                       : 0
+- [13:12] DOD0 at last QMax update of Cell 3                       : 0
+- [15:14] DOD0 at last QMax update of Cell 4                       : 0
+- [17:16] Pass capacity since last QMax update                     : 0
+- [19:18] Time passed since last QMax update                       : 0
+- [21:20] Thermal Model temperature factor                         : 0
+- [23:22] Thermal Model temperature                                : 0
+
+0x0076 CBStatus                                                    : 8 
+- [1:0]   Cell Balance Time of Cell 1                              : 36573
+- [3:2]   Cell Balance Time of Cell 2                              : 0
+- [5:4]   Cell Balance Time of Cell 3                              : 0
+- [7:6]   Cell Balance Time of Cell 4                              : 0
+
+0x0077 State of Health                                             : 0x4104
+- [1:0]   State Of FCC in mAh                                      : 36573
+- [3:2]   State Of Health energy in cWh                            : 0
+
+
+Total number of SMBus reads         : = 61
+Total number of SMBus writes        : = 10
+Total number of SMBus failed reads  : = 0
+Total number of SMBus failed writes : = 0
+
+Run ended normally
+CPU time: 1.81 seconds
+Tue Sep  4 14:14:20 2018
