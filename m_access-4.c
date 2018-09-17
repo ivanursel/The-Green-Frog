@@ -1,7 +1,7 @@
 //
 //  Copyright 2016-2018 Ivo J. L. A. Van Ursel
 //
-//  v0.9a - Mon Sep 3 13:22:12 2018
+//  v0.9a - Mon Sep 17 14:07:39 2018
 //
 
 #define   debug
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 
     start = clock();
 
-    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Mon Sep 3 13:22:12 2018 ***\n\n");
+    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Mon Sep 17 14:07:39 2018 ***\n\n");
 
     if (gpioInitialise() < 0) {
       printf("Failure: pigpio initialization failed\n");
@@ -379,7 +379,7 @@ int main(int argc, char **argv)
 
 //  11.1.1 ManufacturerAccess() 0x0000 - read
 //  A read word on this command returns the low word (16 bits) OperationStatus() data.
-//  n = mac_read(0x0000, 2);
+//  n = mac_read(0x00, 2);
 //  printf("0x0000 %-60s: 0x%02X\n", "", data[4] + (data[3] << 8));
 
 //  printf("- SLEEP      [15] %-49s: %d\n", "Sleep mode conditions met", (data[4] & 0x80) > 0);
@@ -390,6 +390,7 @@ int main(int argc, char **argv)
 //  printf("- SDV        [10] %-49s: %d\n", "Shutdown triggered via low pack voltage", (data[4] & 0x04) > 0);
 //  printf("- SEC[1]     [9]  %-49s: %d\n", "Security Status", (data[4] & 0x02) > 0);
 //  printf("- SEC[0]     [8]  %-49s: %d\n", "Security Status", (data[4] & 0x01) > 0);
+
 //  printf("- BTP_INT    [7]  %-49s: %d\n", "Battery Trip Point interrupt", (data[3] & 0x80) > 0)
 //  printf("- ACLW       [6]  %-49s: %d\n", "AC Voltage below threshold", (data[3] & 0x40) > 0);
 //  printf("- FUSE       [5]  %-49s: %d\n", "Fuse status", (data[3] & 0x20) > 0);
@@ -401,12 +402,12 @@ int main(int argc, char **argv)
 
 //  11.1.2 ManufacturerAccess() 0x0001 Device Type - read
 //  The device can be checked for the IC part number via this command that returns 2 bytes in Little Endian.
-    n = mac_read(0x0001, 2);
+    n = mac_read(0x01, 2);
     printf("0x0001 %-60s: 0x%04X\n", "Device Type", data[4] + (data[3] << 8));
 
 //  11.1.3 ManufacturerAccess() 0x0002 Firmware Version - read
 //  The device can be checked for the firmware version of the IC via this command that returns 11 bytes.
-    n = mac_read(0x0002, 11);
+    n = mac_read(0x02, 11);
 
     printf("- [1:0]  %-58s: 0x%04X\n", "Device Number", data[4] + (data[3] << 8));
     printf("- [3:2]  %-58s: 0x%04X\n", "Version", data[6] + (data[5] << 8));
@@ -418,29 +419,29 @@ int main(int argc, char **argv)
 
 //  11.1.4 ManufacturerAccess() 0x0003 Hardware Version - read
 //  The hardware revision is returned on a subsequent read.
-    n = mac_read(0x0003, 2);
+    n = mac_read(0x03, 2);
     printf("0x0003 %-60s: 0x%04X\n", "Hardware Version", data[4] + (data[3] << 8));
 
 //  11.1.5 ManufacturerAccess() 0x0004 Instruction Flash Signature - read
 //  The IF signature returns on a subsequent read after a wait time of 250 ms.
-    n = mac_read(0x0004, 2);
+    n = mac_read(0x04, 2);
     printf("0x0004 %-60s: 0x%02X\n", "Instruction Flash Signature", data[4] + (data[3] << 8));
 
 //  11.1.6 ManufacturerAccess() 0x0005 Static DF Signature - read
 //  The 2-byte signature of all static DF returns after a wait time of 250 ms.
 //  NOTE: MSB is set to 1 if the calculated signature does not match the signature stored in DF.
-    n = mac_read(0x0005, 2);
+    n = mac_read(0x05, 2);
     printf("0x0005 %-60s: 0x%04X\n", "Static DF Signature", data[4] + (data[3] << 8));
 
 //  11.1.7 ManufacturerAccess() 0x0006 Chemical ID - read
 //  The 2 byte chemical ID of the OCV tables used in the gauging algorithm is returned.
-    n = mac_read(0x0006, 2);
+    n = mac_read(0x06, 2);
     printf("0x0006 %-60s: 0x%04X\n", "Chemical ID", data[4] + (data[3] << 8));
 
 //  11.1.8 ManufacturerAccess() 0x0008 Static Chem DF Signature - read
 //  The 2-byte signature of all static chemistry DF returns after a wait time of 250 ms.
 //  NOTE: MSB is set to 1 if the calculated signature does not match the signature stored in DF.
-    n = mac_read(0x0008, 2);
+    n = mac_read(0x08, 2);
     printf("0x0008 %-60s: 0x%04X\n", "Static Chem DF Signature", data[4] + (data[3] << 8));
 
 //  11.1.9 ManufacturerAccess() 0x0009 All DF Signature - read
@@ -448,7 +449,7 @@ int main(int argc, char **argv)
 //  NOTE: MSB is set to 1 if the calculated signature does not match the signature stored in DF, but it
 //  is normally expected that this signature will change due to update of lifetime, gauging, and
 //  other information.
-    n = mac_read(0x0009, 2);
+    n = mac_read(0x09, 2);
     printf("0x0009 %-60s: 0x%04X\n", "All DF Signature", data[4] + (data[3] << 8));
 
 /* This is no-mans-land, keep out! */
@@ -463,12 +464,12 @@ int main(int argc, char **argv)
 //  safety purposes).
 //  To wake up the device, a voltage > Charger Present Threshold must apply to the VACP pin. The device
 //  will power up and a full reset is applied.
-//  n = mac_read(0x0010, 2);
+//  n = mac_read(0x10, 2);
 //  printf("0x0010 %-60s: 0x%02X\n", "SHUTDOWN Mode", data[4] + (data[3] << 8));
 
 //  11.1.11 ManufacturerAccess() 0x0011 SLEEP Mode - write
 //  If the sleep conditions are met, the device can be sent to sleep with ManufacturerAccess().
-//  n = mac_read(0x0011, 2);
+//  n = mac_read(0x11, 2);
 //  printf("0x0011 %-60s: 0x%02X\n", "SLEEP Mode", data[4] + (data[3] << 8));
 
 //  STATUS CONDITION ACTION
@@ -505,7 +506,7 @@ int main(int argc, char **argv)
 //  This command manually starts an Auto CC Offset calibration, which takes approximately 16 s. After
 //  completion this value is updated to CC Auto Offset and is used for cell current measurement. The cell
 //  current measurement is a current measurement taken simultaneously as the cell voltage measurement.
-//  n = mac_read(0x0013, 2);
+//  n = mac_read(0x13, 2);
 //  printf("0x0013 %-60s: 0x%02X\n", "AutoCCOfset", data[4] + (data[3] << 8));
 
 //  11.1.13 ManufacturerAccess() 0x001D Fuse Toggle - write
@@ -513,7 +514,7 @@ int main(int argc, char **argv)
 //  OperationStatus()[FUSE] = 0, indicating the FUSE output is low, sending this command toggles the FUSE
 //  output to be high, and OperationStatus()[FUSE] is set to 1. OperationStatus()[FUSE] will be cleared to 0 if
 //  this command is sent when OperationStatus()[FUSE] is 1.
-//  n = mac_read(0x001D, 2);
+//  n = mac_read(0x1D, 2);
 //  printf("0x001D %-60s: 0x%02X\n", "Fuse Toggle", data[4] + (data[3] << 8));
 
 //  11.1.14 ManufacturerAccess() 0x001E PCHG FET Toggle - write
@@ -522,7 +523,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[PCHG_TEST] to 1 and vice versa. This toggling command is only enabled if
 //  ManufacturingStatus[FET_EN] = 0, indicating a FW FET control is not active and manual control is
 //  allowed. A reset clears the ManufacturingStatus[PCHG_TEST] flag to 0 and turns off the PCHG FET.
-//  n = mac_read(0x001E, 4);
+//  n = mac_read(0x1E, 4);
 //  printf("0x001E %-60s: 0x%08X\n", "PCHG FET Toggle", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.15 ManufacturerAccess() 0x001F CHG FET Toggle - write
@@ -531,7 +532,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[CHG_TEST] is set to 1 and vice versa. This toggling command is only enabled if
 //  ManufacturingStatus[FET_EN] = 0, indicating a FW FET control is not active and manual control is
 //  allowed. A reset clearsManufacturingStatus[CHG_TEST] flag to 0 and turns off the CHG FET.
-//  n = mac_read(0x001F, 4);
+//  n = mac_read(0x1F, 4);
 //  printf("0x001F %-60s: 0x%08X\n", "CHG FET Toggle", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.16 ManufacturerAccess() 0x0020 DSG FET Toggle - write
@@ -540,7 +541,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[DSG_TEST] = 1 and vice versa. This toggling command is only enabled if
 //  ManufacturingStatus[FET_EN] = 0, indicating a FW FET control is not active and manual control is
 //  allowed. A reset clears the ManufacturingStatus[DSG_TEST] flag to 0 and turns off the DSG FET.
-//  n = mac_read(0x0020, 4);
+//  n = mac_read(0x20, 4);
 //  printf("0x0020 %-60s: 0x%08X\n", "DSG FET Toggle", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.17 ManufacturerAccess() 0x0021 Gauging - write
@@ -550,7 +551,7 @@ int main(int argc, char **argv)
 //  In UNSEALED mode, the ManufacturingStatus[GAUGE_EN] status is copied to
 //  MfgStatusInit[GAUGE_EN] on a reset. Therefore, the device remains on its latest gauging status prior to a
 //  reset.
-//  n = mac_read(0x0021, 4);
+//  n = mac_read(0x21, 4);
 //  printf("0x0021 %-60s: 0x%08X\n", "Gauging", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.18 ManufacturerAccess() 0x0022 FET Control - write
@@ -560,7 +561,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[FET_EN] is set to 1 and vice versa.
 //  In UNSEALED mode, the ManufacturingStatus[FET_EN] status is copied to MfgStatusInit[FET_EN] on a
 //  reset. Hence, the device will remain on its latest FET control status prior to a reset.
-//  n = mac_read(0x0022, 4);
+//  n = mac_read(0x22, 4);
 //  printf("0x0022 %-60s: 0x%08X\n", "FET Control", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.19 ManufacturerAccess() 0x0023 Lifetime Data Collection - write
@@ -569,7 +570,7 @@ int main(int argc, char **argv)
 //  command starts the Lifetime Data collection and ManufacturingStatus[LF_EN] is set to 1 and vice versa.
 //  In UNSEALED mode, the ManufacturingStatus[LF_EN] status is copied to MfgStatusInit[LF_EN] on a
 //  reset. Therefore, the device remains on its latest Lifetime Data Collection setting prior to a reset.
-//  n = mac_read(0x0023, 4);
+//  n = mac_read(0x23, 4);
 //  printf("0x0023 %-60s: 0x%08X\n", "Lifetime Data Collection", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.20 ManufacturerAccess() 0x0024 Permanent Failure - write
@@ -578,7 +579,7 @@ int main(int argc, char **argv)
 //  command enables Permanent Failure protections and ManufacturingStatus[PF_EN] is set to 1 and vice versa.
 //  In UNSEALED mode, ManufacturingStatus[PF_EN] status is copied to MfgStatusInit[PF_EN] on a reset.
 //  Therefore, the device remains at its PF enable/disable setting prior to a reset.
-//  n = mac_read(0x0024, 4);
+//  n = mac_read(0x24, 4);
 //  printf("0x0024 %-60s: 0x%08X\n", "Permanent Failure", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.21 ManufacturerAccess() 0x0025 Black Box Recorder - write
@@ -588,7 +589,7 @@ int main(int argc, char **argv)
 //  In UNSEALED mode, the ManufacturingStatus[BBR_EN] status is copied to MfgStatusInit[BBR_EN] on a
 //  reset. Therefore, the device remains on its latest Black Box Recorder enable/disable setting prior to a
 //  reset.
-//  n = mac_read(0x0025, 4);
+//  n = mac_read(0x25, 4);
 //  printf("0x0025 %-60s: 0x%08X\n", "Black Box Recorder", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.22 ManufacturerAccess() 0x0026 Fuse - write
@@ -598,7 +599,7 @@ int main(int argc, char **argv)
 //  and vice versa.
 //  In UNSEALED mode, the ManufacturingStatus[FUSE_EN] status is copied to MfgStatusInit[FUSE_EN] on
 //  a reset. Therefore, the device remains on its latest Fuse Control setting prior to a reset.
-//  n = mac_read(0x0026, 4);
+//  n = mac_read(0x26, 4);
 //  printf("0x0026 %-60s: 0x%08X\n", "Fuse", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.23 ManufacturerAccess() 0x0027 LED DISPLAY Enable - write
@@ -607,43 +608,43 @@ int main(int argc, char **argv)
 //  command will enable LED display and the ManufacturingStatus[LED_EN] = 1 and vice versa. In
 //  UNSEALED mode, the ManufacturingStatus[LED_EN] status is copied to MfgStatusInit[LED_EN] on a
 //  reset. Therefore, the device remains to its latest setting prior to a reset.
-//  n = mac_read(0x0027, 4);
+//  n = mac_read(0x27, 4);
 //  printf("0x0027 %-60s: 0x%08X\n", "LED DISPLAY Enable", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.24 ManufacturerAccess() 0x0028 Lifetime Data Reset - write
 //  If ManufacturingStatus[LF_EN] = 1, sending this command resets Lifetime data in data flash to help
 //  streamline production testing.
-//  n = mac_read(0x0028, 4);
+//  n = mac_read(0x28, 4);
 //  printf("0x0028 %-60s: 0x%08X\n", "Lifetime Data Reset", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.25 ManufacturerAccess() 0x0029 Permanent Fail Data Reset - write
 //  If ManufacturerAccess[PF_EN] = 1, sending this command resets PF data in data flash to help streamline production testing.
-//  n = mac_read(0x0029, 4);
+//  n = mac_read(0x29, 4);
 //  printf("0x0029 %-60s: 0x%08X\n", "Permanent Fail Data Reset", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.26 ManufacturerAccess() 0x002A Black Box Recorder Reset - write
 //  If ManufacturingStatus[BBR_EN] = 1, sending this command resets the black box recorder data in data
 //  flash to help streamline production testing.
-//  n = mac_read(0x002A, 4);
+//  n = mac_read(0x2A, 4);
 //  printf("0x002A %-60s: 0x%08X\n", "Black Box Recorder Reset", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.27 ManufacturerAccess() 0x002B LED TOGGLE - write
 //  This command toggles the LED display on or off to help streamline testing during manufacturing. When
 //  the LED display is off, the OperationStatus[LED] = 0. Sending this command turns on all LED displays
 //  with OperationStatus[LED] set to 1, and vice versa.
-//  n = mac_read(0x002B, 4);
+//  n = mac_read(0x2B, 4);
 //  printf("0x002B %-60s: 0x%08X\n", "LED TOGGLE", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.28 ManufacturerAccess() 0x002C LED DISPLAY PRESS - write
 //  This command simulates a low-high-low detection of the DISP pin, activating the LED display according to
 //  the LED Support data flash setting.
-//  n = mac_read(0x002C, 2);
+//  n = mac_read(0x2C, 2);
 //  printf("0x002C %-60s: 0x%02X\n", "LED DISPLAY PRESS", data[4] + (data[3] << 8));
 
 //  11.1.29 ManufacturerAccess() 0x002D CALIBRATION Mode - write
 //  This command disables/enables entry into CALIBRATION mode. Status is indicated by the
 //  ManufacturingStatus()[CAL_EN] flag. CALIBRATION mode is disabled upon a reset.
-//  n = mac_read(0x002D, 4);
+//  n = mac_read(0x2D, 4);
 //  printf("0x002D %-60s: 0x%08X\n", "CALIBRATION Mode", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  STATUS CONDITION ACTION
@@ -659,7 +660,7 @@ int main(int argc, char **argv)
 
 //  11.1.30 ManufacturerAccess() 0x002E Lifetime Data Flash - write
 //  This command flushes the RAM lifetime data-to-data flash to help streamline evaluation testing.
-//  n = mac_read(0x002E, 4);
+//  n = mac_read(0x2E, 4);
 //  printf("0x002E %-60s: 0x%08X\n", "Lifetime Data Flash", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.31 ManufacturerAccess() 0x002F Lifetime Data SPEED UP Mode - write
@@ -667,21 +668,21 @@ int main(int argc, char **argv)
 //  lifetime SPEED UP mode, and Lifetime Data will be updated approximately every 5 s. When the lifetime
 //  SPEED UP mode is enabled, ManufacturingStatus[LT_TEST] = 1.
 //  To disable SPEED UP mode, send the command again.
-//  n = mac_read(0x002F, 4);
+//  n = mac_read(0x2F, 4);
 //  printf("0x002F %-60s: 0x%08X\n", "Lifetime Data SPEED UP Mode", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.32 ManufacturerAccess() 0x0030 Seal Device - write
 //  This command seals the device for the field, disabling certain SBS commands and access to data flash.
 //  See the SBS commands description for details.
 //  When the device is sealed, OperationStatus()[SEC1, SEC0] = 2'b11.
-//  n = mac_read(0x0030, 4);
+//  n = mac_read(0x30, 4);
 //  printf("0x0030 %-60s: 0x%08X\n", "Seal Device", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.33 ManufacturerAccess() 0x0035 Security Keys - read/write
 //  This is a read/write command for the 8 bytes of UNSEAL and FULL ACCESS keys.
 //  When reading the keys, data can be read from ManufacturerData() or Alternate ManufacturerAccess().
 //  The keys are return in the following format: aaAAbbBBccCCddDD, where:
-//  n = mac_read(0x0035, 8);
+//  n = mac_read(0x35, 8);
 //  printf("0x0035 %-60s: 0x%08X\n", "Security Keys", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  printf("- [1:0]  %-58s: 0x%04X\n", "First word of the UNSEAL key", data[4] + (data[3] << 8));
@@ -701,9 +702,9 @@ int main(int argc, char **argv)
 //  Data = MAC command + New UNSEAL key + New FULL ACCESS KEY
 //  = 35 00 34 12 78 56 FF FF FF FF
 
-//  11.1.34 ManufacturerAccess() 0x0037 Authentication Key  - read/write
+//  11.1.34 ManufacturerAccess() 0x0037 Authentication Key - read/write
 //  This command enters a new authentication key into the device.
-//  n = mac_read(0x0037, 4);
+//  n = mac_read(0x37, 4);
 //  printf("0x0037 %-60s: 0x%08X\n", "Authentication Key", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  STATUS CONDITION ACTION
@@ -723,7 +724,7 @@ int main(int argc, char **argv)
 //  11.1.35 ManufacturerAccess() 0x0041 Device Reset - write
 //  This command resets the device.
 //  NOTE: Command 0x0012 also resets the device, providing backwards compatibility with thebq30z5x family of devices.
-//  n = mac_read(0x0041, 4);
+//  n = mac_read(0x41, 4);
 //  printf("0x0041 %-60s: 0x%08X\n", "Device Reset", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 /* This is the end of no-mans land, keep out! */
@@ -731,7 +732,7 @@ int main(int argc, char **argv)
 
 //  11.1.36 ManufacturerAccess() 0x0050 SafetyAlert - read
 //  This command returns the 4 bytes of SafetyAlert() flags on AlternateManufacturerAccess() or ManufacturerData().
-//  n = mac_read(0x0050, 4);
+//  n = mac_read(0x50, 4);
 //  printf("0x0050 %-60s: 0x%08X\n", "SafetyAlert", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.36.1 SafetyAlert() High Word
@@ -792,7 +793,7 @@ int main(int argc, char **argv)
 
 //  11.1.37 ManufacturerAccess() 0x0051 SafetyStatus - read
 //  This command returns the 4 bytes of SafetyStatus() flags.
-//  n = mac_read(0x0051, 4);
+//  n = mac_read(0x51, 4);
 //  printf("0x0051 %-60s: 0x%08X\n", "SafetyStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.37.1 SafetyStatus() High Word
@@ -854,7 +855,7 @@ int main(int argc, char **argv)
 //  11.1.38 ManufacturerAccess() 0x0052 PFAlert - read
 //  This command, returns indications of pending safety issues, such as temperature
 //  or voltages that have risen high enough to trigger a PFAlert failure. 4 bytes are returned.
-//  n = mac_read(0x0052, 4);
+//  n = mac_read(0x52, 4);
 //  printf("0x0052 %-60s: 0x%08X\n", "PFAlert", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.38.1 PFAlert() High Word
@@ -915,7 +916,7 @@ int main(int argc, char **argv)
 
 //  11.1.39 ManufacturerAccess() 0x0053 PFStatus - read
 //  This command returns the 4 bytes of PFStatus() flags.
-//  n = mac_read(0x0053, 4);
+//  n = mac_read(0x53, 4);
 //  printf("0x0053 %-60s: 0x%08X\n", "PFStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.39.1 PFStatus() High Word
@@ -976,7 +977,7 @@ int main(int argc, char **argv)
 
 //  11.1.40 ManufacturerAccess() 0x0054 OperationStatus - read
 //  This command returns the 4 bytes of OperationStatus() flags.
-//  n = mac_read(0x0054, 4);
+//  n = mac_read(0x54, 4);
 //  printf("0x0054 %-60s: 0x%08X\n", "OperationStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  11.1.40.1 OperationStatus() High Word
@@ -1037,7 +1038,7 @@ int main(int argc, char **argv)
 
 //  11.1.41 ManufacturerAccess() 0x0055 ChargingStatus - read
 //  This command returns the 1 byte of ChargerStatus() flags and 2 bytes of ChargingStatus() flags.
-//  n = mac_read(0x0055, 4);
+//  n = mac_read(0x55, 4);
 //  printf("0x0055 %-60s: 0x%08X\n", "ChargingStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
@@ -1081,7 +1082,7 @@ int main(int argc, char **argv)
 
 //  11.1.42 ManufacturerAccess() 0x0056 GaugingStatus - read
 //  This command returns the 3 bytes of GaugingStatus() flags.
-//  n = mac_read(0x0056, 4);
+//  n = mac_read(0x56, 4);
 //  printf("0x0056 %-60s: 0x%08X\n", "GaugingStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  B23 B22 B21 B20 B19 B18 B17 B16
@@ -1127,7 +1128,7 @@ int main(int argc, char **argv)
 
 //  11.1.43 ManufacturerAccess() 0x0057 ManufacturingStatus - read
 //  This command returns the 2 bytes of ManufacturingStatus() flags.
-//  n = mac_read(0x0057, 2);
+//  n = mac_read(0x57, 2);
 //  printf("0x0057 %-60s: 0x%08X\n", "ManufacturingStatus", data[4] + (data[3] << 8));
 
 //  B15 B14 B13 B12 B11 B10 B9 B8
@@ -1159,7 +1160,7 @@ int main(int argc, char **argv)
 //  11.1.44 ManufacturerAccess() 0x0058 AFE Register - read
 //  This command returns the 21 byte AFERegister() values.
 //  These are the AFE hardware registers and are intended for internal debug use only.
-//  n = mac_read(0x0058, 22);
+//  n = mac_read(0x58, 22);
 //  printf("0x0058 %-60s: 0x%08X\n", "AFE Register", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  printf("- [0]  %-60s: %d\n", "AFE Hardware interrupt status", data[3]);
@@ -1186,7 +1187,7 @@ int main(int argc, char **argv)
 
 //  11.1.45 ManufacturerAccess() 0x0060 Lifetime Data Block 1 - read
 //  This command returns the 31 bytes of Lifetime data.
-//  n = mac_read(0x0060, 32);
+//  n = mac_read(0x60, 32);
 //  printf("0x0060 %-60s: 0x%08X\n", "Lifetime Data Block 1", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "Cell 1 Max Voltage", data[4] + (data[3] << 8));
@@ -1211,7 +1212,7 @@ int main(int argc, char **argv)
 
 //  11.1.46 ManufacturerAccess() 0x0061 Lifetime Data Block 2 - read
 //  This command returns the 7 bytes of Lifetime data.
-//  n = mac_read(0x0061, 8);
+//  n = mac_read(0x61, 8);
 //  printf("0x0061 %-60s: 0x%08X\n", "Lifetime Data Block 2", data[3]);
 
 //  printf("- [0]     %-57s: %d\n", "No. of Shutdowns", data[3]);
@@ -1225,7 +1226,7 @@ int main(int argc, char **argv)
 
 //  11.1.47 ManufacturerAccess() 0x0062 Lifetime Data Block 3 - read
 //  This command returns the 16 bytes of Lifetime data.
-//  n = mac_read(0x0062, 16);
+//  n = mac_read(0x62, 16);
 //  printf("0x0062 %-60s: 0x%08X\n", "Lifetime Data Block 3", data[4] + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "Total FW Runtime", data[4] + (data[3] << 8));
@@ -1239,7 +1240,7 @@ int main(int argc, char **argv)
 
 //  11.1.48 ManufacturerAccess() 0x0063 Lifetime Data Block 4 - read
 //  This command returns the 31 bytes of Lifetime data.
-//  n = mac_read(0x0063, 32);
+//  n = mac_read(0x63, 32);
 //  printf("0x0063 %-60s: 0x%08X\n", "Lifetime Data Block 4", data[4] + (data[3] << 8));
 
 //  printf("- [3:2]   %-57s: %d\n", "Last COV Event", data[6] + (data[5] << 8));
@@ -1260,7 +1261,7 @@ int main(int argc, char **argv)
 
 //  11.1.49 ManufacturerAccess() 0x0064 Lifetime Data Block 5
 //  This command returns the 31 bytes of Lifetime data.
-//  n = mac_read(0x0064, 32);
+//  n = mac_read(0x64, 32);
 //  printf("0x0064 %-60s: 0x%08X\n", "Lifetime Data Block 5", data[4] + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "No. of ASCC Events", data[4] + (data[3] << 8));
@@ -1282,13 +1283,13 @@ int main(int argc, char **argv)
 
 //  11.1.50 ManufacturerAccess() 0x0070 ManufacturerInfo - read
 //  This command returns the 32 bytes of ManufacturerInfo.
-//  n = mac_read(0x0070, 32);
+//  n = mac_read(0x70, 32);
 //  printf("0x0070 %-60s: 0x%08X\n", "ManufacturerInfo", data[4] + (data[3] << 8));
 
 //  11.1.51 ManufacturerAccess() 0x0071 DAStatus1 - read
 //  This command returns 32 bytes containing CellVoltages, PackVoltage, BatVoltage, CellCurrents,
 //  CellPowers, Power, and AveragePower on AlternateManufacturerAccess() or ManufacturerData().
-//  n = mac_read(0x0071, 32);
+//  n = mac_read(0x71, 32);
 //  printf("0x0071 %-60s: 0x%08X\n", "DAStatus1", data[4] + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "Cell Voltage 1", data[4] + (data[3] << 8));
@@ -1311,7 +1312,7 @@ int main(int argc, char **argv)
 //  11.1.52 ManufacturerAccess() 0x0072 DAStatus2 - read
 //  This command returns 14 bytes containing the temperatures from the internal temp sensor, TS1, TS2,
 //  TS3, TS4, Cell Temp, and FETTemp.
-//  n = mac_read(0x0072, 14);
+//  n = mac_read(0x72, 14);
 //  printf("0x0072 %-60s: 0x%08X\n", "DAStatus2", data[4] + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "Int Temperature", data[4] + (data[3] << 8));
@@ -1324,7 +1325,7 @@ int main(int argc, char **argv)
 
 //  11.1.53 ManufacturerAccess() 0x0073 GaugeStatus1 - read
 //  This command returns the 32 bytes of Impedance Track related gauging information.
-//  n = mac_read(0x0073, 32);
+//  n = mac_read(0x73, 32);
 //  printf("0x0073 %-60s: 0x%08X\n", "GaugeStatus1", data[4] + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "True remaining capacity in mAh", data[4] + (data[3] << 8));
@@ -1346,7 +1347,7 @@ int main(int argc, char **argv)
 
 //  11.1.54 ManufacturerAccess() 0x0074 GaugeStatus2 - read
 //  This command returns the 32 bytes of Impedance Track related gauging information.
-//  n = mac_read(0x0074, 32);
+//  n = mac_read(0x74, 32);
 //  printf("0x0074 %-60s: 0x%08X\n", "GaugeStatus2", data[4] + (data[3] << 8));
 
 //  0 Pack Grid. Active pack grid point (minimum of CellGrid0 to Cell Grid3)
@@ -1383,7 +1384,7 @@ int main(int argc, char **argv)
 
 //  11.1.55 ManufacturerAccess() 0x0075 GaugeStatus3 - read
 //  This command returns the 32 bytes Impedance Track related gauging information.
-//  n = mac_read(0x0075, 24);
+//  n = mac_read(0x75, 24);
 //  printf("0x0075 %-60s: 0x%08X\n", "GaugeStatus3", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "QMax 0. QMax of Cell 1", data[4] + (data[3] << 8));
@@ -1401,7 +1402,7 @@ int main(int argc, char **argv)
 
 //  11.1.56 ManufacturerAccess() 0x0076 CBStatus - read
 //  This command returns the 32 bytes of cell-balancing–related information.
-//  n = mac_read(0x0076, 32);
+//  n = mac_read(0x76, 32);
 //  printf("0x0076 %-60s: 0x%08X\n", "CBStatus", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
 //  printf("- [1:0]   %-57s: %d\n", "Calculated cell balancing time of Cell 1", data[4] + (data[3] << 8));
@@ -1411,7 +1412,7 @@ int main(int argc, char **argv)
 
 //  11.1.57 ManufacturerAccess() 0x0077 State of Health - read
 //  This command returns the 4 bytes of State of Health FCC in mAh and energy in cWh.
-//  n = mac_read(0x0077, 4);
+//  n = mac_read(0x77, 4);
 //  printf("0x0077 %-60s: %d\n", "State of Health FFC in mAh", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 //  printf("0x0077 %-60s: %d\n\n", "State of Health energy in cWh", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
@@ -1420,14 +1421,14 @@ int main(int argc, char **argv)
 //  command sets ManufacturingStatus[CHGR_EN] to 1, allowing the charge controller to enable whenever
 //  the adaptor voltage is present and valid. If ManufacturingStatus[CHGR_EN] = 1 this command will disable
 //  the charger immediately and set ManufacturingStatus[CHGR_EN] to 0.
-//  n = mac_read(0x00C0, 2);
+//  n = mac_read(0xC0, 2);
 //  printf("0x00C0 %-60s: 0x%02X\n", "CHGR_EN Toggle", data[4] + (data[3] << 8));
 
 //  11.1.59 ManufacturerAccess() 0x00C1 CVRD_ARM Toggle - write
 //  This command allows host control of the charger voltage and current settings. If Charging
 //  Configuration[CVRD_EN] = 0, sending this command allows the host system to controller the charging
 //  current and voltage, setting Charging Configuration[CVRD_EN] to 1 and vice versa.
-//  n = mac_read(0x00C1, 2);
+//  n = mac_read(0xC1, 2);
 //  printf("0x00C1 %-60s: 0x%02X\n", "CVRD_ARM Toggle", data[4] + (data[3] << 8));
 
 //  11.1.60 ManufacturerAccess() 0x00C2 ACFET_TEST Toggle
@@ -1436,7 +1437,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[ACFET_TEST] is set to 1 and vice versa. This toggling command is only enabled if
 //  ManufacturingStatus[FET_EN] = 0, indicating a FW FET control is not active and manual control is
 //  allowed. A reset clears ManufacturingStatus[ACFET_TEST] and turns off the AC FET.
-//  n = mac_read(0x00C2, 2);
+//  n = mac_read(0xC2, 2);
 //  printf("0x00C2 %-60s: 0x%02X\n", "ACFET_TEST Toggle", data[4] + (data[3] << 8));
 
 //  11.1.61 ManufacturerAccess() 0x00C3 CHGON_TEST Toggle - write
@@ -1445,7 +1446,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[CHGON_TEST] is set to 1 and vice versa. This toggling command is only enabled if
 //  ManufacturingStatus[FET_EN] = 0, indicating a FW FET control is not active and manual control is
 //  allowed. A reset clears ManufacturingStatus[CHGON_TEST] and turns off the CHG FET.
-//  n = mac_read(0x00C3, 2);
+//  n = mac_read(0xC3, 2);
 //  printf("0x00C3 %-60s: 0x%02X\n", "CHGON_TEST Toggle", data[4] + (data[3] << 8));
 
 //  11.1.62 ManufacturerAccess() 0x0F00 ROM Mode - write
@@ -1509,19 +1510,20 @@ int main(int argc, char **argv)
 
 //  11.2 0x01 RemainingCapacityAlarm()
 //  This read/write word function sets a low capacity alarm threshold for the cell stack.
-//  0x01 RemainingCapacityAlarm() R/W Word U2 0 700 300
-//  mAh/10 mWh
 //  NOTE: If BatteryMode()[CAPM] = 0, then the data reports in mAh.
 //  If BatteryMode()[CAPM] = 1, then the data reports in 10 mWh.
+//  0x01 RemainingCapacityAlarm() R/W Word U2 0 700 300 mAh
+//  0x01 RemainingCapacityAlarm() R/W Word U2 0 700 300 10 mWh
     readWord("RemainingCapacityAlarm", "mAh/10 mWh", 0x01, 0, 700, 300);
 
 //  11.3 0x02 RemainingTimeAlarm()
 //  This read/write word function sets a low remaining time to fully discharge alarm threshold for the cell stack.
+//  0x02 RemainingTimeAlarm() R/W Word U2 0 30 10 min
     readWord("RemainingTimeAlarm", "min", 0x02, 0, 30, 10);
 
 //  11.4 0x03 BatteryMode()
 //  This read/write word function sets various battery operating mode options.
-//  0x03 BatteryMode() R/W Word H2 0x0000 0xFFFF, 0);
+//  0x03 BatteryMode() R/W Word H2 0x0000 0xFFFF —
     readWord("BatteryMode", "hex", 0x03, 0x0000, 0xFFFF, 0);
 
 //  B15 B14 B13 B12 B11 B10 B9 B8
@@ -1549,27 +1551,31 @@ int main(int argc, char **argv)
 //  11.5 0x04 AtRate()
 //  This read/write word function sets the value used in calculating AtRateTimeToFull() and
 //  AtRateTimeToEmpty().
+//  0x04 AtRate() R/W Word I2 –32768 32767 0 mA
+//  0x04 AtRate() R/W Word I2 –32768 32767 0 10 mW
     readWord("AtRate", "mA/10mW", 0x04, -32768, 32767, 0);
 
 //  11.6 0x05 AtRateTimeToFull()
 //  This word read function returns the remaining time to fully charge the battery stack.
-//  0x05 AtRateTimeToFull() R Word U2 0 65535 min
 //  NOTE: 65535 indicates battery stack is not being charged.
+//  0x05 AtRateTimeToFull() R Word U2 0 65535 min
     readWord("AtRateTimeToFull", "min", 0x05, 0, 65535, 0);
 
 //  11.7 0x06 AtRateTimeToEmpty()
 //  This read word function returns a Boolean value that indicates whether the battery can deliver AtRate() for
 //  at least 10 seconds.
+//  NOTE: 65535 indicates battery stack is not being charged.
+//  0x06 AtRateTimeToEmpty() R Word U2 0 65535 min
     readWord("AtRateTimeToEmpty", "min", 0x06, 0, 65535, 0);
 
 //  11.8 0x07 AtRateOK()
 //  This read word function returns a Boolean value that indicates whether the battery can deliver AtRate() for
 //  at least 10 seconds.
-//  0x07 AtRateOK() R Word U2 0 65535 —
 //  NOTE: 0 = False. The gauge cannot deliver energy for 10 s, based on the discharge rate indicated
 //  in AtRate().
 //  > than 0 = True. The gauge can deliver energy for 10 s, based on the discharge rate
 //  indicated in AtRate().
+//  0x07 AtRateOK() R Word U2 0 65535 —
     readWord("AtRateOK", "0.1°K", 0x07, 0, 65535, 0);
 
 //  11.9 0x08 Temperature()
@@ -1584,11 +1590,11 @@ int main(int argc, char **argv)
 
 //  11.11 0x0A Current()
 //  This read word function returns the measured current from the coulomb counter.
-//  0x0A Current() R Word I2 –32767, 32768 mA
+//  0x0A Current() R Word I2 –32767 32768 mA
     readWord("Current", "mA", 0x0A, -32767, 32768, 0);
 
 //  11.12 0x0B AverageCurrent()
-//  0x0B AverageCurrent() R Word I2 -32767 32768 mA
+//  0x0B AverageCurrent() R Word I2 –32767 32768 mA
     readWord("AverageCurrent", "mA", 0x0B, -32767, 32768, 0);
 
 //  11.13 0x0C MaxError()
@@ -1610,6 +1616,7 @@ int main(int argc, char **argv)
 //  11.14 0x0D RelativeStateOfCharge()
 //  This read word function returns the predicted remaining battery capacity as a percentage of
 //  FullChargeCapacity().
+//  0x0D RelativeStateOfCharge() R Word U1 0% 100%
     readWord("RelativeStateOfCharge", "%", 0x0D, 0, 100, 0);
 
 //  11.15 0x0E AbsoluteStateOfCharge()
@@ -1619,53 +1626,54 @@ int main(int argc, char **argv)
 
 //  11.16 0x0F RemainingCapacity()
 //  This read word function returns the predicted remaining battery capacity.
-//  0x0F RemainingCapacity() R R R Word U2 0 65535
-//  mAh/10 mWh
 //  NOTE: If BatteryMode()[CAPM] = 0, then the data reports in mAh.
 //  If BatteryMode()[CAPM] = 1, then the data reports in 10 mWh.
+//  0x0F RemainingCapacity() R R R Word U2 0 65535 mAh 
+//  0x0F RemainingCapacity() R R R Word U2 0 65535 10 mWh
     readWord("RemainingCapacity", "mAh/10 mWh", 0x0F, 0, 65535, 0);
 
 //  11.17 0x10 FullChargeCapacity()
 //  This read word function returns the predicted battery capacity when full charged.
-//  0x10 FullChargeCapacity() R R R Word U2 0 65535
-//  mAh/10 mWh
 //  NOTE: If BatteryMode()[CAPM] = 0, then the data reports in mAh.
 //  If BatteryMode()[CAPM] = 1, then the data reports in 10 mWh.
+//  0x10 FullChargeCapacity() R R R Word U2 0 65535 mAh
+//  0x10 FullChargeCapacity() R R R Word U2 0 65535 10 mWh
     readWord("FullChargeCapacity", "mAh/10 mWh", 0x10, 0, 65535, 0);
 
 //  11.18 0x11 RunTimeToEmpty()
 //  This read word function returns the predicted remaining battery capacity based on the present rate of
 //  discharge.
-//  0x11 RunTimeToEmpty() R R R Word U2 0 65535 min
 //  NOTE: 65535 = Battery is not being discharged.
+//  0x11 RunTimeToEmpty() R R R Word U2 0 65535 min
     readWord("RunTimeToEmpty", "min", 0x11, 0, 65535, 0);
 
 //  11.19 0x12 AverageTimeToEmpty()
 //  This read word function returns the predicted remaining battery capacity based on AverageCurrent().
-//  0x12 AverageTimeToEmpty() R R R Word U2 0 65535 min
 //  NOTE: 65535 = Battery is not being discharged.
+//  0x12 AverageTimeToEmpty() R R R Word U2 0 65535 min
     readWord("AverageTimeToEmpty", "min", 0x12, 0, 65535, 0);
 
 //  11.20 0x13 AverageTimeToFull()
 //  This read word function returns the predicted time to full charge based on AverageCurrent().
-//  0x13 AverageTimeToFull() R R R Word U2 0 65535 min
 //  NOTE: 65535 = Battery is not being discharged.
+//  0x13 AverageTimeToFull() R R R Word U2 0 65535 min
     readWord("AverageTimeToFull", "min", 0x13, 0, 65535, 0);
 
 //  11.21 0x14 ChargingCurrent()
 //  This read word function returns the desired charging current.
-//  0x14 ChargingCurrent() R R R Word U2 0 65535 mA
 //  NOTE: 65535 = Request maximum current
+//  0x14 ChargingCurrent() R R R Word U2 0 65535 mA
     readWord("ChargingCurrent", "mA", 0x14, 0, 65535, 0);
 
 //  11.22 0x15 ChargingVoltage()
 //  This read word function returns the desired charging voltage.
-//  0x15 ChargingVoltage() R R R Word U2 0 65535 mV
 //  NOTE: 65535 = Request maximum voltage
+//  0x15 ChargingVoltage() R R R Word U2 0 65535 mV
     readWord("ChargingVoltage", "mV", 0x15, 0, 65535, 0);
 
 //  11.23 0x16 BatteryStatus()
 //  This read-word function returns various battery status information.
+//  NOTE: 65535 = Request maximum voltage
 //  0x16 BatteryStatus() R R R Word H2 — —
     readWord("BatteryStatus", "hex", 0x16, 0, 65535, 0);
 
@@ -1704,10 +1712,10 @@ int main(int argc, char **argv)
 //  11.25 0x18 DesignCapacity()
 //  This read word function returns the theoretical pack capacity. The default value is stored in data flash
 //  value Design Capacity mAh or Design Capacity cWh.
-//  0x18 DesignCapacity() R R/W R/W Word U2 0 65535
-//  ", (data[4] & 0x40) > 0);0 mAh/6336 10 mWh
 //  NOTE: If BatteryMode()[CAPM] = 0, then the data reports in mAh.
 //  If BatteryMode()[CAPM] = 1, then the data reports in 10 mWh.
+//  0x18 DesignCapacity() R R/W R/W Word U2 0 65535 4400 mAh
+//  0x18 DesignCapacity() R R/W R/W Word U2 0 65535 6336 10 mWh
     readWord("DesignCapacity", "mAh/10 mWh", 0x18, 65535, 0, (data[4] & 0x40) > 0);
 
 //  11.26 0x19 DesignVoltage()
@@ -1735,8 +1743,8 @@ int main(int argc, char **argv)
 
 //  11.28 0x1B ManufacturerDate()
 //  This read word function returns the pack's manufacture date.
-//  0x1B ManufacturerDate() R R/W R/W Word U2 65535 0
 //  NOTE: ManufacturerDate() value is in the following format: Day + Month × 32 + (Year–1980) × 256.
+//  0x1B ManufacturerDate() R R/W R/W Word U2 65535 0
 //  readWord("ManufacturerDate", "", 0x1B, 0, 65535, 0);
 
 //  11.29 0x1C SerialNumber()
@@ -1751,7 +1759,7 @@ int main(int argc, char **argv)
 
 //  11.31 0x21 DeviceName()
 //  This read block function returns the assigned pack name.
-//  0x21 DeviceName() R R R Block S7+1 — — bq40z60 ASCII
+//  0x21 DeviceName() R R R Block S11+1 — — Texas Inst. ASCII
 //  readWord("DeviceName", "ASCII", 0x21, 0, 0 ,0);
 
 //  11.32 0x22 DeviceChemistry()
@@ -1763,6 +1771,8 @@ int main(int argc, char **argv)
 //  This read block function returns several manufacturing- related pack information codes in the default
 //  mode. It is also used to return measured voltage, current, and temperature data for calibration purposes in
 //  CALIBRATION mode.
+//  0x23 ManufacturerData() R R R Block H14+1
+//  0x23 CalibrationData() R R R Block H2+S24
 //  readWord("ManufacturerData()/CalibrationData", "", 0x23, 0, 0, 0);
 
 //  CALIBRATION mode.
@@ -1823,6 +1833,7 @@ int main(int argc, char **argv)
 //  11.41 0x4F State of Health (SoH)
 //  This read-word command returns the state of health (SoH) information of the battery in percentage of
 //  design capacity and design energy.
+//  0x4F 
     readWord("State of Health", "%", 0x4F, 0, 0, 0);
 
 //  11.42 0x50 SafetyAlert
@@ -1949,7 +1960,7 @@ int main(int argc, char **argv)
 
 //  11.44 0x52 PFAlert
 //  This command returns the PFAlert() flags.
-//  0x52 PFAlert() — R R Block H4 0x00000000, 0xFFFFFFFF — —
+//  0x52 PFAlert() — R R Block H4 0x00000000 0xFFFFFFFF — —
     readWord("PFAlert", "", 0x52, 0x00000000, 0xFFFFFFFF, 0);
 
 //  11.1.38.1 PFAlert() High Word
@@ -2282,16 +2293,17 @@ int main(int argc, char **argv)
 //  TURBO_POWER reports the maximal peak power value, MAX_POWER. The gauge computes a new
 //  RAM value every second. TURBO_POWER() is initialized to the result of the max power calculation at
 //  reset or power up.
-//  0x59 TURBO_POWER() R R R/W Word — — — — cW
 //  NOTE: Computes and provides Turbo Power information based on the battery pack configuration.
+//  0x59 TURBO_POWER() R R R/W Word — — — — cW
 //  readWord("TURBO_POWER", "cW", 0x59, 0, 0, 0);
 
 //  11.52 0x5A TURBO_FINAL
 //  TURBO_FINAL sets Min Turbo Power, which represents the minimal TURBO BOOST mode power level
 //  during active operation (such as, non-SLEEP) after all higher TURBO BOOST mode levels are disabled
 //  (expected at the end of discharge).
+//  NOTE: Computes and provides Turbo Power information based on the battery pack configuration.
 //  0x5A TURBO_FINAL() R/W R/W R/W Word — — — — cW
-//  readWord("TURBO_FINAL", "cW", 0x59, 0, 0, 0);
+//  readWord("TURBO_FINAL", "cW", 0x5A, 0, 0, 0);
 
 //  11.53 0x5B TURBO_PACK_R
 //  TURBO_PACK_R sets the RAM value of the battery pack serial resistance, including resistance
@@ -2318,8 +2330,8 @@ int main(int argc, char **argv)
 //  11.56 0x5E TURBO_CURRENT
 //  The gauge computes a maximal discharge current supported by the cell design for a C-rate discharge
 //  pulse for 10 ms. This value is updated every 1 s for the system to read.
-//  0x5D TURBO_CURRENT() R R R/W Word — — — — mAh
 //  NOTE: Computes a maximal discharge current supported by the cell design.
+//  0x5E TURBO_EDV() R/W R/W R/W Word — — — — mV
 //  readWord("TURBO_CURRENT3", "mAh", 0x5E, 0, 0, 0);
 
 //  11.57 0x60 Lifetime Data Block 1
@@ -2363,6 +2375,7 @@ int main(int argc, char **argv)
 
 //  11.59 0x62 Lifetime Data Block 3
 //  This command returns the third block of Lifetime data.
+//  0x62 LifeTimeDataBlock3() — R R Block — — — — —
     readWord("Lifetime Data Block 3", "", 0x62, 0, 0, 0);
 
     printf("- [1:0]   %-57s: %d\n", "Total FW Runtime", data[4] + (data[3] << 8));
@@ -2461,6 +2474,7 @@ int main(int argc, char **argv)
 
 //  11.65 0x73 GaugeStatus1
 //  This command instructs the device to return the 32 bytes of Impedance Track related gauging information.
+//  0x73 GaugeStatus1() — R R Block — — — — —
     readWord("GaugeStatus1", "hex", 0x73, 0, 0, 0);
 
     printf("- [1:0]   %-57s: %d mAh\n", "True remaining capacity in mAh", data[4] + (data[3] << 8));
@@ -2519,6 +2533,7 @@ int main(int argc, char **argv)
 
 //  11.67 0x75 GaugeStatus3
 //  This command instructs the device to return the 32 bytes Impedance Track related gauging information.
+//  0x75 GaugeStatus3() — R R Block — — — — —
     readWord("GaugeStatus3", "hex", 0x75, 0, 0, 0);
 
     printf("- [1:0]   %-57s: %d\n", "QMax of Cell 1", data[4] + (data[3] << 8));
@@ -2534,9 +2549,10 @@ int main(int argc, char **argv)
     printf("- [21:20] %-57s: %d\n", "Thermal Model temperature factor", data[24] + (data[23] << 8));
     printf("- [23:22] %-57s: %d\n\n", "Thermal Model temperature", data[26] + (data[25] <<  8));
 
-//  11.68 0x76 CBStatus
+//  11.68 0x76 CBStatus3
 //  This command instructs the device to return the 32 bytes of cell balancing information.
-    readWord("CBStatus", "", 0x76, 0, 0, 0);
+//  0x76 CBStatus3() — R R Block — — — — —
+    readWord("CBStatus3", "", 0x76, 0, 0, 0);
 
     printf("- [1:0]   %-57s: %d\n", "Cell Balance Time of Cell 1", data[4] + (data[3] << 8));
     printf("- [3:2]   %-57s: %d\n", "Cell Balance Time of Cell 2", data[6] + (data[5] << 8));
@@ -2545,6 +2561,7 @@ int main(int argc, char **argv)
 
 //  11.1.57 ManufacturerAccess() 0x0077 State of Health
 //  This command returns the 4 bytes of State of Health FCC in mAh and energy in cWh.
+//  0x77 
     readWord("State of Health", "hex", 0x77, 0, 0, 0);
 
     printf("- [1:0]   %-57s: %d\n", "State Of FCC in mAh", data[4] + (data[3] << 8));
