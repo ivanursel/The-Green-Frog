@@ -1,7 +1,7 @@
 //
 //  Copyright 2016-2018 Ivo J. L. A. Van Ursel
 //
-//  v0.9a - Mon Sep 17 14:07:39 2018
+//  v0.9a - Fri Sep 21 15:03:14 2018
 //
 
 #define   debug
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 
     start = clock();
 
-    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Mon Sep 17 14:07:39 2018 ***\n\n");
+    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Fri Sep 21 15:03:14 2018 ***\n\n");
 
     if (gpioInitialise() < 0) {
       printf("Failure: pigpio initialization failed\n");
