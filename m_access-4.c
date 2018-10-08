@@ -1,7 +1,7 @@
 //
 //  Copyright 2016-2018 Ivo J. L. A. Van Ursel
 //
-//  v0.9a - Fri Sep 21 15:03:14 2018
+//  v0.9a - Mon Oct  8 17:05:38 2018
 //
 
 #define   debug
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 
     start = clock();
 
-    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Fri Sep 21 15:03:14 2018 ***\n\n");
+    printf("\n*** Texas Instruments bq40z60 status tool v0.9a - Mon Oct  8 17:05:38 2018 ***\n\n");
 
     if (gpioInitialise() < 0) {
       printf("Failure: pigpio initialization failed\n");
@@ -531,7 +531,7 @@ int main(int argc, char **argv)
 //  ManufacturingStatus[CHG_TEST] = 0, sending this command turns on the CHG FET and
 //  ManufacturingStatus[CHG_TEST] is set to 1 and vice versa. This toggling command is only enabled if
 //  ManufacturingStatus[FET_EN] = 0, indicating a FW FET control is not active and manual control is
-//  allowed. A reset clearsManufacturingStatus[CHG_TEST] flag to 0 and turns off the CHG FET.
+//  allowed. A reset clears ManufacturingStatus[CHG_TEST] flag to 0 and turns off the CHG FET.
 //  n = mac_read(0x1F, 4);
 //  printf("0x001F %-60s: 0x%08X\n", "CHG FET Toggle", data[6] + (data[5] << 24) + (data[4] << 16) + (data[3] << 8));
 
