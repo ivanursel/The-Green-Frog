@@ -15,33 +15,33 @@ The device has extended capabilities, including:
 
 • Low Power Modes
 
-– LOW POWER
+  – LOW POWER
 
-– SLEEP
+  – SLEEP
 
 • Full Array of Programmable Protection Features
 
-– Voltage
+  – Voltage
 
-– Current
+  – Current
 
-– Temperature
+  – Temperature
 
-– Charge Timeout
+  – Charge Timeout
 
-– CHG/DSG FETs
+  – CHG/DSG FETs
 
-– Cell Imbalance
+  – Cell Imbalance
 
 • Sophisticated Charge Algorithms, with gas gauge that directly communicates to Battery Charger the programmed charging parameters
 
-– JEITA
+  – JEITA
 
-– Enhanced Charging
+  – Enhanced Charging
 
-– Adaptive Charging
+  – Adaptive Charging
 
-– Cell Balancing
+  – Cell Balancing
 
 • Diagnostic Lifetime Data Monitor
 
